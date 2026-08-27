@@ -1,14 +1,12 @@
 # SQLMendRAG 知识库流水线
 
-这个目录是 SQLMendRAG 的 knowledge base construction 模块：把五种数据库的官方资料抓下来，清洗、补元数据、去重、切块，最后得到可以直接拿去做 BM25 或向量索引的 `corpus.jsonl`。这里**没有**实现回答生成器，也不会把后续人工标注数据混进来。
+这个目录是 SQLMendRAG 的 knowledge base construction 模块：把五种数据库的官方资料抓下来，清洗、补元数据、去重、切块，最后得到可以直接拿去做 BM25 或向量索引的 `corpus.jsonl`。
 
 本文中的 `data/`、`config/`、`reports/` 等路径都相对于 `construction/`。项目级说明在上一级 [README](../README.md)，以后新增的索引、检索、生成或标注模块不要塞进本目录的数据阶段。
 
 ## 为什么选这五种数据库
 
 我们只覆盖 PostgreSQL、MySQL Community Edition、SQLite、MariaDB 和 DuckDB。理由很实际：它们常见或增长很快，能免费安装，项目资料公开，实验室里也容易复现。PostgreSQL、SQLite、MariaDB、DuckDB 本身都是开放项目；MySQL 这里限定 Community Edition，并优先使用它公开的 GPL 源码资料。
-
-没有收 Microsoft SQL Server、Oracle Database 和 Firebird。前两者不适合本项目想要的全开源、可重复分发环境；Firebird 相比这五种系统，课程实验所需的资料规模、使用广度和版本对比价值都弱一些。
 
 ## 现在仓库里有什么
 
@@ -34,12 +32,12 @@ construction/
 
 ## 数据来源和许可说明
 
-机器可读的完整清单在 [config/sources.yaml](config/sources.yaml)。每条来源都明确写了 `authority_class`，不会把社区文章说成官方资料。
+机器可读的完整清单在 [config/sources.yaml](config/sources.yaml)。每条来源都明确写了 `authority_class`，区分社区文章和官方资料。
 
 | 系统 | 主要来源 | 版本处理 | 来源级别 / 许可要点 |
 |---|---|---|---|
 | PostgreSQL | 官方发布归档里的 HTML 或 SGML 手册 | 18.6、17.11、14.24 分开保留 | 官方项目文档；保留 PostgreSQL 文档许可中的版权和免责声明 |
-| MySQL Community | 官方 `mysql/mysql-server` 固定提交里的 HELP 表和错误目录 | 8.4.0–8.4.11、8.0.0–8.0.46 | 项目维护技术文档，源文件是 GPLv2；没有冒充整本 Oracle Reference Manual |
+| MySQL Community | 官方 `mysql/mysql-server` 固定提交里的 HELP 表和错误目录 | 8.4.0–8.4.11、8.0.0–8.0.46 | 项目维护技术文档，源文件是 GPLv2 |
 | SQLite | 官网发布的 3.53.4 静态 HTML 包 | 当前手册是 3.53.4；历史版本从 release log 标题提取 | 官方项目文档；SQLite 说明其代码和文档属于 public domain |
 | MariaDB | 官方文档仓库固定提交，加 11.4.10 HELP/错误目录 | 通用页标 `current`；发布说明提取 10.x/11.x 精确版本；结构目录标 11.4.10 | 官方/项目维护资料；逐页记录 CC BY-SA / GNU FDL 或 GPLv2，排除 “all rights reserved” 页面 |
 | DuckDB | 官方 `duckdb-web` 固定提交的 current 手册和发布文章 | 当前手册记 1.5 系列；发布文章提取精确版本 | 官方项目/发布文档；仓库使用 MIT License |
@@ -95,7 +93,7 @@ python -m sqlmend_pipeline.cli validate
 python -m sqlmend_pipeline.cli collect --source sqlite_3_53_4_docs
 ```
 
-下载失败不会静默跳过。看 `reports/collection_report.json` 和 `reports/download_failures.jsonl`；解析失败则看 `reports/parse_report.json` 和 `reports/parse_failures.jsonl`。目前固定快照的完整采集没有失败或不可访问来源，未来网络或上游状态变化时，报告会如实变化。
+下载失败看 `reports/collection_report.json` 和 `reports/download_failures.jsonl`；解析失败则看 `reports/parse_report.json` 和 `reports/parse_failures.jsonl`。目前固定快照的完整采集没有失败或不可访问来源，未来网络或上游状态变化时，报告会如实变化。
 
 ## 清洗到底做了什么
 
@@ -112,7 +110,7 @@ Table:
 
 ## 分块策略
 
-生产语料使用结构感知分块：文档 → 章节 → 子章节 → 解释/语法/示例。默认目标 150 个词，正文最少 35、普通最大 260、重叠 20，参数都在 [config/chunking.yaml](config/chunking.yaml)。最小长度按正文算，不会靠很长的合成标题凑数；短签名、参数、返回值、错误记录和代码/表格仍作为有意义的原子块保留。相邻的小节会配对，避免把函数签名和参数拆开。重叠内容会明确标成 `Context carried from the preceding passage`，也不会单独产生只有半句的尾块。代码块会和紧邻解释绑在一起；错误消息不会和错误号拆开；表格只会在行之间切，并在每个子块里保留列名。超长但必须原样保留的单个代码块允许超过普通最大值，这会在统计里如实体现。
+生产语料使用结构感知分块：文档 → 章节 → 子章节 → 解释/语法/示例。默认目标 150 个词，正文最少 35、普通最大 260、重叠 20，参数都在 [config/chunking.yaml](config/chunking.yaml)。最小长度按正文算，不会靠很长的合成标题；短签名、参数、返回值、错误记录和代码/表格仍作为有意义的原子块保留。相邻的小节会配对，避免把函数签名和参数拆开。重叠内容会明确标成 `Context carried from the preceding passage`，也不会单独产生只有半句的尾块。代码块会和紧邻解释绑在一起；错误消息不会和错误号拆开；表格只会在行之间切，并在每个子块里保留列名。超长但必须原样保留的单个代码块允许超过普通最大值，这会在统计里如实体现。
 
 为了以后做消融实验，流水线还会生成 180 词、30 词重叠的固定尺寸基线 `data/processed/corpus_fixed.jsonl`。生产索引应该使用 `corpus.jsonl`，不要把两套混在一起。
 
@@ -128,7 +126,7 @@ Table:
 - 明确旧版用 `legacy`；
 - 实在判断不了才用 `unknown`。
 
-不会拿仓库日期猜数据库版本，也不会把“适用于 8.0 系列”伪装成某个精确补丁版。SQLite、MariaDB、DuckDB 的发布说明会从版本标题进一步细化到 chunk；跨版本相同或相似的文字只有在版本范围相同且没有独立语义时才参与合并。
+SQLite、MariaDB、DuckDB 的发布说明会从版本标题进一步细化到 chunk；跨版本相同或相似的文字只有在版本范围相同且没有独立语义时才参与合并。
 
 生产 JSONL 至少包含下面这些字段：
 

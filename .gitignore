@@ -9,3 +9,4 @@ construction/data/raw/*/*.json
 construction/data/raw/collection_index.jsonl
 construction/data/interim/*.jsonl
 construction/data/processed/corpus_fixed.jsonl
+construction/HISTORY.md
