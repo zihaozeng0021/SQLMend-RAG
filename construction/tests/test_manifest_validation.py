@@ -5,9 +5,11 @@ from pathlib import Path
 
 import yaml
 
-from sqlmend_pipeline.cli import main
+from sqlmend_pipeline.cli import main, resolve_root
 from sqlmend_pipeline.manifest import ManifestError, load_source_manifest
 from sqlmend_pipeline.validation import validate_corpus
+
+CONSTRUCTION_ROOT = Path(__file__).resolve().parents[1]
 
 
 def valid_source() -> dict:
@@ -25,6 +27,22 @@ def valid_source() -> dict:
         "version_status": "exact",
         "collector": {"type": "single", "url": "https://example.test/docs/index.html"},
     }
+
+
+def test_cli_auto_detects_nested_construction_workspace(tmp_path: Path, monkeypatch) -> None:
+    project_root = tmp_path / "project"
+    construction_root = project_root / "construction"
+    config = construction_root / "config"
+    config.mkdir(parents=True)
+    (config / "sources.yaml").write_text("sources: []\n", encoding="utf-8")
+    (config / "chunking.yaml").write_text("{}\n", encoding="utf-8")
+    monkeypatch.chdir(project_root)
+
+    assert resolve_root() == construction_root.resolve()
+
+
+def test_cli_explicit_root_takes_precedence(tmp_path: Path) -> None:
+    assert resolve_root(str(tmp_path)) == tmp_path.resolve()
 
 
 def write_project_config(root: Path) -> None:
@@ -51,7 +69,7 @@ def write_project_config(root: Path) -> None:
 
 
 def test_repository_source_manifest_is_valid_and_has_all_five_dialects() -> None:
-    manifest = load_source_manifest("config/sources.yaml")
+    manifest = load_source_manifest(CONSTRUCTION_ROOT / "config" / "sources.yaml")
     assert {source["dialect"] for source in manifest["sources"]} == {
         "postgresql",
         "mysql",
@@ -123,4 +141,3 @@ def test_source_manifest_consistency_failure_is_reported(tmp_path: Path) -> None
     report = validate_corpus(tmp_path)
     check = next(item for item in report["checks"] if item["check"] == "source_manifest_consistency")
     assert check["status"] == "FAIL"
-

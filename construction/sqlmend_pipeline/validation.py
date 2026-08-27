@@ -77,7 +77,8 @@ def _tracked_candidate_files(root: Path) -> list[Path]:
     return [
         path
         for path in candidates
-        if path.suffix.lower() in TEXT_SUFFIXES
+        if path.is_file()
+        and path.suffix.lower() in TEXT_SUFFIXES
         and "data" not in path.relative_to(root).parts
         and path.stat().st_size <= 5_000_000
     ]
@@ -95,6 +96,14 @@ def scan_secrets(root: Path) -> list[dict[str, Any]]:
                 line = text.count("\n", 0, match.start()) + 1
                 findings.append({"type": name, "path": path.relative_to(root).as_posix(), "line": line})
     return findings
+
+
+def _secret_scan_root(construction_root: Path) -> Path:
+    """Use the Git worktree root so project-level files are checked too."""
+    for candidate in (construction_root, *construction_root.parents):
+        if (candidate / ".git").exists():
+            return candidate
+    return construction_root
 
 
 def _is_usable_atomic_fragment(chunk: dict[str, Any]) -> bool:
@@ -272,7 +281,7 @@ def validate_corpus(root: str | Path = ".", config_path: str | Path = "config/ch
     missing_sources = Counter(chunk.get("source_id") for chunk in chunks if chunk.get("source_id") not in manifest_ids)
     checks.append(_check("source_manifest_consistency", not missing_sources, dict(missing_sources), "every source_id in config/sources.yaml", "Corpus contains a source absent from the manifest.", "Add the source with correct authority/licensing metadata or remove its chunks."))
 
-    secret_findings = scan_secrets(root)
+    secret_findings = scan_secrets(_secret_scan_root(root))
     checks.append(_check("no_secret_credentials", not secret_findings, secret_findings[:20], 0, "Credential-like material found in tracked project files.", "Remove and rotate any real credential; use environment variables."))
 
     analyzable_chunks = [

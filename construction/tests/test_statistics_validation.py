@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 import yaml
@@ -11,12 +12,37 @@ from sqlmend_pipeline.constants import ALLOWED_DIALECTS, REQUIRED_CORPUS_FIELDS
 from sqlmend_pipeline.manifest import ManifestError, load_source_manifest, public_source_record, source_index
 from sqlmend_pipeline.statistics import calculate_statistics
 from sqlmend_pipeline.utils import write_jsonl_atomic
-from sqlmend_pipeline.validation import MOJIBAKE_RE, validate_corpus
+from sqlmend_pipeline.validation import (
+    MOJIBAKE_RE,
+    _secret_scan_root,
+    _tracked_candidate_files,
+    validate_corpus,
+)
 
 
 def test_mojibake_detector_allows_literal_a_tilde_but_catches_utf8_damage() -> None:
     assert not MOJIBAKE_RE.search('The tokenizer distinguishes "Ã" from "ã".')
     assert MOJIBAKE_RE.search("cafÃ©")
+
+
+def test_secret_scan_root_includes_project_level_files(tmp_path: Path) -> None:
+    project_root = tmp_path / "project"
+    construction_root = project_root / "construction"
+    (project_root / ".git").mkdir(parents=True)
+    construction_root.mkdir()
+
+    assert _secret_scan_root(construction_root) == project_root
+
+
+def test_tracked_candidate_scan_ignores_deleted_git_paths(tmp_path: Path, monkeypatch) -> None:
+    present = tmp_path / "present.md"
+    present.write_text("safe", encoding="utf-8")
+    monkeypatch.setattr(
+        "sqlmend_pipeline.validation.subprocess.run",
+        lambda *args, **kwargs: SimpleNamespace(stdout="missing.md\npresent.md\n"),
+    )
+
+    assert _tracked_candidate_files(tmp_path) == [present]
 
 
 def _source(source_id: str, dialect: str) -> dict:

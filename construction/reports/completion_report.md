@@ -1,6 +1,6 @@
 # SQLMendRAG 知识库流水线完成报告
 
-生成日期：2026-08-27。这里报告的是当前固定快照，不是以后重跑时保证永远不变的数字；重跑后请以同目录下自动生成的 JSON/CSV 报告为准。
+生成日期：2026-08-27。知识库构建流水线现已整体放在项目的 `construction/` 模块中。下文未加前缀的路径均相对于 `construction/`；从项目根目录看，请在前面加上 `construction/`。这里报告的是当前固定快照，不是以后重跑时保证永远不变的数字；重跑后请以同目录下自动生成的 JSON/CSV 报告为准。
 
 ## 1. 文件路径
 
@@ -9,9 +9,10 @@
 - `README.md`
 - `pyproject.toml`
 - `requirements.txt`
-- `.gitignore`
 - `config/sources.yaml`
 - `config/chunking.yaml`
+
+项目根目录的 `.gitignore` 是所有阶段共用的，不属于 construction 模块。
 
 核心实现：
 
@@ -76,6 +77,7 @@
 ## 2. 重建命令
 
 ```powershell
+cd construction
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -e ".[test]"
@@ -218,7 +220,7 @@ PostgreSQL、SQLite、MariaDB 和 DuckDB 都有公开项目资料、可下载源
 工程标准：
 
 - PASS — README 给出无隐藏手工步骤的完整重建命令。
-- PASS — 自动测试通过：86/86。
+- PASS — 自动测试通过：90/90。
 - PASS — 严格验证通过：24/24，退出码 0。
 - PASS — 统计由流水线自动生成。
 - PASS — 来源和版本覆盖 CSV 自动生成。

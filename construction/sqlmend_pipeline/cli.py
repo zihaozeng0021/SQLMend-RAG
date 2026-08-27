@@ -15,9 +15,34 @@ from .statistics import generate_statistics
 from .validation import validate_corpus
 
 
+def resolve_root(value: str | None = None) -> Path:
+    """Resolve the construction workspace without tying the CLI to the CWD."""
+    if value:
+        return Path(value).resolve()
+
+    cwd = Path.cwd().resolve()
+    module_root = Path(__file__).resolve().parents[1]
+    candidates = (cwd, cwd / "construction", module_root)
+    seen: set[Path] = set()
+    for candidate in candidates:
+        resolved = candidate.resolve()
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        if (resolved / "config" / "sources.yaml").is_file() and (
+            resolved / "config" / "chunking.yaml"
+        ).is_file():
+            return resolved
+    return cwd
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="SQLMendRAG knowledge-base construction pipeline")
-    parser.add_argument("--root", default=".", help="Repository root (default: current directory)")
+    parser.add_argument(
+        "--root",
+        default=None,
+        help="Construction workspace (default: auto-detect ./construction or the installed module root)",
+    )
     parser.add_argument("--verbose", action="store_true", help="Enable verbose logging")
     subparsers = parser.add_subparsers(dest="command", required=True)
     collect_parser = subparsers.add_parser("collect", help="Collect raw source documents")
@@ -41,7 +66,7 @@ def main(argv: list[str] | None = None) -> int:
         level=logging.DEBUG if args.verbose else logging.INFO,
         format="%(asctime)s %(levelname)s %(name)s: %(message)s",
     )
-    root = Path(args.root).resolve()
+    root = resolve_root(args.root)
     command = args.command
     if command == "collect":
         collect_all(root, source_ids=set(args.sources) if args.sources else None)
@@ -74,4 +99,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-
