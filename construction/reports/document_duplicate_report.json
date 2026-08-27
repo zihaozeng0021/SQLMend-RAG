@@ -1,0 +1,893 @@
+{
+  "input_count": 8189,
+  "output_count": 8043,
+  "exact_duplicate_count": 140,
+  "near_duplicate_count": 6,
+  "near_duplicate_threshold": 0.94,
+  "near_duplicate_method": "Jaccard similarity over normalized 5-word shingles, with deterministic 64-bit SimHash banding for candidates",
+  "scope_policy": "Compare only within the same dialect and version scope; preserve cross-dialect and meaningfully versioned records",
+  "by_dialect_and_version": [
+    {
+      "dialect": "mariadb",
+      "version_scope": "current",
+      "kind": "exact",
+      "removed": 137
+    },
+    {
+      "dialect": "mariadb",
+      "version_scope": "current",
+      "kind": "near",
+      "removed": 6
+    },
+    {
+      "dialect": "sqlite",
+      "version_scope": "3.53.4",
+      "kind": "exact",
+      "removed": 3
+    }
+  ],
+  "exact_examples": [
+    {
+      "removed_id": "doc_sqlite_60366736b0ba9a806bf5fb21",
+      "kept_id": "doc_sqlite_55236b2aa33bea9dfbc9809d",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ]
+    },
+    {
+      "removed_id": "doc_sqlite_bc2d578e3343802722736328",
+      "kept_id": "doc_sqlite_f891bb0f0e0ef7365efd731e",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ]
+    },
+    {
+      "removed_id": "doc_sqlite_5c3e7c48b60353e91f7e0328",
+      "kept_id": "doc_sqlite_6d6db42a7c15d3702c9dfaef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_7cf46398b87e93aa73a30ed2",
+      "kept_id": "doc_mariadb_5fb4d214110fa5c79f78de46",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_93ef6123c41322c3816111fa",
+      "kept_id": "doc_mariadb_650b24b3b1b3265de6ebe49c",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_652a7fad8fa0ca9aac0df3e0",
+      "kept_id": "doc_mariadb_8f3c5344e58e1e99f6f22dfc",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_9f7f81aa0e2005107ddf3226",
+      "kept_id": "doc_mariadb_d38db1d5fc0e4a98c427e456",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_7f4d7b8a851bca6d7eca382a",
+      "kept_id": "doc_mariadb_1cc934853d4a6c80afa52602",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_6bf02fcf6856c4ce02afcb6d",
+      "kept_id": "doc_mariadb_31bd74108582ef76c88f16ba",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_97896fd5dae6f6204258ebb9",
+      "kept_id": "doc_mariadb_6347944fe9a1593bac08ee48",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_8323396a6399423498071dff",
+      "kept_id": "doc_mariadb_31bd74108582ef76c88f16ba",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_cd2d1803b11151499d04ef84",
+      "kept_id": "doc_mariadb_31bd74108582ef76c88f16ba",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_0a39e91fdbf341753d2dda0d",
+      "kept_id": "doc_mariadb_31bd74108582ef76c88f16ba",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_e93c786ee7049e313d3df293",
+      "kept_id": "doc_mariadb_31bd74108582ef76c88f16ba",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_a1e4c68b3d6d4519b44634d3",
+      "kept_id": "doc_mariadb_15a43764f07cda823882114a",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_fb5d2d1c55a6c5f537250e05",
+      "kept_id": "doc_mariadb_d38db1d5fc0e4a98c427e456",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_63a3a8e1f7811112fdcf8d16",
+      "kept_id": "doc_mariadb_1cc934853d4a6c80afa52602",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_99c975c22cdb8f38315ab05a",
+      "kept_id": "doc_mariadb_31bd74108582ef76c88f16ba",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_37998f7065eb3ae2c0de9d69",
+      "kept_id": "doc_mariadb_6347944fe9a1593bac08ee48",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_7f4b6920ade3c8bf976f7b35",
+      "kept_id": "doc_mariadb_15a43764f07cda823882114a",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_1b18fd19d602bf8cfe462e62",
+      "kept_id": "doc_mariadb_fbd239df4b49f6ddace6e436",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_b94a1d5a4b1cc3993db1996b",
+      "kept_id": "doc_mariadb_1a9adbec94130d7d90b03daa",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_00250d38147c2001cee6fe69",
+      "kept_id": "doc_mariadb_b96c7d03df3b3bca025dfd6e",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_d70d4fbaf1ac9e96f906570d",
+      "kept_id": "doc_mariadb_1a9adbec94130d7d90b03daa",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_2f05e6629663f39e92d655eb",
+      "kept_id": "doc_mariadb_1a9adbec94130d7d90b03daa",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_477a1b7b9737f074a6afb989",
+      "kept_id": "doc_mariadb_1a9adbec94130d7d90b03daa",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_5cf2d4dba7f25bc76ca8dd6e",
+      "kept_id": "doc_mariadb_1a9adbec94130d7d90b03daa",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_431927c6af7c7db65c511fce",
+      "kept_id": "doc_mariadb_1a9adbec94130d7d90b03daa",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_fc82d18fd08828f0c97c1c18",
+      "kept_id": "doc_mariadb_7e5f2b079bd226da8ea72adf",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_48b4815e75b0daee03b20a2c",
+      "kept_id": "doc_mariadb_4b9da748b40233e1fe100c61",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_8d72bd2f2b475989108e5fb6",
+      "kept_id": "doc_mariadb_4b9da748b40233e1fe100c61",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_573a61c700bb910c4269ae17",
+      "kept_id": "doc_mariadb_fbd239df4b49f6ddace6e436",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_66b4066e5fd1c3b9f2948b0a",
+      "kept_id": "doc_mariadb_1a9adbec94130d7d90b03daa",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_4e0c2307c105e0924acbe3ae",
+      "kept_id": "doc_mariadb_b96c7d03df3b3bca025dfd6e",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_9749bebdb0305f19708d5ac0",
+      "kept_id": "doc_mariadb_7e5f2b079bd226da8ea72adf",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_055072b5a7a9d72796b34b6e",
+      "kept_id": "doc_mariadb_1a9adbec94130d7d90b03daa",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_efff99ebca53b2c5a1958e1a",
+      "kept_id": "doc_mariadb_9203cf0513064261627e87bc",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_f20182115ffc160d4f5b13be",
+      "kept_id": "doc_mariadb_9cf290a462c26bae7a20d14b",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_1836bd37f701da69e4871e10",
+      "kept_id": "doc_mariadb_86f984fd8438a6229655147b",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_c9b7793aea23bdaae6b9e83a",
+      "kept_id": "doc_mariadb_64b5bfbfbdac0a5ed40b19c5",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_06e4751153836934207213b1",
+      "kept_id": "doc_mariadb_83ae26e89ef1d24431ac1ad8",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_8751225e1e36f6222cdea8c2",
+      "kept_id": "doc_mariadb_bd31428de6a6245689d759c8",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_3f3709e412f8b1e95ec3b61d",
+      "kept_id": "doc_mariadb_180401c77cee911833e44430",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_1fd929785ee65c33668b5778",
+      "kept_id": "doc_mariadb_9a5ad0f9dcfe06a64b499bc5",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_3dc684de7135643725241588",
+      "kept_id": "doc_mariadb_114d2af8e7cb662f05993e64",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_446690976653c87ae3b5dd3e",
+      "kept_id": "doc_mariadb_f7924fc21594abd16d15a630",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_a7b8d8758ba56cfc0dd2e7f0",
+      "kept_id": "doc_mariadb_43d70ab0493b39dbded3c213",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_276ce4de86ceae6827ae2a1b",
+      "kept_id": "doc_mariadb_af51c222add56da0d209596c",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_e729dec754865d5a46dfbe2b",
+      "kept_id": "doc_mariadb_07a1497c5456b1963dee7e91",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_af29ef9aafed0d4bbb10d428",
+      "kept_id": "doc_mariadb_a615d4de136cbd01c369f90c",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_8cfd25b8f28da50ad275242e",
+      "kept_id": "doc_mariadb_9ec4edaed3040cd497d865aa",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_d1c216bcbeeabebfa3fb20d0",
+      "kept_id": "doc_mariadb_3cfc6eed2d99e697f56ff757",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_6c099befafd793856b1df3c7",
+      "kept_id": "doc_mariadb_3f4ca0c3dc76a6bd7818cd9a",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_47e64a347e9a83e3b0068f2b",
+      "kept_id": "doc_mariadb_f6c4e83113236b3230c3e056",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_2ba1d0ab8f473598bec742a2",
+      "kept_id": "doc_mariadb_0bdd7a854e87925f768ba6e3",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_dc7dc08e378823d1b8cdca87",
+      "kept_id": "doc_mariadb_a144e69de4f73c0824c3ca4c",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_3cfaf80fede0c60119758dc6",
+      "kept_id": "doc_mariadb_f4524b6d34370b159fa76cf2",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_c5c4248a28e9d30a362f311e",
+      "kept_id": "doc_mariadb_080be786ec3534b0eff38971",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_75326dbde094b168738dd230",
+      "kept_id": "doc_mariadb_8531a676859592a1614a95d1",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_d2a61a64ad32bfd85e7f3e26",
+      "kept_id": "doc_mariadb_f16e511877da9e0d2e8fe451",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_842944f476e56d39438bbfad",
+      "kept_id": "doc_mariadb_eb7fe94f57a9f14e999826a1",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_3d5768ea376f95a1d3cb82f9",
+      "kept_id": "doc_mariadb_b02bfefd454de268de83d53a",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_acf66d08f8bee3e95a139b8e",
+      "kept_id": "doc_mariadb_9cc4920686b18c36344a7337",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_33801d8555fba9ff67284b34",
+      "kept_id": "doc_mariadb_56850a588d987c5a3e02578b",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_a73b06d21d6cbe4d8af6f18a",
+      "kept_id": "doc_mariadb_0d330a1faa209a9579cfef3d",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_e7ad6aa45408d6c8786e866d",
+      "kept_id": "doc_mariadb_7efe87a4660548462c4bfe55",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_30e00bbc676813174648fba6",
+      "kept_id": "doc_mariadb_29b48879c4cbf0635dbb5f4d",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_f9521159066ce01146845ef0",
+      "kept_id": "doc_mariadb_aca36d7332e8e97a0963fc6f",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_3fbe82fa5a87a87814c5ec78",
+      "kept_id": "doc_mariadb_5aa84059d298e071590ad4ad",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_8f3f4fb3629f3fb8c5f28afe",
+      "kept_id": "doc_mariadb_2675d2187358224f8219037b",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_98d70f6b70fc9d5482fc05a6",
+      "kept_id": "doc_mariadb_a3515a1f7e87b805394f7440",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_47d37afe50b36f2747ed2eb4",
+      "kept_id": "doc_mariadb_6e150ade06764ec01a576c3d",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_b8bb9aa5c6456457e85cb4f3",
+      "kept_id": "doc_mariadb_d3df259a81bc14661b957418",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_13c03e46a7074e0e57c50b08",
+      "kept_id": "doc_mariadb_f97e7d7f446df805de1a6e9e",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_2999768769228e15e624220a",
+      "kept_id": "doc_mariadb_cf655ed5361c7015224a8319",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_250acad91b0f7da2cea400d8",
+      "kept_id": "doc_mariadb_c69445f94198841e3ea18396",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_b2176d5fe043eaedb41cc89b",
+      "kept_id": "doc_mariadb_00ae4f01f98c594ce2059004",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_0b63d321881dbed7a684d028",
+      "kept_id": "doc_mariadb_b6984b2426b0edc20cc70302",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_6ac409ba42ef8f45360f256d",
+      "kept_id": "doc_mariadb_44a7b8a7d1f9c66b6239138b",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_35ea6690f10f4e7cf37677c6",
+      "kept_id": "doc_mariadb_76c1bbb269d1deb6bffb9128",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_a075a9bd32645cdcd303cf8a",
+      "kept_id": "doc_mariadb_a1a3d44e0cf937cd4dfb5ca3",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_aa1dcf1a7c3ac486d69e41e6",
+      "kept_id": "doc_mariadb_05c4d1c061c328c928ed48c5",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_9f1c61107a6ed25183b8beb8",
+      "kept_id": "doc_mariadb_84de4e6980dbf5311d79f1eb",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_c1abf1fb9cadd9786dbbdacf",
+      "kept_id": "doc_mariadb_cb90859e13495b3119828686",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_6a46f9dc7126b2c5acffef65",
+      "kept_id": "doc_mariadb_0ebb945d9ee06c277ec4cdad",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_dd2b2e65fae7a16b30ed4acb",
+      "kept_id": "doc_mariadb_0c5d4c50e52a5ea82ec9f58e",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_b93646a302467552779384e4",
+      "kept_id": "doc_mariadb_d38db1d5fc0e4a98c427e456",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_82cb9135bbc5e13409e4d29b",
+      "kept_id": "doc_mariadb_1cc934853d4a6c80afa52602",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_51c32ec45d9ddc13e0887c13",
+      "kept_id": "doc_mariadb_31bd74108582ef76c88f16ba",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_d162c6731499e1592eeafdc7",
+      "kept_id": "doc_mariadb_6347944fe9a1593bac08ee48",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_01358bc7ffad68b039d924ab",
+      "kept_id": "doc_mariadb_cacb13bfe813ed7218ebb0ff",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_9d7bdb32808fbb3fae87c31b",
+      "kept_id": "doc_mariadb_7419195afd47c4bf28ff7bf5",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_16d18d54270a039fe880c391",
+      "kept_id": "doc_mariadb_6a1f99a485532a67bdf233e4",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_4c7ce8a1e530262e374d21a0",
+      "kept_id": "doc_mariadb_15a43764f07cda823882114a",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_d179315e9e50d9245ee7afca",
+      "kept_id": "doc_mariadb_9f8fbc993b75f42755ca2e90",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_d27740b669c9ff85b43a19f7",
+      "kept_id": "doc_mariadb_d38db1d5fc0e4a98c427e456",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_1ab23a43d2b6d77549e73a78",
+      "kept_id": "doc_mariadb_bbd747b6b9ab39df266037c5",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_25b86aa8e4198cb9d0a90620",
+      "kept_id": "doc_mariadb_1cc934853d4a6c80afa52602",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_43a0cb03d9ecafb05f9e3319",
+      "kept_id": "doc_mariadb_31bd74108582ef76c88f16ba",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "doc_mariadb_c4185653d51e462b736b4024",
+      "kept_id": "doc_mariadb_12067929764d57d7543b8f87",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    }
+  ],
+  "near_examples": [
+    {
+      "removed_id": "doc_mariadb_3947e4e0bc05b142138c835a",
+      "kept_id": "doc_mariadb_d902d5774979c2029edf019d",
+      "scope": [
+        "mariadb",
+        "current"
+      ],
+      "similarity": 0.964286,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "doc_mariadb_45e2c06e0aba4a8b4f28af7e",
+      "kept_id": "doc_mariadb_9287937e0c13bb217e3bd866",
+      "scope": [
+        "mariadb",
+        "current"
+      ],
+      "similarity": 1.0,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "doc_mariadb_2ce110ca257af0f0050a628f",
+      "kept_id": "doc_mariadb_919c50996837b899ad80d039",
+      "scope": [
+        "mariadb",
+        "current"
+      ],
+      "similarity": 1.0,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "doc_mariadb_6f413ac2be080e8b791de391",
+      "kept_id": "doc_mariadb_8be582e048ccb479a2564a38",
+      "scope": [
+        "mariadb",
+        "current"
+      ],
+      "similarity": 1.0,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "doc_mariadb_0234a44eaa11496f44249ad0",
+      "kept_id": "doc_mariadb_ef5b9c20db3ca8c0d1a4fc29",
+      "scope": [
+        "mariadb",
+        "current"
+      ],
+      "similarity": 1.0,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "doc_mariadb_c1734114191f24e47e8e3546",
+      "kept_id": "doc_mariadb_bfcba2d31fd48063fd09af3a",
+      "scope": [
+        "mariadb",
+        "current"
+      ],
+      "similarity": 1.0,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    }
+  ]
+}

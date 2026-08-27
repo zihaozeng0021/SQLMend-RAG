@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+construction/data/raw/*/.archives/
+construction/data/raw/*/*.json
+construction/data/raw/collection_index.jsonl
+construction/data/interim/*.jsonl
+construction/data/processed/corpus_fixed.jsonl
+construction/HISTORY.md

@@ -1,0 +1,398 @@
+manifest_version: 1
+project: SQLMendRAG
+allowed_dialects:
+  - postgresql
+  - mysql
+  - sqlite
+  - mariadb
+  - duckdb
+
+collection:
+  retries: 4
+  connect_timeout_seconds: 20
+  read_timeout_seconds: 180
+  rate_limit_seconds: 0.5
+  user_agent: "SQLMendRAG-university-research/0.1 (reproducible documentation collector)"
+
+sources:
+  - id: postgresql_18_6_manual
+    source_name: PostgreSQL 18.6 Reference Manual
+    source_type: official_docs
+    vendor_or_project: PostgreSQL Global Development Group
+    dialect: postgresql
+    base_url: https://www.postgresql.org/docs/18/
+    retrieved_at: "2026-08-27T04:45:30Z"
+    license_or_terms_note: PostgreSQL documentation license permits use, copying, modification, and distribution when the copyright and disclaimer notices are retained; see legalnotice.html.
+    authority_class: official_project_documentation
+    collector_name: postgresql_release_archive
+    version: "18.6"
+    version_min: "18.6"
+    version_max: "18.6"
+    version_status: exact
+    coverage_tier: current
+    collector:
+      type: archive
+      url: https://ftp.postgresql.org/pub/source/v18.6/postgresql-18.6.tar.bz2
+      archive_format: tar.bz2
+      expected_sha256: 555610c24d53e4316da5b7d3fc25c279d96856d5e0e23ee308c328c5fa881d9f
+      strip_components: 1
+      include:
+        - doc/src/sgml/*.sgml
+        - doc/src/sgml/*.xml
+      exclude:
+        - doc/src/sgml/postgres.sgml
+        - doc/src/sgml/filelist.sgml
+      source_url_template: https://ftp.postgresql.org/pub/source/v18.6/postgresql-18.6.tar.bz2?member={path}
+    path_rules:
+      - glob: "**/release*.sgml"
+        set:
+          source_type: release_notes
+          authority_class: official_release_documentation
+      - regex: "(?:errcodes|error)"
+        set:
+          source_type: error_reference
+      - regex: "(?:pgupgrade|logical-replication-upgrade|migration)"
+        set:
+          source_type: migration_guide
+
+  - id: postgresql_17_11_manual
+    source_name: PostgreSQL 17.11 Reference Manual
+    source_type: official_docs
+    vendor_or_project: PostgreSQL Global Development Group
+    dialect: postgresql
+    base_url: https://www.postgresql.org/docs/17/
+    retrieved_at: "2026-08-27T04:45:30Z"
+    license_or_terms_note: PostgreSQL documentation license permits use, copying, modification, and distribution when the copyright and disclaimer notices are retained; see legalnotice.html.
+    authority_class: official_project_documentation
+    collector_name: postgresql_release_archive
+    version: "17.11"
+    version_min: "17.11"
+    version_max: "17.11"
+    version_status: exact
+    coverage_tier: recent_supported
+    collector:
+      type: archive
+      url: https://ftp.postgresql.org/pub/source/v17.11/postgresql-17.11.tar.bz2
+      archive_format: tar.bz2
+      expected_sha256: dd27f2b3c59e73ed14aa3324901242bf69a032a6347805f274e6260322d42979
+      strip_components: 1
+      include:
+        - doc/src/sgml/*.sgml
+        - doc/src/sgml/*.xml
+      exclude:
+        - doc/src/sgml/postgres.sgml
+        - doc/src/sgml/filelist.sgml
+      source_url_template: https://ftp.postgresql.org/pub/source/v17.11/postgresql-17.11.tar.bz2?member={path}
+    path_rules:
+      - glob: "**/release*.sgml"
+        set:
+          source_type: release_notes
+          authority_class: official_release_documentation
+      - regex: "(?:errcodes|error)"
+        set:
+          source_type: error_reference
+      - regex: "(?:pgupgrade|logical-replication-upgrade|migration)"
+        set:
+          source_type: migration_guide
+
+  - id: postgresql_14_24_manual
+    source_name: PostgreSQL 14.24 Reference Manual
+    source_type: official_docs
+    vendor_or_project: PostgreSQL Global Development Group
+    dialect: postgresql
+    base_url: https://www.postgresql.org/docs/14/
+    retrieved_at: "2026-08-27T04:45:30Z"
+    license_or_terms_note: PostgreSQL documentation license permits use, copying, modification, and distribution when the copyright and disclaimer notices are retained; see legalnotice.html.
+    authority_class: official_project_documentation
+    collector_name: postgresql_release_archive
+    version: "14.24"
+    version_min: "14.24"
+    version_max: "14.24"
+    version_status: exact
+    coverage_tier: older_supported
+    collector:
+      type: archive
+      url: https://ftp.postgresql.org/pub/source/v14.24/postgresql-14.24.tar.bz2
+      archive_format: tar.bz2
+      expected_sha256: a7fa7ed3d558172355f51406097a7bd4f6b473be80f311ef7cda96bf383d8897
+      strip_components: 1
+      include:
+        - doc/src/sgml/html/*.html
+      exclude:
+        - doc/src/sgml/html/bookindex.html
+      source_url_template: https://www.postgresql.org/docs/14/{name}
+    path_rules:
+      - glob: "**/release*.html"
+        set:
+          source_type: release_notes
+          authority_class: official_release_documentation
+      - glob: "**/errcodes-appendix.html"
+        set:
+          source_type: error_reference
+      - regex: "(?:pgupgrade|logical-replication-upgrade|migration)"
+        set:
+          source_type: migration_guide
+
+  - id: mysql_8_4_help
+    source_name: MySQL Community 8.4.11 Built-in HELP Catalog
+    source_type: project_docs
+    vendor_or_project: Oracle MySQL Community
+    dialect: mysql
+    base_url: https://dev.mysql.com/doc/refman/8.4/en/
+    retrieved_at: "2026-08-27T04:45:30Z"
+    license_or_terms_note: The pinned source file carries GPLv2 terms and additional linking permissions. This corpus uses it instead of redistributing Oracle's separately licensed standalone manual.
+    authority_class: project_maintained_technical_documentation
+    collector_name: mysql_help_sql
+    version: "8.4.11"
+    version_min: "8.4.0"
+    version_max: "8.4.11"
+    version_status: range
+    collector:
+      type: single
+      url: https://raw.githubusercontent.com/mysql/mysql-server/99960bf74fa919347e4f4e3ca47672f333d6e91f/scripts/fill_help_tables.sql
+      expected_sha256: 1f300b9140e45760e69044808381feda155eb90f3c55d467f7d35626e96a0d79
+
+  - id: mysql_8_4_errors
+    source_name: MySQL Community 8.4.11 Error Catalog
+    source_type: error_reference
+    vendor_or_project: Oracle MySQL Community
+    dialect: mysql
+    base_url: https://github.com/mysql/mysql-server/tree/99960bf74fa919347e4f4e3ca47672f333d6e91f/share
+    retrieved_at: "2026-08-27T04:45:30Z"
+    license_or_terms_note: The pinned error-catalog source files carry GPLv2 terms; their exact symbolic names, SQLSTATE values, placeholders, and messages are retained.
+    authority_class: project_maintained_technical_documentation
+    collector_name: mysql_error_catalog
+    version: "8.4.11"
+    version_min: "8.4.0"
+    version_max: "8.4.11"
+    version_status: range
+    collector:
+      type: url_list
+      urls:
+        - url: https://raw.githubusercontent.com/mysql/mysql-server/99960bf74fa919347e4f4e3ca47672f333d6e91f/share/messages_to_clients.txt
+          expected_sha256: e331fe816f3dfe9f8382baadc60a1f45dd8f3409f24752030c6d858593f5379c
+        - url: https://raw.githubusercontent.com/mysql/mysql-server/99960bf74fa919347e4f4e3ca47672f333d6e91f/share/messages_to_error_log.txt
+          expected_sha256: d55f651263ddac73e607af69186cd78f804a43f329ec87a1172ccff63d0266fd
+
+  - id: mysql_8_0_help
+    source_name: MySQL Community 8.0.46 Built-in HELP Catalog
+    source_type: project_docs
+    vendor_or_project: Oracle MySQL Community
+    dialect: mysql
+    base_url: https://dev.mysql.com/doc/refman/8.0/en/
+    retrieved_at: "2026-08-27T04:45:30Z"
+    license_or_terms_note: The pinned source file carries GPLv2 terms and additional linking permissions. It provides legacy 8.x syntax and behavior without republishing Oracle's standalone manual.
+    authority_class: project_maintained_technical_documentation
+    collector_name: mysql_help_sql
+    version: "8.0.46"
+    version_min: "8.0.0"
+    version_max: "8.0.46"
+    version_status: range
+    coverage_tier: legacy_8x
+    collector:
+      type: single
+      url: https://raw.githubusercontent.com/mysql/mysql-server/0a7df2e4693d8f10901a26034ae6257699356e30/scripts/fill_help_tables.sql
+      expected_sha256: 78e10df673f710f09ffc417576f3a45a0989a593c4ee771585adf56da69bc2d9
+
+  - id: mysql_8_0_errors
+    source_name: MySQL Community 8.0.46 Error Catalog
+    source_type: error_reference
+    vendor_or_project: Oracle MySQL Community
+    dialect: mysql
+    base_url: https://github.com/mysql/mysql-server/tree/0a7df2e4693d8f10901a26034ae6257699356e30/share
+    retrieved_at: "2026-08-27T04:45:30Z"
+    license_or_terms_note: The pinned error-catalog source files carry GPLv2 terms; legacy 8.0 records are kept in a distinct version scope.
+    authority_class: project_maintained_technical_documentation
+    collector_name: mysql_error_catalog
+    version: "8.0.46"
+    version_min: "8.0.0"
+    version_max: "8.0.46"
+    version_status: range
+    collector:
+      type: url_list
+      urls:
+        - url: https://raw.githubusercontent.com/mysql/mysql-server/0a7df2e4693d8f10901a26034ae6257699356e30/share/messages_to_clients.txt
+          expected_sha256: f717bafc66926a2998981c28d857a0a190c9e849238d388608b753d2994f3d83
+        - url: https://raw.githubusercontent.com/mysql/mysql-server/0a7df2e4693d8f10901a26034ae6257699356e30/share/messages_to_error_log.txt
+          expected_sha256: 842fce23da36d95b1362114cb5abc6a3a0c6e32c6abaad1b84f078ad6ec6219e
+
+  - id: sqlite_3_53_4_docs
+    source_name: SQLite 3.53.4 Official Documentation Bundle
+    source_type: official_docs
+    vendor_or_project: SQLite Project
+    dialect: sqlite
+    base_url: https://www.sqlite.org/
+    retrieved_at: "2026-08-27T05:00:00Z"
+    license_or_terms_note: SQLite states that its code and documentation are dedicated to the public domain; see https://www.sqlite.org/copyright.html.
+    authority_class: official_project_documentation
+    collector_name: sqlite_published_documentation_archive
+    version: "3.53.4"
+    version_min: "3.53.4"
+    version_max: "3.53.4"
+    version_status: exact
+    coverage_tier: current
+    collector:
+      type: archive
+      url: https://www.sqlite.org/2026/sqlite-doc-3530400.zip
+      archive_format: zip
+      expected_sha3_256: 7ccf86a52e7dd1fb9b31e63edcebe3b553f18f89cd26eef59c7f191a5111836e
+      strip_components: 1
+      include:
+        - "*.html"
+        - "**/*.html"
+      exclude:
+        - "search*"
+        - "keyword_index.html"
+        - "doc_*_crossref.html"
+        - "doclist.html"
+        - "permuted_index.html"
+        - "sitemap.html"
+      source_url_template: https://www.sqlite.org/{path}
+    path_rules:
+      - regex: "(?:^|/)releaselog/.*\\.html$"
+        set:
+          source_type: release_notes
+          authority_class: official_release_documentation
+          version: null
+          version_min: null
+          version_max: null
+          version_status: unknown
+      - glob: "changes.html"
+        set:
+          source_type: release_notes
+          authority_class: official_release_documentation
+          version: null
+          version_min: null
+          version_max: null
+          version_status: unknown
+      - glob: "rescode.html"
+        set:
+          source_type: error_reference
+
+  - id: mariadb_docs_snapshot
+    source_name: MariaDB Community Server Official Documentation Snapshot
+    source_type: official_docs
+    vendor_or_project: MariaDB Foundation and MariaDB plc
+    dialect: mariadb
+    base_url: https://mariadb.com/docs/server/
+    retrieved_at: "2026-08-27T05:00:00Z"
+    license_or_terms_note: The official repository uses per-page terms, commonly CC BY-SA / GNU FDL or GPLv2. The collector records each marker and excludes pages marked all rights reserved.
+    authority_class: official_project_documentation
+    collector_name: pinned_mariadb_docs_archive
+    version: current
+    version_min: null
+    version_max: null
+    version_status: current
+    collector:
+      type: archive
+      url: https://codeload.github.com/mariadb-corporation/mariadb-docs/tar.gz/08635a8bce39f33121f5f1673fc3519f957ba2db
+      archive_format: tar.gz
+      expected_sha256: e4753eaac01b7e23661010b32ce7c7e778cd20461c4ddf572dc324267831de63
+      strip_components: 1
+      include:
+        - "server/**/*.md"
+        - "release-notes/community-server/**/*.md"
+      exclude:
+        - "**/.gitbook/**"
+        - "**/README.md"
+      content_exclude_regex: "(?i)This page is:\\s*Copyright[^}\\n]*All rights reserved"
+      source_url_template: https://github.com/mariadb-corporation/mariadb-docs/blob/08635a8bce39f33121f5f1673fc3519f957ba2db/{path}
+    path_rules:
+      - glob: "release-notes/community-server/**/*.md"
+        set:
+          source_type: release_notes
+          authority_class: official_release_documentation
+          version: null
+          version_min: null
+          version_max: null
+          version_status: unknown
+      - regex: "server/.*/(?:error-codes?|mariadb-error-codes?)/"
+        set:
+          source_type: error_reference
+      - regex: "server/.*/(?:upgrade|upgrading|migration|migrating|compatib)"
+        set:
+          source_type: migration_guide
+
+  - id: mariadb_11_4_10_help
+    source_name: MariaDB Community Server 11.4.10 Built-in HELP Catalog
+    source_type: project_docs
+    vendor_or_project: MariaDB Foundation
+    dialect: mariadb
+    base_url: https://github.com/MariaDB/server/tree/054a893f1645b77e52a329a7fc8cf614eebd1fad/scripts
+    retrieved_at: "2026-08-27T05:00:00Z"
+    license_or_terms_note: The pinned MariaDB Server source file is GPLv2; retain upstream copyright and license provenance.
+    authority_class: project_maintained_technical_documentation
+    collector_name: mariadb_help_table_parser
+    version: "11.4.10"
+    version_min: "11.4.10"
+    version_max: "11.4.10"
+    version_status: exact
+    collector:
+      type: single
+      url: https://raw.githubusercontent.com/MariaDB/server/054a893f1645b77e52a329a7fc8cf614eebd1fad/scripts/fill_help_tables.sql
+      expected_sha256: a6d9d9d51822a2fb1f94ef35b268f075e56edf25ffc6ef07e840128fd925a9d4
+
+  - id: mariadb_11_4_10_errors
+    source_name: MariaDB Community Server 11.4.10 Error Catalog
+    source_type: error_reference
+    vendor_or_project: MariaDB Foundation
+    dialect: mariadb
+    base_url: https://github.com/MariaDB/server/tree/054a893f1645b77e52a329a7fc8cf614eebd1fad/sql/share
+    retrieved_at: "2026-08-27T05:00:00Z"
+    license_or_terms_note: The pinned MariaDB Server error catalog is GPLv2; symbolic names, assigned numbers, SQLSTATE fields, placeholders, and English messages are retained.
+    authority_class: project_maintained_technical_documentation
+    collector_name: mariadb_structured_error_catalog
+    version: "11.4.10"
+    version_min: "11.4.10"
+    version_max: "11.4.10"
+    version_status: exact
+    collector:
+      type: single
+      url: https://raw.githubusercontent.com/MariaDB/server/054a893f1645b77e52a329a7fc8cf614eebd1fad/sql/share/errmsg-utf8.txt
+      expected_sha256: a27f829351a84eff10f927e54bded4e78e5ffd46a4e4aa2e4721244afbc99d15
+
+  - id: duckdb_docs_snapshot
+    source_name: DuckDB Official Documentation and Release Snapshot
+    source_type: official_docs
+    vendor_or_project: DuckDB Foundation
+    dialect: duckdb
+    base_url: https://duckdb.org/docs/current/
+    retrieved_at: "2026-08-27T05:00:00Z"
+    license_or_terms_note: The duckdb-web repository is maintained by the DuckDB project and distributed under the MIT License; retain its copyright and license notice.
+    authority_class: official_project_documentation
+    collector_name: pinned_duckdb_web_archive
+    version: "1.5"
+    version_min: "1.5.0"
+    version_max: "1.5.x"
+    version_status: current
+    coverage_tier: current
+    collector:
+      type: archive
+      url: https://codeload.github.com/duckdb/duckdb-web/tar.gz/1172b267179fbe8849fe6de50c0a87e4adac22a4
+      archive_format: tar.gz
+      expected_sha256: 7209263cea3187c85043adcea2712320b31a92489c86e107b69fab4f46b16b70
+      strip_components: 1
+      include:
+        - "docs/current/**/*.md"
+        - "_posts/*announcing-duckdb-*.md"
+        - "release_calendar.md"
+      exclude:
+        - "docs/current/clients/c/api_reference.md"
+        - "docs/current/clients/python/reference/**/*.md"
+      source_url_template: https://github.com/duckdb/duckdb-web/blob/1172b267179fbe8849fe6de50c0a87e4adac22a4/{path}
+    path_rules:
+      - glob: "_posts/*announcing-duckdb-*.md"
+        set:
+          source_type: release_notes
+          authority_class: official_release_documentation
+          version: null
+          version_min: null
+          version_max: null
+          version_status: unknown
+      - glob: "release_calendar.md"
+        set:
+          source_type: release_notes
+          authority_class: official_release_documentation
+      - regex: "(?:breaking|deprecated|migration|compatib|upgrade)"
+        set:
+          source_type: migration_guide

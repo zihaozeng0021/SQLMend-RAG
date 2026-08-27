@@ -1,0 +1,12 @@
+{
+  "document_count": 8189,
+  "version_known_count": 8114,
+  "version_known_percentage": 99.0841,
+  "dialects": [
+    "duckdb",
+    "mariadb",
+    "mysql",
+    "postgresql",
+    "sqlite"
+  ]
+}
