@@ -1,0 +1,52 @@
+{
+  "status": "PASS",
+  "reviewed_at": "2026-08-27T09:41:52Z",
+  "reviewer": "Codex manual full-text review",
+  "sample_path": "reports/inspection_sample.jsonl",
+  "sample_sha256": "51a6be34b7b86b8d0feb57b744733b2b2dd2c7ea086f333e35e069a61ce2fe71",
+  "corpus_path": "data/processed/corpus.jsonl",
+  "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+  "sampling": {
+    "method": "deterministic stratified random sample",
+    "seed": 20260827,
+    "sample_size": 100,
+    "per_dialect": {
+      "postgresql": 20,
+      "mysql": 20,
+      "sqlite": 20,
+      "mariadb": 20,
+      "duckdb": 20
+    }
+  },
+  "manual_results": {
+    "coherent_and_retrieval_usable_count": 100,
+    "coherent_and_retrieval_usable_percentage": 100.0,
+    "sql_or_error_applicable_count": 38,
+    "sql_or_error_preserved_count": 38,
+    "sql_or_error_preserved_percentage": 100.0,
+    "failed_chunk_ids": []
+  },
+  "review_criteria": [
+    "The title and section provide enough context for the passage.",
+    "The passage is not site navigation, an orphaned cross-reference index, or an unlabelled trailing fragment.",
+    "Code fences are balanced and SQL syntax or command examples retain their lexical form.",
+    "Error references retain every symbol, numeric code, SQLSTATE, placeholder, and message field available upstream.",
+    "Converted tables retain header-to-value relationships and remain readable."
+  ],
+  "non_failing_observations": [
+    {
+      "chunk_ids": [
+        "smr_mysql_0c95a7035c98687750f935b3",
+        "smr_mysql_00878b115e598048812589e9",
+        "smr_mysql_097b5de1df48fe742c9668d3"
+      ],
+      "note": "The pinned MySQL error catalogue itself supplies only the message placeholder %s for these symbols. The pipeline preserves that upstream limitation verbatim together with the symbol and error number."
+    },
+    {
+      "note": "Some MySQL and MariaDB HELP catalogue examples are source-authored as inline terminal transcripts instead of fenced Markdown. SQL identifiers, statements, result columns, warning or error numbers, and values remain present and inspectable."
+    },
+    {
+      "note": "The SQL detector is deliberately lexical and can conservatively flag prose beginning with a SQL keyword such as update. This affects the contains_sql label only and does not alter text."
+    }
+  ]
+}

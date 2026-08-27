@@ -1,0 +1,273 @@
+{
+  "status": "PASS",
+  "critical_failures": 0,
+  "warning_failures": 0,
+  "corpus_path": "data/processed/corpus.jsonl",
+  "checks": [
+    {
+      "check": "jsonl_parseable",
+      "status": "PASS",
+      "critical": true,
+      "observed": 12000,
+      "required": "0 parse errors",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "unique_chunk_ids",
+      "status": "PASS",
+      "critical": true,
+      "observed": [],
+      "required": "all IDs unique and non-null",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "document_ids_present",
+      "status": "PASS",
+      "critical": true,
+      "observed": 0,
+      "required": 0,
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "required_fields_exist",
+      "status": "PASS",
+      "critical": true,
+      "observed": [],
+      "required": "all required fields on every chunk",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "non_empty_text",
+      "status": "PASS",
+      "critical": true,
+      "observed": 0,
+      "required": 0,
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "source_urls_present",
+      "status": "PASS",
+      "critical": true,
+      "observed": 0,
+      "required": 0,
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "allowed_dialect_vocabulary",
+      "status": "PASS",
+      "critical": true,
+      "observed": {},
+      "required": [
+        "postgresql",
+        "mysql",
+        "sqlite",
+        "mariadb",
+        "duckdb"
+      ],
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "no_exact_duplicates",
+      "status": "PASS",
+      "critical": true,
+      "observed": 0,
+      "required": 0,
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "encoding_not_obviously_broken",
+      "status": "PASS",
+      "critical": true,
+      "observed": {
+        "count": 0,
+        "chunk_ids": []
+      },
+      "required": {
+        "count": 0
+      },
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "no_extremely_short_garbage",
+      "status": "PASS",
+      "critical": true,
+      "observed": {
+        "garbage_count": 0,
+        "garbage_chunk_ids": [],
+        "short_but_atomic_count": 6
+      },
+      "required": {
+        "garbage_count": 0
+      },
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "valid_version_status",
+      "status": "PASS",
+      "critical": true,
+      "observed": {},
+      "required": [
+        "exact",
+        "range",
+        "current",
+        "legacy",
+        "unknown"
+      ],
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "minimum_corpus_chunks",
+      "status": "PASS",
+      "critical": true,
+      "observed": 12000,
+      "required": ">=10000",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "minimum_total_words",
+      "status": "PASS",
+      "critical": true,
+      "observed": 1663145,
+      "required": ">=100000",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "minimum_chunks_each_dialect",
+      "status": "PASS",
+      "critical": true,
+      "observed": {
+        "duckdb": 2400,
+        "mariadb": 2400,
+        "mysql": 2400,
+        "postgresql": 2400,
+        "sqlite": 2400
+      },
+      "required": ">=1000 for each",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "maximum_dialect_share",
+      "status": "PASS",
+      "critical": true,
+      "observed": {
+        "postgresql": 0.2,
+        "mysql": 0.2,
+        "sqlite": 0.2,
+        "mariadb": 0.2,
+        "duckdb": 0.2
+      },
+      "required": "<=35% each",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "version_metadata_coverage",
+      "status": "PASS",
+      "critical": true,
+      "observed": 0.9520833333333333,
+      "required": ">=90%",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "dialect_metadata_coverage",
+      "status": "PASS",
+      "critical": true,
+      "observed": 1.0,
+      "required": "100%",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "source_manifest_consistency",
+      "status": "PASS",
+      "critical": true,
+      "observed": {},
+      "required": "every source_id in config/sources.yaml",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "no_secret_credentials",
+      "status": "PASS",
+      "critical": true,
+      "observed": [],
+      "required": 0,
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "residual_near_duplicate_rate",
+      "status": "PASS",
+      "critical": true,
+      "observed": {
+        "estimated_pair_count": 0,
+        "estimated_record_rate": 0.0,
+        "threshold": 0.94,
+        "method": "Jaccard similarity over normalized 5-word shingles, with deterministic 64-bit SimHash banding for candidates"
+      },
+      "required": "<3%",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "inspectable_sample_size",
+      "status": "PASS",
+      "critical": true,
+      "observed": 100,
+      "required": ">=100",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "sample_coherence_proxy",
+      "status": "PASS",
+      "critical": true,
+      "observed": 100.0,
+      "required": ">=95%",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "sample_code_error_preservation_proxy",
+      "status": "PASS",
+      "critical": true,
+      "observed": 100.0,
+      "required": ">=90%",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    },
+    {
+      "check": "topic_coverage",
+      "status": "PASS",
+      "critical": false,
+      "observed": "all topic families represented",
+      "required": "syntax/functions/errors/migration/release notes per dialect where sources permit",
+      "explanation": "Requirement satisfied.",
+      "recommended_remediation": null
+    }
+  ],
+  "sample_proxy": {
+    "sample_size": 100,
+    "coherent_count": 100,
+    "coherent_percentage": 100.0,
+    "code_or_error_applicable_count": 38,
+    "code_or_error_preserved_count": 38,
+    "code_or_error_preserved_percentage": 100.0,
+    "method": "deterministic inspectable sample; coherence and SQL/error preservation use explicit structural evidence, with the sample retained for manual review"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "document_count": 8043,
+  "candidate_structure_chunk_count": 104657,
+  "deduplicated_structure_chunk_count": 104504,
+  "final_chunk_count": 12000,
+  "fixed_baseline_chunk_count": 12000,
+  "exact_duplicates_removed": 40,
+  "near_duplicates_removed": 113,
+  "balancing": {
+    "enabled": true,
+    "target_chunks_per_dialect": 2400,
+    "minimum_total_chunks": 10000,
+    "available_by_dialect": {
+      "postgresql": 29593,
+      "mysql": 13875,
+      "sqlite": 7901,
+      "mariadb": 48058,
+      "duckdb": 5077
+    },
+    "selected_by_dialect": {
+      "postgresql": 2400,
+      "mysql": 2400,
+      "sqlite": 2400,
+      "mariadb": 2400,
+      "duckdb": 2400
+    },
+    "selection_method": "deterministic hierarchical round-robin: topics first, then source/source type/version within each topic"
+  }
+}

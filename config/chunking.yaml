@@ -1,0 +1,46 @@
+structure_aware:
+  target_words: 150
+  minimum_words: 35
+  maximum_words: 260
+  overlap_words: 20
+  keep_code_blocks_intact: true
+  keep_tables_intact: true
+  splitting_rules:
+    - document
+    - section
+    - subsection
+    - syntax_definition_with_explanation
+    - example_with_explanation
+    - table_with_headers
+    - migration_warning_with_feature
+
+fixed_size_baseline:
+  enabled: true
+  size_words: 180
+  minimum_words: 25
+  overlap_words: 30
+
+deduplication:
+  exact_method: normalized_sha256
+  near_duplicate_method: five_word_shingle_jaccard_with_simhash_candidates
+  near_duplicate_threshold: 0.94
+  minimum_near_duplicate_words: 50
+  preserve_cross_dialect: true
+  preserve_meaningful_cross_version: true
+
+balancing:
+  enabled: true
+  target_chunks_per_dialect: 2400
+  minimum_total_chunks: 10000
+  selection: deterministic_round_robin_by_source_type_version_topic
+
+validation:
+  minimum_chunks: 10000
+  minimum_total_words: 100000
+  minimum_chunks_per_dialect: 1000
+  maximum_single_dialect_share: 0.35
+  minimum_version_known_ratio: 0.90
+  minimum_chunk_words: 20
+  near_duplicate_threshold: 0.94
+  maximum_residual_near_duplicate_rate: 0.03
+

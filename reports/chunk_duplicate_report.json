@@ -1,0 +1,1401 @@
+{
+  "input_count": 104657,
+  "output_count": 104504,
+  "exact_duplicate_count": 40,
+  "near_duplicate_count": 113,
+  "near_duplicate_threshold": 0.94,
+  "near_duplicate_method": "Jaccard similarity over normalized 5-word shingles, with deterministic 64-bit SimHash banding for candidates",
+  "scope_policy": "Compare only within the same dialect and version scope; preserve cross-dialect and meaningfully versioned records",
+  "by_dialect_and_version": [
+    {
+      "dialect": "mariadb",
+      "version_scope": "11.4.10",
+      "kind": "near",
+      "removed": 1
+    },
+    {
+      "dialect": "mariadb",
+      "version_scope": "current",
+      "kind": "exact",
+      "removed": 31
+    },
+    {
+      "dialect": "mariadb",
+      "version_scope": "current",
+      "kind": "near",
+      "removed": 3
+    },
+    {
+      "dialect": "mariadb",
+      "version_scope": "unknown",
+      "kind": "near",
+      "removed": 21
+    },
+    {
+      "dialect": "mysql",
+      "version_scope": "8.0.0..8.0.46",
+      "kind": "near",
+      "removed": 29
+    },
+    {
+      "dialect": "mysql",
+      "version_scope": "8.4.0..8.4.11",
+      "kind": "near",
+      "removed": 27
+    },
+    {
+      "dialect": "postgresql",
+      "version_scope": "17.11",
+      "kind": "exact",
+      "removed": 4
+    },
+    {
+      "dialect": "postgresql",
+      "version_scope": "17.11",
+      "kind": "near",
+      "removed": 3
+    },
+    {
+      "dialect": "postgresql",
+      "version_scope": "18.6",
+      "kind": "exact",
+      "removed": 5
+    },
+    {
+      "dialect": "postgresql",
+      "version_scope": "18.6",
+      "kind": "near",
+      "removed": 3
+    },
+    {
+      "dialect": "sqlite",
+      "version_scope": "3.53.4",
+      "kind": "near",
+      "removed": 26
+    }
+  ],
+  "exact_examples": [
+    {
+      "removed_id": "smr_postgresql_9f46dc1d4f58e41196be6a27",
+      "kept_id": "smr_postgresql_e2de8e9de972dae51519389a",
+      "scope": [
+        "postgresql",
+        "18.6"
+      ]
+    },
+    {
+      "removed_id": "smr_postgresql_8b842bb0cfa60c9aa1befda1",
+      "kept_id": "smr_postgresql_fc1e66e1e6baaa3e47909190",
+      "scope": [
+        "postgresql",
+        "18.6"
+      ]
+    },
+    {
+      "removed_id": "smr_postgresql_97e23a671fd29b2b6701b407",
+      "kept_id": "smr_postgresql_3daf1426f08dc57e6fe62fae",
+      "scope": [
+        "postgresql",
+        "18.6"
+      ]
+    },
+    {
+      "removed_id": "smr_postgresql_7f421e0df3616f09051400f6",
+      "kept_id": "smr_postgresql_b63b8e98d8db70a2c5b8abce",
+      "scope": [
+        "postgresql",
+        "18.6"
+      ]
+    },
+    {
+      "removed_id": "smr_postgresql_9c38a761a3a7315808087589",
+      "kept_id": "smr_postgresql_5f34243cf5a93caf136acfbb",
+      "scope": [
+        "postgresql",
+        "18.6"
+      ]
+    },
+    {
+      "removed_id": "smr_postgresql_8dd78401d5d28744c54ba71f",
+      "kept_id": "smr_postgresql_aea118bbcb4d29cd3e76da04",
+      "scope": [
+        "postgresql",
+        "17.11"
+      ]
+    },
+    {
+      "removed_id": "smr_postgresql_2f217aaef5bd722eea57e34f",
+      "kept_id": "smr_postgresql_c30f0e3d4e464fe952839ce8",
+      "scope": [
+        "postgresql",
+        "17.11"
+      ]
+    },
+    {
+      "removed_id": "smr_postgresql_0803994da7feb75b55b2e1cb",
+      "kept_id": "smr_postgresql_c3c22e0b3acea57e6050dcb3",
+      "scope": [
+        "postgresql",
+        "17.11"
+      ]
+    },
+    {
+      "removed_id": "smr_postgresql_5553ff92aa9ab449addb87de",
+      "kept_id": "smr_postgresql_387f09a9f534a0b5ccdbfd31",
+      "scope": [
+        "postgresql",
+        "17.11"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_abbda0150a1076468797d46f",
+      "kept_id": "smr_mariadb_18be83033f9e9c9bc10bd0d9",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_3522199699d1ccfea8acc4e2",
+      "kept_id": "smr_mariadb_cfa2316ad02cac95deb6c05b",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_30634c28776dbb48052c5e21",
+      "kept_id": "smr_mariadb_edfd5899ed583de619754796",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_2d18a69c83e85be4a74cd7fc",
+      "kept_id": "smr_mariadb_831438c36679c9915dfe1ba6",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_9de8af9fc4cc75bd9af80b97",
+      "kept_id": "smr_mariadb_2bbe6fc0985d3fe8d20cee7f",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_98458614ce872bbedc3d71a0",
+      "kept_id": "smr_mariadb_5c57ca18db8077ca10958bcd",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_0ce7d7592724012db478137f",
+      "kept_id": "smr_mariadb_e5e7316ea33de2281734be2b",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_15b57ad0d64fe71b12896223",
+      "kept_id": "smr_mariadb_d67a421feb5855ccbfcc8f41",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_d1c1189419b15645fd32b003",
+      "kept_id": "smr_mariadb_e44e36808e82c9b16fb6c691",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_e079a25917644e6b8991cbe9",
+      "kept_id": "smr_mariadb_2e7bd707bcea22b715db4b0b",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_098a00835018ebf63120305e",
+      "kept_id": "smr_mariadb_222bfdc0e623758c124ad53f",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_1f531266541196c163445980",
+      "kept_id": "smr_mariadb_fed71a9a313cbe2c32c2435d",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_0f5c98560057d04e62d186a5",
+      "kept_id": "smr_mariadb_3eea5c7b06fd363f6d454433",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_fe161d392f665b11703dd1ba",
+      "kept_id": "smr_mariadb_a92237c104785821d5e20dfd",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_392c69b92f25757bc7a5ff87",
+      "kept_id": "smr_mariadb_e0fcef37158eeee8c3ad3b66",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_cb90dbbbc4ce0504c692213e",
+      "kept_id": "smr_mariadb_5d608ee9963726a6a5429344",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_f0387b9de0d8b85675b93a63",
+      "kept_id": "smr_mariadb_e71322091e44313943e4d73e",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_508f6b8449ca3327216c3f46",
+      "kept_id": "smr_mariadb_f9c8b6e7bef288d2d0a7770c",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_313a1a0623f5eceef8812ad2",
+      "kept_id": "smr_mariadb_33f9331de5cba25a07be8cab",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_5f8f3d4cb45ba1d2eb987a5e",
+      "kept_id": "smr_mariadb_1672908b84e5303f808c249c",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_4804474afc693f3722714fa4",
+      "kept_id": "smr_mariadb_8c31bded3a0ef4e1bed69fcd",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_c34db18619da391882e4d17f",
+      "kept_id": "smr_mariadb_d44ded4cfee25d9f5cd1cef3",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_b8e74d18e83b25e0960c0bda",
+      "kept_id": "smr_mariadb_aac15ade9914a527db6f9604",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_96e033a70800cff9988fc42a",
+      "kept_id": "smr_mariadb_16d88ea1ee8efe8bb92f97e7",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_9b5d02b97dbf8c6a618c36d4",
+      "kept_id": "smr_mariadb_b5e952e7a803774963ad2729",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_17c4e5695b605390bb2f7bda",
+      "kept_id": "smr_mariadb_48b60051d57883339eaa49a8",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_c23509e74ddcde2f6108c451",
+      "kept_id": "smr_mariadb_d4d023053d6fa04214ab61c3",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_95dcb0b790abbe5028093956",
+      "kept_id": "smr_mariadb_e6515b14aa722598354863ca",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_51911b6d8127c280f70448f9",
+      "kept_id": "smr_mariadb_418bac4f08e865b4e3552af3",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_3c87859bf17e395fb53491c1",
+      "kept_id": "smr_mariadb_9cbec8492fd8c6d50433f1b9",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    },
+    {
+      "removed_id": "smr_mariadb_68fd461bb407a13a386872fb",
+      "kept_id": "smr_mariadb_00c0317a63b7aab48f6b4101",
+      "scope": [
+        "mariadb",
+        "current"
+      ]
+    }
+  ],
+  "near_examples": [
+    {
+      "removed_id": "smr_postgresql_e1019e186b015058cfcffdf0",
+      "kept_id": "smr_postgresql_06b4e61439e28efc1bef73fd",
+      "scope": [
+        "postgresql",
+        "18.6"
+      ],
+      "similarity": 0.964029,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_postgresql_d5fd124673f0f710a5291dcb",
+      "kept_id": "smr_postgresql_2f2dd9a982aa58d0147065c7",
+      "scope": [
+        "postgresql",
+        "18.6"
+      ],
+      "similarity": 1.0,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_postgresql_d1ac81d65fb572a12d0eb268",
+      "kept_id": "smr_postgresql_31bf324116eb0c790838319d",
+      "scope": [
+        "postgresql",
+        "18.6"
+      ],
+      "similarity": 0.986301,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_postgresql_a62d00bc085c9c496578dcdd",
+      "kept_id": "smr_postgresql_4fa2e0f55f1a520fd40e36bc",
+      "scope": [
+        "postgresql",
+        "17.11"
+      ],
+      "similarity": 0.964029,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_postgresql_2b760a0fbac0c92beb9993db",
+      "kept_id": "smr_postgresql_a9043150612bff9ed0687a0d",
+      "scope": [
+        "postgresql",
+        "17.11"
+      ],
+      "similarity": 1.0,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_postgresql_d337e0856dd9ea1933ca768f",
+      "kept_id": "smr_postgresql_c33efac846c1e0ce3dbcf016",
+      "scope": [
+        "postgresql",
+        "17.11"
+      ],
+      "similarity": 0.986301,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_1ee007281984a4789fa95d9b",
+      "kept_id": "smr_mysql_763c5036540c97661649d27c",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.955752,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_df3025e8b0e64e4aefff4285",
+      "kept_id": "smr_mysql_0d87b31fc411d3b4b3ede78f",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.96337,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_728f874f8ac5c995f728324c",
+      "kept_id": "smr_mysql_2320a7234ee4c8ec54f648ae",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.96337,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_f38127efe38b42514bed2ea4",
+      "kept_id": "smr_mysql_00227cc2e305abf96e5358ad",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.981025,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_31fa645755a3082585395464",
+      "kept_id": "smr_mysql_700c02e532fbd26a4ba5a283",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.964286,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_ff80e0e50e5e1fab7da457c9",
+      "kept_id": "smr_mysql_b684c25890d42b77782c2a6b",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.962963,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_3349876cff771a39d82209ab",
+      "kept_id": "smr_mysql_624b39234b58769ab257a9da",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.947368,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_8c2e4802d84ccb7d426794f3",
+      "kept_id": "smr_mysql_7edf651ad464075d5755c622",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.962825,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_3d75a53629fcb02495ff58f0",
+      "kept_id": "smr_mysql_ec9c53c0b808d449cdb3c337",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.959184,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_b9a3148f6fa5f2f376add195",
+      "kept_id": "smr_mysql_0a59aca4439649211bde5db3",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.962121,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_3e623694b86a6c9130e1b72f",
+      "kept_id": "smr_mysql_0a754ac327a93aef8f46fcd8",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.979798,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_65bc67cd7c480873384c92fd",
+      "kept_id": "smr_mysql_001c4c99678ef85889f42647",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.961686,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_acf672c31ddba42d45fab62d",
+      "kept_id": "smr_mysql_556313b884b1580ba469f7f3",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.961686,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_1532ab071db845ebd41531fe",
+      "kept_id": "smr_mysql_ae7486e5411192297e16fa5e",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.946524,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_987256e67a60f405fa414a7e",
+      "kept_id": "smr_mysql_43d7d0bd5b5783f7f1d33b6d",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.959559,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_6201da9f23f1d389835fdd16",
+      "kept_id": "smr_mysql_a4a23984eb4b3036de5e7899",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.960145,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_a7327fb8910d82920262d7a5",
+      "kept_id": "smr_mysql_8fd2d9eaaf315a1d50674f49",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.951965,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_7144a4062b0723bc4370b018",
+      "kept_id": "smr_mysql_43d7d0bd5b5783f7f1d33b6d",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.959559,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_b1dff290a7f8ea0cba3ac25c",
+      "kept_id": "smr_mysql_a4a23984eb4b3036de5e7899",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.960145,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_8ad7d7b16375a47ef2401a36",
+      "kept_id": "smr_mysql_8fd2d9eaaf315a1d50674f49",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.951965,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_5148b4374dafbedf1d637a25",
+      "kept_id": "smr_mysql_43d7d0bd5b5783f7f1d33b6d",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.959559,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_144bf93f3ae10a43873c1d97",
+      "kept_id": "smr_mysql_0f556082549e3332a4acce5b",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.962406,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_6d058997ff6855911aa2fdaa",
+      "kept_id": "smr_mysql_a4a23984eb4b3036de5e7899",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.960145,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_b9ced9e13a20c0df6045948b",
+      "kept_id": "smr_mysql_8fd2d9eaaf315a1d50674f49",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.951965,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_e315c8ed1b61d46f6bd92449",
+      "kept_id": "smr_mysql_6034b903fb164e345175a422",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.962963,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_61e5b0227f0c8aae0c4851e5",
+      "kept_id": "smr_mysql_99d92d5c1142525d4444f0a7",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.961832,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_395358b37153407ba9cc29cd",
+      "kept_id": "smr_mysql_a356ecb9bd9f27a0739b9803",
+      "scope": [
+        "mysql",
+        "8.4.0..8.4.11"
+      ],
+      "similarity": 0.96063,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_634f3cac1ed82f8cd70d7b0a",
+      "kept_id": "smr_mysql_c4bccefe6b033d29c02f8e28",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.955752,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_c8d71a4c080f533943aad99d",
+      "kept_id": "smr_mysql_b843a7d49068155d528180bd",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.962547,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_2e54a3e456e73304be5b4a45",
+      "kept_id": "smr_mysql_7a8c62e0871022738c578b24",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.96337,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_2f38713c08557b66065fc256",
+      "kept_id": "smr_mysql_badd2346c6a28d04b547c60d",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.980732,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_feab0de46c4bc64aadd9e421",
+      "kept_id": "smr_mysql_fb54711f1a4faca50ad7b944",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.964029,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_42738adbb1e5b4957c75048d",
+      "kept_id": "smr_mysql_7cb2805c6f1e4220ec4cedf2",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.963504,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_7e2fc9525da8486c003f6ceb",
+      "kept_id": "smr_mysql_a147e73951c18a4b505628fa",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.955752,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_c9d459be92ba6a0c90970724",
+      "kept_id": "smr_mysql_002195c51528901d0f17f667",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.9631,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_c5956159e2088d137d9daed7",
+      "kept_id": "smr_mysql_77158c68026cacc248a6ea75",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.959839,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_cbbc3af23f0f8e9d94e9e973",
+      "kept_id": "smr_mysql_3a30cde8c093d51825eeaecc",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.962121,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_b85d48843c015e1ecbb97838",
+      "kept_id": "smr_mysql_0073435613d8da94c01b48e7",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.979798,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_f7308e7660ed5830a2dab1b8",
+      "kept_id": "smr_mysql_08211cf49aa09d3d225e8e5a",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.961686,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_dddbe651123d0ab9d684b2db",
+      "kept_id": "smr_mysql_4b7a3b7b2371bf5a69e719cd",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.961686,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_6c90a7294082ad71e2be691d",
+      "kept_id": "smr_mysql_ee6523a8f7d5d97fc488c757",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.948718,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_a9269290bc020c71d698a369",
+      "kept_id": "smr_mysql_66712f049b44979b9fe56686",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.959559,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_c7239a0fed6eade4493375d6",
+      "kept_id": "smr_mysql_7a6e2fe2507288db84728fb7",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.960145,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_bcc8d003eda1e0ce3d68d1c0",
+      "kept_id": "smr_mysql_13c400280bac31b0044f3f44",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.951965,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_7f58af7626ba4fba7f106426",
+      "kept_id": "smr_mysql_66712f049b44979b9fe56686",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.959559,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_47ea5380fb0be78282398019",
+      "kept_id": "smr_mysql_7a6e2fe2507288db84728fb7",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.960145,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_e49dc26ace7c2d1339d29330",
+      "kept_id": "smr_mysql_13c400280bac31b0044f3f44",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.951965,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_1c52b8fa9f97e3bc37b289c1",
+      "kept_id": "smr_mysql_66712f049b44979b9fe56686",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.959559,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_510d48457d1e7812b683195d",
+      "kept_id": "smr_mysql_6fa6b109600e4f90a3f3eaf1",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.962406,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_3496bdbe36e8c24a2fba0cca",
+      "kept_id": "smr_mysql_7a6e2fe2507288db84728fb7",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.960145,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_abeb2ae4fd31d2a4460c2261",
+      "kept_id": "smr_mysql_13c400280bac31b0044f3f44",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.951965,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_b19bad53ec5cfb9c95c277ad",
+      "kept_id": "smr_mysql_52f3d146674b479a7ad3aece",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.946524,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_3f1c4d69a9f15028156ff37a",
+      "kept_id": "smr_mysql_1f8e3495384ce4014b159ad9",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.945355,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_dc55fdba43918403556ef059",
+      "kept_id": "smr_mysql_4c5aed1e7d406cc8cafbc230",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.962963,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_36731aeed9777df963bfd2a4",
+      "kept_id": "smr_mysql_17fc5eca2db159a0774b3bfe",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.961832,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mysql_3ded12611e65873cd6377da5",
+      "kept_id": "smr_mysql_c630333660a6afd66da48664",
+      "scope": [
+        "mysql",
+        "8.0.0..8.0.46"
+      ],
+      "similarity": 0.96063,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_7008423b4787e6427e13eb0b",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.99141,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_acbaff0ee7a1eef12aeb5dc9",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.992961,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_9709024e520576cfde2c3ecf",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.991797,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_3641767525838c9e11316638",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.99141,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_b58f6f9f963dadf8f25fdae0",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.992961,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_3b03cf252794c599aab13066",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.992961,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_1cd6df1d6cec5404d49d1328",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.99141,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_b279de1ccfcf695ab900758b",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.992961,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_ce0e1af57bd0d60d587e3a81",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.992961,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_7563f9bcb98a97f874e60dff",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.992961,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_e9193c8446a1539ed56b37e1",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.992961,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_91d7a33ac0b519af50feb58d",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.99141,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_ba8c2dfea53b00ce0a5a4ad3",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.992961,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_00210818cdd15cf14f463eb5",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.99141,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_f90671d4bcbe62073ca47424",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.99141,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_3789cc16602571c7bd3a7777",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.992961,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_aec0801ebd4f9ec2e84f2c32",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.992961,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_cac1360a95bb5c30eb695109",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.992961,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_34597db16ade5278a2053248",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.992961,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_c4f070cd16cc4507cf6291cc",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.992961,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_20a2ece3d777141d793864ed",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.99141,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_fe7a8ab5add43150843e158c",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.99141,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_d04f02e8f4bc35b4a8de829a",
+      "kept_id": "smr_sqlite_86a0bbd5d7871c1d476211ef",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.992961,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_6f68a9a1182f536d271a68f4",
+      "kept_id": "smr_sqlite_991d7c3fa28a3c6b2a000704",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 0.951724,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_9188f25b80b7bae2a83bc959",
+      "kept_id": "smr_sqlite_d829f735466f2c70c746045b",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 1.0,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_sqlite_adc17c3ed850db7f77ec23a1",
+      "kept_id": "smr_sqlite_46ce4cb1febdd0dc5def383e",
+      "scope": [
+        "sqlite",
+        "3.53.4"
+      ],
+      "similarity": 1.0,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mariadb_b39652a3b9ae48b9c5d14c80",
+      "kept_id": "smr_mariadb_352d51ab040cf9963864a0d6",
+      "scope": [
+        "mariadb",
+        "unknown"
+      ],
+      "similarity": 0.947743,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mariadb_530239b8de5e80fa1a10d975",
+      "kept_id": "smr_mariadb_352d51ab040cf9963864a0d6",
+      "scope": [
+        "mariadb",
+        "unknown"
+      ],
+      "similarity": 0.947743,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mariadb_e1be0a8fe24e0d6f1842fa0b",
+      "kept_id": "smr_mariadb_0a3b45e5ec81d0846a47e05f",
+      "scope": [
+        "mariadb",
+        "unknown"
+      ],
+      "similarity": 0.957597,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mariadb_cbf4558c8fae27a821156a62",
+      "kept_id": "smr_mariadb_352d51ab040cf9963864a0d6",
+      "scope": [
+        "mariadb",
+        "unknown"
+      ],
+      "similarity": 0.947743,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mariadb_769830de9241c181e4c3106b",
+      "kept_id": "smr_mariadb_76195a7c4349bb6f048925db",
+      "scope": [
+        "mariadb",
+        "unknown"
+      ],
+      "similarity": 0.959866,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mariadb_35caca9f71750ee9acf21595",
+      "kept_id": "smr_mariadb_352d51ab040cf9963864a0d6",
+      "scope": [
+        "mariadb",
+        "unknown"
+      ],
+      "similarity": 0.947743,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mariadb_6bcaba6bbbb883691f2203b9",
+      "kept_id": "smr_mariadb_76195a7c4349bb6f048925db",
+      "scope": [
+        "mariadb",
+        "unknown"
+      ],
+      "similarity": 0.959866,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mariadb_bf4f40cceabfd2ee99335579",
+      "kept_id": "smr_mariadb_352d51ab040cf9963864a0d6",
+      "scope": [
+        "mariadb",
+        "unknown"
+      ],
+      "similarity": 0.947743,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mariadb_186192e41ec9f737a964f7a0",
+      "kept_id": "smr_mariadb_76195a7c4349bb6f048925db",
+      "scope": [
+        "mariadb",
+        "unknown"
+      ],
+      "similarity": 0.959866,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mariadb_c1e0a2e341c372e8e50622da",
+      "kept_id": "smr_mariadb_dc2d25ed249abdd629afab1f",
+      "scope": [
+        "mariadb",
+        "unknown"
+      ],
+      "similarity": 0.942748,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mariadb_0a25b5821024021e5d0cc867",
+      "kept_id": "smr_mariadb_9b310cd701a699475ac00c05",
+      "scope": [
+        "mariadb",
+        "unknown"
+      ],
+      "similarity": 0.946237,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    },
+    {
+      "removed_id": "smr_mariadb_db8d97d4ee54a652b8588009",
+      "kept_id": "smr_mariadb_1dec2ece3d43cb03466d3588",
+      "scope": [
+        "mariadb",
+        "unknown"
+      ],
+      "similarity": 0.94332,
+      "method": "Jaccard similarity over normalized 5-word shingles; SimHash band candidates"
+    }
+  ]
+}

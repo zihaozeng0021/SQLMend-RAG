@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+data/raw/*/.archives/
+data/raw/*/*.json
+data/raw/collection_index.jsonl
+data/interim/*.jsonl
+data/processed/corpus_fixed.jsonl

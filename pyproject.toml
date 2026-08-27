@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sqlmend-rag-kb"
+version = "0.1.0"
+description = "Reproducible, version-aware SQL documentation corpus pipeline"
+requires-python = ">=3.10"
+dependencies = [
+  "beautifulsoup4>=4.12,<5",
+  "lxml>=5,<7",
+  "PyYAML>=6,<7",
+  "requests>=2.31,<3",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<9"]
+
+[project.scripts]
+sqlmend-kb = "sqlmend_pipeline.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["sqlmend_pipeline*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
