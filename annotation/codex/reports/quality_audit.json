@@ -1,0 +1,1571 @@
+{
+  "status": "PASS",
+  "sampling": {
+    "method": "deterministic stratified random sample",
+    "seed": 20260828,
+    "sample_size": 50,
+    "per_dialect": 10
+  },
+  "review_method": "Independent Codex-agent semantic/evidence consistency review",
+  "human_verified": false,
+  "note": "Automated internal consistency audit of machine-proposed data; not human verification.",
+  "review_part_files": [
+    "annotation/codex/work/audit_parts/audit_duckdb.jsonl",
+    "annotation/codex/work/audit_parts/audit_mariadb.jsonl",
+    "annotation/codex/work/audit_parts/audit_pg_mysql.jsonl",
+    "annotation/codex/work/audit_parts/audit_sqlite.jsonl"
+  ],
+  "failures": [],
+  "records": [
+    {
+      "query_id": "DEV0002",
+      "dialect": "postgresql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "6be5fb98f59c593aab07756c6ba3aff0fd1ae499ee7d9840d0651951297aaf65",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The PostgreSQL 14.24 SELECT synopsis defines each CTE as AS followed by a parenthesized select/values/DML body. The repair adds exactly those parentheses, preserves the date predicate and final SELECT, and truthfully claims documentation-only review."
+      ]
+    },
+    {
+      "query_id": "DEV0014",
+      "dialect": "postgresql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "9fb4ad7d63f5672466f710830da9f8070bd3b06a41937050d55d26cce8ed42e7",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The PostgreSQL 14 migration note uses the exact websearch_to_tsquery input and contrasts the former two-position result with corrected adjacency. Keeping the SQL while changing the regression expectation therefore addresses the versioned behavior without claiming execution."
+      ]
+    },
+    {
+      "query_id": "DEV0015",
+      "dialect": "postgresql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "2c2b4481d3bd2ae2c070ebeba0428a920628079342396d883e3518c653c491fe",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "CREATE ROLE documentation explicitly states that an empty password becomes NULL from PostgreSQL 10 onward. In the disclosed psql provisioning context, substituting a configured nonempty secret is target-appropriate; the annotation stores no credential and reports no execution."
+      ]
+    },
+    {
+      "query_id": "DEV0018",
+      "dialect": "postgresql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "5324bafb51b4dae767df3941faf2b53534f3426e0b30f872124b7a6a0396d095",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The PostgreSQL formatting evidence demonstrates to_char with a YYYY-MM-DD template. Replacing MySQL DATE_FORMAT tokens with that PostgreSQL expression meets the formatting-only requirement, while the note correctly leaves time-zone conversion out of scope."
+      ]
+    },
+    {
+      "query_id": "DEV0022",
+      "dialect": "postgresql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "35f8f4b246fabad6df7d3b42504ab6f9d17c14b9c91653599c120f14117ba5b5",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The cited PostgreSQL aggregate passage directly says WHERE precedes aggregate formation and restricts aggregate expressions to the result list or HAVING at that query level. Moving count(*) >= 3 to HAVING preserves the requested grouped filter."
+      ]
+    },
+    {
+      "query_id": "DEV0024",
+      "dialect": "postgresql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "33e716ce1643324f75b16f48991f788413b505e579de7f2f0ae85dd68c92132f",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The PostgreSQL 14.24 aggregate grammar places FILTER (WHERE ...) after the aggregate call's closing parenthesis. The proposed sum(amount) FILTER repair exactly follows that grammar and retains the non-refunded predicate."
+      ]
+    },
+    {
+      "query_id": "DEV0030",
+      "dialect": "postgresql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "0120032c505256589a2c06b6a42863fee1584825347434828f773d3ef14486ad",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "PostgreSQL's UPDATE example explicitly warns that UPDATE FROM can behave unexpectedly when multiple source rows match. DISTINCT ON reduces each SKU to one row under quoted_at DESC and the unique quote_id DESC tie-breaker before the update, directly addressing that cardinality hazard."
+      ]
+    },
+    {
+      "query_id": "DEV0037",
+      "dialect": "postgresql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "c33bf055838362f6b075425e7af5cefe49de1a46a00ef72a25a1272a2bc803ba",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The PostgreSQL 14.5 release note establishes the version-14 anyarray-to-anycompatiblearray change and pg_upgrade impact on dependent objects. The supporting aggregate manual supplies the concrete array_append declaration with anycompatible input and anycompatiblearray state, exactly matching the repair."
+      ]
+    },
+    {
+      "query_id": "DEV0041",
+      "dialect": "postgresql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "758986ac060c4e4b9e78ee04c8fd859e4124116e399db856e97ac809337d6a54",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The PostgreSQL 18.6 passage uses the same offset-bearing literal and explains that the TIMESTAMP keyword still selects the without-time-zone type. Its explicit TIMESTAMP WITH TIME ZONE form is identical in substance to the repair and supports the instant semantics."
+      ]
+    },
+    {
+      "query_id": "DEV0043",
+      "dialect": "postgresql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "1dcc63c947d7b1caaa6986763b630e15bd9017c3f09d53ca0bec2cffa7219391",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The PostgreSQL 17.11 example directly demonstrates four-argument timestamptz generate_series with a one-day interval and America/New_York across a DST transition. The repair applies the same documented mechanism, and the tzdata caveat plus non-execution disclosure keep verification truthful."
+      ]
+    },
+    {
+      "query_id": "DEV0056",
+      "dialect": "mysql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "ff7b232fd6f6bb9ccaafcd0fdd5a6ac76ebb3ea836cc73dc8733ace5ee8992df",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The MySQL 8.4.11 SELECT grammar contains LIMIT after ORDER BY and no TOP select modifier. Replacing SQL Server TOP 10 with trailing LIMIT 10 preserves descending created_at ordering and the at-most-ten-row requirement without making a MariaDB claim."
+      ]
+    },
+    {
+      "query_id": "DEV0058",
+      "dialect": "mysql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "227ba255706f7b1576d737186582e58a1ba4f6f81f54b3b5ce57e1d68f656189",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The MySQL 8.4.11 evidence defines conversion as CAST(expr AS type), which directly supports replacing PostgreSQL's double-colon notation with CAST(amount AS DECIMAL(10,2)). The annotation explicitly leaves invalid input handling for runtime tests and does not claim execution."
+      ]
+    },
+    {
+      "query_id": "DEV0068",
+      "dialect": "mysql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "4e83c8b6c6263d39daf96c52bed16f71a6add62a68ac782890211bc270c1bddd",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The MySQL REGEXP_REPLACE signature defines its fourth argument as numeric pos and the default occurrence as zero, meaning replace all. Removing PostgreSQL's g argument therefore fixes the dialect mismatch while preserving global nondigit removal; the sample result remains an unexecuted oracle."
+      ]
+    },
+    {
+      "query_id": "DEV0074",
+      "dialect": "mysql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "910b07c2e3050c76a2733fb777727d4841b869edf737649d33d3df23b4b4f2d5",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The MySQL 8.0.46 GROUP_CONCAT grammar distinguishes multiple per-row expressions from SEPARATOR and permits in-aggregate ORDER BY DESC. For the disclosed sql/rag seed, tag DESC makes sql,rag deterministic while SEPARATOR removes the extra per-row comma."
+      ]
+    },
+    {
+      "query_id": "DEV0075",
+      "dialect": "mysql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "c01bbbc135b7e813c2e3ae69d8056af9a097e5d13b732c067954f3464194f58a",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The cited MySQL AVG and IFNULL passages jointly support replacing each NULL input with zero before averaging. Under the explicit application rule and seed values 80 and NULL, AVG(IFNULL(score,0)) yields the numeric 40.00 oracle; verification correctly says this was not executed."
+      ]
+    },
+    {
+      "query_id": "DEV0082",
+      "dialect": "mysql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "f534a7075e767043a536f8c527a93bc068f1036078b698c8e72024edcda96c83",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "MySQL documentation explicitly defines IS NOT NULL and shows it false only for NULL. Applying that predicate to the two disclosed rows selects id 2 and excludes id 1, exactly addressing the ordinary comparison-to-NULL defect without claiming a run."
+      ]
+    },
+    {
+      "query_id": "DEV0085",
+      "dialect": "mysql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "4d65d20eee3121e0644b193615dc7b65bf00a61af39289d03dadc08b4af62013",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The MySQL <=> passage documents deterministic equality results when either operand is NULL. Negating status <=> 'closed' includes both the NULL and open seed rows while excluding closed, exactly implementing the stated null-inclusive business rule."
+      ]
+    },
+    {
+      "query_id": "DEV0087",
+      "dialect": "mysql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "ab9340b9e59094ae1e0495fcaeb4c7d3d76b71121731ff089ee82228a746d8d5",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The MySQL CAST passage explicitly dates multi-valued ARRAY indexes to 8.0.17, requires a JSON source column, and excludes JSON as the element target while allowing supported scalar CAST types. Replacing JSON ARRAY with UNSIGNED ARRAY meets those documented constraints."
+      ]
+    },
+    {
+      "query_id": "DEV0088",
+      "dialect": "mysql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "0bf45ce969c28e7e99bb9df7f381cdbc40444172e77a0bfb65c3fde8b75eba8e",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The MySQL DOUBLE entry directly dates both DOUBLE(M,D) and floating UNSIGNED deprecations to 8.0.17, describes DOUBLE as approximate, and recommends CHECK for nonnegativity. DECIMAL(10,2) plus CHECK therefore fits the exact-money requirement and the record truthfully labels the result proposed, not executed."
+      ]
+    },
+    {
+      "query_id": "DEV0100",
+      "dialect": "mysql",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-pg-mysql",
+      "reviewed_at_utc": "2026-08-28T04:31:39Z",
+      "reviewed_case_sha256": "8b1db904090c620beb4c973faf8b73d275b8478885a3d3666017591ad3301463",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The MySQL DROP INDEX passage explicitly states that the primary-key index is named PRIMARY and must be quoted because it is reserved, then gives the same backtick form as the repair. The destructive impact is disclosed and the annotation makes no execution claim."
+      ]
+    },
+    {
+      "query_id": "DEV0107",
+      "dialect": "sqlite",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-sqlite-runner-bound",
+      "reviewed_at_utc": "2026-08-28T04:57:46Z",
+      "reviewed_case_sha256": "0f0abe53ae8775a1bb3e2e8bbaf4f6333eaa6fa2a51c78c857b058b07dc2213c",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "SQLite's 3.6.4 release note directly makes DELETE ORDER BY/LIMIT conditional on SQLITE_ENABLE_UPDATE_DELETE_LIMIT. The rowid-subquery repair avoids that optional grammar, and documentation_only truthfully avoids claiming portable execution for an unspecified build."
+      ]
+    },
+    {
+      "query_id": "DEV0114",
+      "dialect": "sqlite",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-sqlite-runner-bound",
+      "reviewed_at_utc": "2026-08-28T04:57:46Z",
+      "reviewed_case_sha256": "95fed7d4b9239fbc14fb901f68aebfbffe65839d33d02e036111a84f23abdc2e",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "SQLite's 3.38.0 release note identifies -> and ->> as newly added JSON operators, establishing their absence on the stated 3.37 target. json_extract() is appropriate for the explicitly JSON1-enabled legacy build, and documentation_only makes no mismatched-runtime execution claim."
+      ]
+    },
+    {
+      "query_id": "DEV0116",
+      "dialect": "sqlite",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-sqlite-runner-bound",
+      "reviewed_at_utc": "2026-08-28T04:57:46Z",
+      "reviewed_case_sha256": "1234e8b35a4c65f7c48cf68e02c6870686de20283b1f1f02e407fb9d0467e06a",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "Official evidence defines strftime(format,time-value,...) and %F as YYYY-MM-DD. The current hash-bound SQLite 3.45.3 replay observed NULL for the reversed call and 2024-06-15 for the repair; replay, scalar oracle, promotion, and case verification agree exactly."
+      ]
+    },
+    {
+      "query_id": "DEV0124",
+      "dialect": "sqlite",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-sqlite-runner-bound",
+      "reviewed_at_utc": "2026-08-28T04:57:46Z",
+      "reviewed_case_sha256": "e9704d6db93ef3df7f423f7ddd49e4a65224c4aadbb483bfe99c0bc120d9834e",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The cited SELECT documentation directly explains whole-dataset aggregation and an arbitrary non-aggregate value without GROUP BY. The current 3.45.3 replay reproduced [[A,35]], while the grouped repair, ordered-row oracle, promotion, and case all agree on [[A,15],[B,20]]."
+      ]
+    },
+    {
+      "query_id": "DEV0128",
+      "dialect": "sqlite",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-sqlite-runner-bound",
+      "reviewed_at_utc": "2026-08-28T04:57:46Z",
+      "reviewed_case_sha256": "b0447762f05c7804b46229f96c847ee02acb21d13a3c6674f71ca4fb3675362e",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The CROSS JOIN diagnosis follows SQLite's documented Cartesian-product rule. The current 3.45.3 replay returned order 10 twice originally and exactly once after the customer_id predicate; replay, ordered-row oracle, promotion, and case all bind the repair to [[10]]."
+      ]
+    },
+    {
+      "query_id": "DEV0137",
+      "dialect": "sqlite",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-sqlite-runner-bound",
+      "reviewed_at_utc": "2026-08-28T04:57:46Z",
+      "reviewed_case_sha256": "36564cf88994f7389378845625d9c5ff6464c8c8be9a70459d4b2e4696fc006f",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The official CAST evidence says text without an interpretable integer prefix becomes 0 and defines longest-prefix conversion. The restricted non-negative digit guard is target-appropriate for the stated samples, and the current replay, ordered-row oracle, promotion, and case agree on [['42',42],['abc',null],['',null]]."
+      ]
+    },
+    {
+      "query_id": "DEV0138",
+      "dialect": "sqlite",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-sqlite-runner-bound",
+      "reviewed_at_utc": "2026-08-28T04:57:46Z",
+      "reviewed_case_sha256": "96ca0ff19887b1615c184715acddac93abfe2a29066e02b241094d4cf68cc2d6",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "Official evidence supports SQLITE_MISMATCH code 20 for a non-convertible INTEGER PRIMARY KEY and automatic assignment when NULL is inserted. The latest replay reproduced the error and the repaired database state [[1,'bad']], which exactly matches the oracle, promotion, and current case."
+      ]
+    },
+    {
+      "query_id": "DEV0140",
+      "dialect": "sqlite",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-sqlite-runner-bound",
+      "reviewed_at_utc": "2026-08-28T04:57:46Z",
+      "reviewed_case_sha256": "59a6a75f6793e1c9dd3522b3488f31352106fb5dc26187e7be1b153d87ea4804",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "SQLite's CAST documentation explicitly states saturation above +9223372036854775807. The current 3.45.3 replay observed that boundary for the original and exact text 9223372036854775808 for the repair; the scalar oracle, promotion, and case verification match."
+      ]
+    },
+    {
+      "query_id": "DEV0144",
+      "dialect": "sqlite",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-sqlite-runner-bound",
+      "reviewed_at_utc": "2026-08-28T04:57:46Z",
+      "reviewed_case_sha256": "0fe447f74646d23af254444fcad0f869c8c40628c8efe330cd2f6bbd8765adf3",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "Official documentation states that localtime assumes UTC input and utc assumes local input. In the stated UTC+08:00 environment, the latest 3.45.3 replay observed 20:00 originally and 04:00 after repair; the scalar oracle, promotion, and current case agree exactly."
+      ]
+    },
+    {
+      "query_id": "DEV0149",
+      "dialect": "sqlite",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-sqlite-runner-bound",
+      "reviewed_at_utc": "2026-08-28T04:57:46Z",
+      "reviewed_case_sha256": "59623790d39da03b5a60f6b9043b90ccf2a803688222341014fef1a8852dad2b",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "SQLite documents that RENAME COLUMN aborts when rewriting a dependent view would create semantic ambiguity, and the 3.25.0 release note establishes feature availability. The latest 3.45.3 replay reproduced the ambiguous-column error, while the repaired schema-state oracle, promotion, and case all show t(a_new) and view SELECT a_new,b."
+      ]
+    },
+    {
+      "query_id": "DEV0152",
+      "dialect": "mariadb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-mariadb",
+      "reviewed_at_utc": "2026-08-28T04:31:49Z",
+      "reviewed_case_sha256": "d5eb6f07989ea52fc6db35fb2c69a769a005b4efb4ef5ee9b33f511afc49c683",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The frozen case's disclosed two-IN-parameter signature and one-argument CALL exhibit the parameter-count defect named by MariaDB error 1107; supplying both typed arguments addresses that defect. Both evidence IDs resolve to MariaDB sources, and documentation_only truthfully states that neither SQL form was executed."
+      ]
+    },
+    {
+      "query_id": "DEV0157",
+      "dialect": "mariadb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-mariadb",
+      "reviewed_at_utc": "2026-08-28T04:31:49Z",
+      "reviewed_case_sha256": "8b49aaeeaac09da3867b0b6a76d56b5c2abd9253cd6f3d55b772b3fbcf4dc0a4",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The exact MariaDB 11.4.10 HELP chunk gives the full SELECT grammar with ORDER BY followed by LIMIT/FETCH alternatives and no TOP production; the supporting SELECT passage explicitly assigns row restriction to LIMIT. The repair preserves newest-first ordering and the ten-row cap, while documentation_only makes no execution claim."
+      ]
+    },
+    {
+      "query_id": "DEV0161",
+      "dialect": "mariadb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-mariadb",
+      "reviewed_at_utc": "2026-08-28T04:31:49Z",
+      "reviewed_case_sha256": "b4c4c1aeeb54e68901268c495fc2364cb52ebd18a54b512e4f5fb96cfdfe1cbb",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The MariaDB HELP passage explicitly dates common table expressions to 10.2.1, directly placing target 10.2.0 below the boundary. The derived-table repair preserves the paid predicate and projection without WITH; the historical version claim is supported and no runtime result is asserted."
+      ]
+    },
+    {
+      "query_id": "DEV0167",
+      "dialect": "mariadb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-mariadb",
+      "reviewed_at_utc": "2026-08-28T04:31:49Z",
+      "reviewed_case_sha256": "023f6310c616a3b344470582f7a3543bfda532d8fcc0fbbfc69690c97a345508",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The exact MariaDB GROUP_CONCAT reference documents grouped non-NULL string concatenation and the SEPARATOR clause used by the repair. The expected result requires comma-separated membership but no deterministic member order, so the fix is semantically appropriate; documentation_only is truthful."
+      ]
+    },
+    {
+      "query_id": "DEV0169",
+      "dialect": "mariadb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-mariadb",
+      "reviewed_at_utc": "2026-08-28T04:31:49Z",
+      "reviewed_case_sha256": "00fd82cae3c3826897d667b1d1896aaa34c35bedd3b381add44ab6dd5bb5981d",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "MariaDB error 4101 directly requires a numeric datatype for the percentile function, while the disclosed ordering expression is VARCHAR; the PERCENTILE_CONT evidence confirms the target function form. Casting validated decimal text to DECIMAL addresses the defect and gives median 2.5 for the seed values; no execution is claimed."
+      ]
+    },
+    {
+      "query_id": "DEV0193",
+      "dialect": "mariadb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-mariadb",
+      "reviewed_at_utc": "2026-08-28T04:31:49Z",
+      "reviewed_case_sha256": "3086e7e01246da203f578310dad2efe79d38d994fb5f904480ed7d7aff5f3a6c",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "MariaDB's time-zone passage enumerates accepted time_zone forms and directly describes signed UTC offsets such as +5:00 and -9:00. UTC+8 is not that hours-and-minutes form, whereas +08:00 implements the required fixed offset; the frozen record accurately labels the assessment documentation_only."
+      ]
+    },
+    {
+      "query_id": "DEV0194",
+      "dialect": "mariadb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-mariadb",
+      "reviewed_at_utc": "2026-08-28T04:31:49Z",
+      "reviewed_case_sha256": "f75533507c19285f4b916cd9a4bc9d1ebcbd26508304a3cdee61e4a5c0f3219d",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The exact 11.4.10 catalog documents error 1411 for an incorrect function value, while the HELP passage maps GET_FORMAT(DATE,'EUR') to %d.%m.%Y, says it is useful with STR_TO_DATE, and includes a STR_TO_DATE/GET_FORMAT example. The dotted day-first input therefore matches the repair and not the original mask; no execution is asserted."
+      ]
+    },
+    {
+      "query_id": "DEV0196",
+      "dialect": "mariadb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-mariadb",
+      "reviewed_at_utc": "2026-08-28T04:31:49Z",
+      "reviewed_case_sha256": "e227282f5ce3c0aa91bbe6ca295649c780995f4cce4b61fa53d47f167b2b05f4",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The MariaDB CREATE DATABASE passage explicitly marks COMMENT as available starting with 10.5.0, directly supporting its absence on target 10.4. Removing only optional metadata preserves database creation and the upgrade alternative uses the documented boundary; documentation_only does not claim execution."
+      ]
+    },
+    {
+      "query_id": "DEV0197",
+      "dialect": "mariadb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-mariadb",
+      "reviewed_at_utc": "2026-08-28T04:31:49Z",
+      "reviewed_case_sha256": "c0cb5b164ac82f136c51f26a989d91606111e2de128d97f1dc1bf0c155019181",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The exact MariaDB 11.4.10 catalog matches error 1176, SQLSTATE 42000, ER_KEY_DOES_NOT_EXISTS, and its nonexistent-key message; the disclosed schema identifies idx_orders_created as the existing target. The repair removes that index, and the destructive DDL is explicitly not executed."
+      ]
+    },
+    {
+      "query_id": "DEV0200",
+      "dialect": "mariadb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-final-mariadb",
+      "reviewed_at_utc": "2026-08-28T04:31:49Z",
+      "reviewed_case_sha256": "10db91441baea18db04cfe8faaab73b90f6fded33475057b31b804dad876c7dd",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "The exact MariaDB identifier passage names numeral-plus-e identifiers such as 5e6 as floating-point ambiguities needing quotes and documents backticks as the regular identifier quote. The repair retains the required literal name while removing ambiguity; documentation_only is truthful."
+      ]
+    },
+    {
+      "query_id": "DEV0202",
+      "dialect": "duckdb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-duckdb-replay-v2",
+      "reviewed_at_utc": "2026-08-28T04:59:35Z",
+      "reviewed_case_sha256": "70aa643b192247d952d1aabb6c70b64df8e5f27d3e9aee1fe8c254d30b314071",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "Official DuckDB 1.5 evidence directly requires parentheses around a literal dot-call receiver and documents the parser failure. The current case, replay, oracle, and promotion share execution-input hash 6766d144fceadebf73990d7f95c7dfdda9717ab599898338d7913cf5ee5b9dd0; DuckDB 1.5.5 reproduced the error and returned exactly DB ERROR after the fix."
+      ]
+    },
+    {
+      "query_id": "DEV0206",
+      "dialect": "duckdb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-duckdb-replay-v2",
+      "reviewed_at_utc": "2026-08-28T04:59:35Z",
+      "reviewed_case_sha256": "7470c0523c7d417919e318d42eb494f32466cd8bd2caa16b5f56b1e085cdc96c",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "Official compatibility evidence says DuckDB identifiers are fully case-insensitive while their case is preserved. The current replay and promotion match case input hash 59b76bd3eed839378c25e3ed6866d5b247aeb1c7e17362fb51f4383f5b65223d; 1.5.5 rejected duplicate Key/key and the repaired schema-state oracle proves exactly two unambiguous INTEGER columns."
+      ]
+    },
+    {
+      "query_id": "DEV0212",
+      "dialect": "duckdb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-duckdb-replay-v2",
+      "reviewed_at_utc": "2026-08-28T04:59:35Z",
+      "reviewed_case_sha256": "ee1bde5b6933dc094379378d875b7c56ebfcf87f8d94479ebcc842fa99bec1ba",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "DuckDB 1.1.0 official release evidence directly documents the new multirow scalar-subquery error, its prior arbitrary-row behavior, and array as the all-results repair. ORDER BY makes [10, 11] deterministic; this exact-version case has no 1.5.5 oracle or promotion and truthfully records both forms as unexecuted documentation-only verification."
+      ]
+    },
+    {
+      "query_id": "DEV0220",
+      "dialect": "duckdb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-duckdb-replay-v2",
+      "reviewed_at_utc": "2026-08-28T04:59:35Z",
+      "reviewed_case_sha256": "53a5eb469e0a8512c794e44bd52f7b4b257db7d052e6b6f36b69f36cf07a67ab",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "DuckDB 1.3.0 official release evidence contains the same *COLUMNS() cast binder failure, introduces UNPACK, and shows the repaired VARCHAR list [21, 1.234]. This exact-version case has no 1.5.5 oracle or promotion and its documentation-only verification makes no execution claim."
+      ]
+    },
+    {
+      "query_id": "DEV0221",
+      "dialect": "duckdb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-duckdb-replay-v2",
+      "reviewed_at_utc": "2026-08-28T04:59:35Z",
+      "reviewed_case_sha256": "cf7569b88fa3d6e27b18c3cb1d6b6175281a0ea14ddead0467fc25e8b23a8e43",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "Official PostgreSQL-compatibility evidence documents DuckDB's lack of primary-key functional-dependency inference for GROUP BY and the matching binder error. The case, replay, and promotion share input hash 4bf39587abe73d320f294885e3731afe7a9e2f39418be803f7411943e42890b8; the explicit grouping repair returned the exact two ordered id-label-count rows in the structured oracle."
+      ]
+    },
+    {
+      "query_id": "DEV0231",
+      "dialect": "duckdb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-duckdb-replay-v2",
+      "reviewed_at_utc": "2026-08-28T04:59:35Z",
+      "reviewed_case_sha256": "e9caf4e7581ba13a4cf2c83cb6331416b0557c66625d5a004be823b9fc79cedb",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "Official NULL evidence states that every equality comparison with NULL yields NULL and prescribes IS NULL for the missing-value test. Input hash 91785697b1c9efee7491d246dc29b7faa11ffb5cb330c996ecc4707c90c395bd is identical across case, replay, and promotion; the original returned no rows and the repair selected exactly order_id 1, matching the scalar oracle."
+      ]
+    },
+    {
+      "query_id": "DEV0237",
+      "dialect": "duckdb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-duckdb-replay-v2",
+      "reviewed_at_utc": "2026-08-28T04:59:35Z",
+      "reviewed_case_sha256": "5e44290d12013b8dcd2446c5e587ec1e684e62afd8bb325f42b3994ee2094fe3",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "Official ENUM evidence documents the out-of-domain explicit-cast conversion failure. Input hash 569acc7d7a5d6da71724b12708ff13f778fed47b8ad901d3ab6be49df09803ba matches the case, replay, and promotion; DuckDB 1.5.5 reproduced the error and TRY_CAST returned exactly NULL, as required by the scalar oracle."
+      ]
+    },
+    {
+      "query_id": "DEV0240",
+      "dialect": "duckdb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-duckdb-replay-v2",
+      "reviewed_at_utc": "2026-08-28T04:59:35Z",
+      "reviewed_case_sha256": "697e66dfe3e19925417cd34e68b609dbee697c8b06430d874742663287f235c8",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "DuckDB 0.10.0 official release evidence documents the DATE-versus-VARCHAR binder failure, explains the changed literal binding rules, and requires an explicit cast. Casting the text to DATE makes the comparison false as intended; this exact-version case has no 1.5.5 oracle or promotion and truthfully remains documentation-only."
+      ]
+    },
+    {
+      "query_id": "DEV0241",
+      "dialect": "duckdb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-duckdb-replay-v2",
+      "reviewed_at_utc": "2026-08-28T04:59:35Z",
+      "reviewed_case_sha256": "c0a61cc6ec6d9e3da7c0bbc24a2ff94014042d89b3af7b4e9c08a381e5707db9",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "Official date-format evidence shows the same invalid-month strptime error and directs callers to try_strptime for NULL-on-failure behavior. Input hash 86f62defb87028c26c9874ed2752f284f537eff766ab5f4d7a4574fe6fb3ed2e matches case, replay, and promotion; 1.5.5 reproduced the error and the fixed scalar-null oracle passed exactly."
+      ]
+    },
+    {
+      "query_id": "DEV0246",
+      "dialect": "duckdb",
+      "reviewer": "codex_independent_agent",
+      "audit_run_id": "codex-independent-audit-20260828-duckdb-replay-v2",
+      "reviewed_at_utc": "2026-08-28T04:59:35Z",
+      "reviewed_case_sha256": "16da4a04436fa242565055ba207fcc9745f54df829dc5069dd355c052cc90964",
+      "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS",
+      "checks": {
+        "root_cause_matches_problem": true,
+        "reference_fix_addresses_root_cause": true,
+        "evidence_supports_diagnosis": true,
+        "target_dialect_correct": true,
+        "mysql_mariadb_not_conflated": true,
+        "duckdb_claim_supported": true,
+        "version_claim_supported": true,
+        "evidence_ids_resolve": true,
+        "no_evidence_contradiction": true,
+        "reference_fix_target_appropriate": true,
+        "verification_truthful": true
+      },
+      "structural_checks": {
+        "primary_evidence_valid": true,
+        "schema_semantics_valid": true,
+        "leakage_hard_gate_passed": true
+      },
+      "findings": [
+        "Official DROP documentation shows that view dependencies are not tracked, DROP TABLE ... RESTRICT leaves the view invalid, and the next read raises the stated missing-table error; dropping the view first directly prevents that state. A current replay with matching input hash 7c1205e28a6cd9b61987da68edeb694b25bf12c7db9813fed140e63bd31b6d7b reproduced the behavior, but DEV0246 is explicitly excluded from the structured-oracle promotion ledger, so the case truthfully retains its narrower documentation-only claim."
+      ]
+    }
+  ]
+}

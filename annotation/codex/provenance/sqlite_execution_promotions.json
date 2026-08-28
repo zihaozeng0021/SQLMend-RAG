@@ -1,0 +1,461 @@
+{
+  "engine": "Python sqlite3 module",
+  "engine_version": "3.45.3",
+  "source_replay_path": "annotation/codex/provenance/sqlite_3_45_3_reverification.jsonl",
+  "source_replay_sha256": "6f7be4f5cb71f3ae362c3c29bde20d8140131ac3d1eb8047ba9a179ab3803a9e",
+  "semantic_oracle_path": "annotation/codex/work/semantic_oracles/sqlite_3_45_3.jsonl",
+  "semantic_oracle_sha256": "60b3924a7bc34ef5416742c8a9530bf6ad81acbc28c8873aa90ad6ba98e1ca43",
+  "promoted_count": 45,
+  "records": [
+    {
+      "query_id": "DEV0101",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "b35f2ca04ee3dd12d8bf5567a7435cfe7011ee5affff8acbc80b8b72b8d46994",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0102",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "bb3d787e646d04527b0148341d298028b125f28bdb664c049441de8b6cc2f03a",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0103",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "cd474e3f51299b6f359e94ac70b2b6e5b5b12c3d2cdb4fb3afa0824c566e1258",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0104",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "8ad4fee761dcf50d203b1ad22b5638e7e67a58b3fb2fba2d09ce8e3b8444d09f",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0105",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "950f99a99e61dcbbb2c1aa870a9721842a1880acdf773b25bf99335cad2d0a7b",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0106",
+      "oracle_type": "database_state",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "d975e5ebc55fe2b4740364419aef1c29ab9857d3c7d08f17cb849cbd8a8dd7de",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0108",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "211f2886721c7dea429390cbcd4f57bc6e0ce15a33aed32dabc718fb1312dded",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0109",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "da8ac91655f811683d4542e30ea47a7db3fd307a2231c43c5feb2e4ac45de1f7",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0110",
+      "oracle_type": "database_state",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "6e8bfbac7918655def81f7bb9d59c69ea5a272a75bb4172020180d90f28e5a5f",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0115",
+      "oracle_type": "schema_state",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "965a1f92d492d0a0f798d68bd2c0ab4df3c33489f4a2221afabd62a4b87da6ab",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0116",
+      "oracle_type": "scalar",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "89aaf5a24248a009acc82833dcb6375f81835906483ac218d1a9fea08db0075d",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0117",
+      "oracle_type": "scalar",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "edf3154373880b473852d59586cdcf50b050c9e5343b459951a1d8173b502a70",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0118",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "1e85a04cba83f4a740b6091bebf79e3b77f80b57e5a45b215c3d189af43b765d",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0119",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "e5de9e75efe221fea55e0f24780aca88171d9b4484b112ff0302827178ca0142",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0120",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "1302de31733a56652bcf4a4dd10d0d84f820e6ce15fb583640c23078ddb46e45",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0121",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "75c9bce4f2192ec54f0f68b77730604e66df6162549f0190b4945f90cd0115f4",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0122",
+      "oracle_type": "scalar",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "ae5d086d81281da745ec42b05bda2a76df5ba1f31809a44e1ea5d7f61d05a7dc",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0123",
+      "oracle_type": "scalar",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "66e05ce54c7d7cb8cd2c821ad4c0b2cbd8398a12ed3de9342da1b82d28eb5423",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0124",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "747d0cde29b2c6aacca3f89295551a577168068d76977454a0ba8fcc0e839a96",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0125",
+      "oracle_type": "scalar",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "793c3611117023c90f0b5eae3fdf8a1a0bc98f2186ddfb97cb9923cfc857af01",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0126",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "fce2029a9938bd2a7eb61e409eeacb2a557223c2dfef507853fcca4b926ea039",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0127",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "378c67b2c31cd4883fe5c40a1925c8c6067d2391dbd74418cb4f7d8f6939f019",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0128",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "296cc906fe887b3f573d25aeb43c6cdd7cb176157189e8315c9658667f1999bf",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0129",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "9302b4d1bbe9cb45a21909f10bba2747c862e452a862bf8d90f1246656696137",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0130",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "86f477b60d374e90e0fa15d0233200ba8e1e9a2672aaa46c98ad814b6fd7cf34",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0131",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "61d650810539eb8b57b85e2476a948b550443262e4ed937b6b5f9fee3a8d8b0d",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0132",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "2d0a64fab48fc948fe57a93aef15289a24a9c720f645a2cd5d2964a8e851d4e5",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0133",
+      "oracle_type": "database_state",
+      "original_succeeded": true,
+      "fixed_succeeded": false,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "4824d5cbec8ca27f9044f2bc685769dc01991e35782107a25c0100865ca223d9",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0134",
+      "oracle_type": "scalar",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "2bf08d0d6192e62183502a7d5956810e712a0a92f1d883111cbddb14e4ec6526",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0135",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "9747ff4dee3714c5926adb9d135979509330e9a3202b85d04244e7b3a3bbe677",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0136",
+      "oracle_type": "scalar",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "ce24154a439f20e23f887eaa8189ff3d240ad26164617e3c49cecc213d47d580",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0137",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "be1c9cb7a7856a6a43873e83f6d95d1ba83af1f5831db1bd73102d008ff89132",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0138",
+      "oracle_type": "database_state",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "aaeb936c6138869a15b79f331234c7d2725240f177b661d5cfcb7d27286dcccc",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0139",
+      "oracle_type": "database_state",
+      "original_succeeded": true,
+      "fixed_succeeded": false,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "cb2bb0e9245e46e18b4902f160718e6059b429c8ad6406eb9e9e52ce22fcb301",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0140",
+      "oracle_type": "scalar",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "bb16c72b5d981d7ecbe77a235366381be4031e3786d9f874f5a484abec2dadc6",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0141",
+      "oracle_type": "scalar",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "0eed5e34aa5a6863e191b5fc96e04a05885941876b4117ad93b24ded9f914e71",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0142",
+      "oracle_type": "scalar",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "ff2c9da2a2a3ef1e38d86629e902eea867c9e49bf6784da19abd89157564df72",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0143",
+      "oracle_type": "scalar",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "73396aa4775bac321b4bc8df39087bf79e46f4ca2d2ed662286665b28dab847f",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0144",
+      "oracle_type": "scalar",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "4349ef577f091c0f46631a0939a9e47c159c61a34f383566eda2f860c48cb96b",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0145",
+      "oracle_type": "scalar",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "42d2291aba48e8eee646fb100cbf7f014f7ee86047349be33e787718def8d823",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0146",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "bf8dababb69c0683055ef2798c8d8343403e9d0eb1cd100d090489f53d0cb325",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0147",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "1fbad54d13e758684edd48bc838ea5770770a787371f644b9851e994183155db",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0148",
+      "oracle_type": "database_state",
+      "original_succeeded": true,
+      "fixed_succeeded": false,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "d291ff9ff43981797dd72006092cdb94103a8428c944631d715a26ab4ebae146",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0149",
+      "oracle_type": "schema_state",
+      "original_succeeded": false,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "9087a29f3d7b2646d5071688cc30749bd60b12bc171c93cc9af0fd7ffd6c21a9",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    },
+    {
+      "query_id": "DEV0150",
+      "oracle_type": "ordered_rows",
+      "original_succeeded": true,
+      "fixed_succeeded": true,
+      "semantic_oracle_passed": true,
+      "execution_input_sha256": "778246b2791d777e039c6ae3481a94f5864bc0a92b3b9af483b4c7a016298021",
+      "runner_sha256": "3eded53efc8cdbf2d38785b67a4626b9e268404b63656462756d006c97afaffb",
+      "execution_common_sha256": "480663f7f3e9d2a17b3d33bee88d99e9443ec738be1206cc62ac1dbd8a960791"
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sqlmendrag.local/schema/dev_case.schema.json",
+  "title": "SQLMendRAG machine-proposed development case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "query_id", "split", "dialect", "version",
+    "version_min", "version_max", "version_status", "sql",
+    "error_message", "error_code", "sqlstate", "error_symbol",
+    "user_problem", "schema_context", "setup_sql", "seed_data",
+    "expected_behavior", "error_category", "root_cause",
+    "reference_fix_sql", "reference_explanation", "evidence",
+    "primary_evidence_chunk_id", "case_flags", "verification",
+    "annotation_source", "annotation_status", "generation_run_id", "notes"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "query_id": {"type": "string", "pattern": "^DEV[0-9]{4}$"},
+    "split": {"const": "dev"},
+    "dialect": {"enum": ["postgresql", "mysql", "sqlite", "mariadb", "duckdb"]},
+    "version": {"type": ["string", "null"]},
+    "version_min": {"type": ["string", "null"]},
+    "version_max": {"type": ["string", "null"]},
+    "version_status": {"enum": ["exact", "range", "current", "legacy", "unknown"]},
+    "sql": {"type": "string", "minLength": 1},
+    "error_message": {"type": ["string", "null"]},
+    "error_code": {"type": ["string", "integer", "null"]},
+    "sqlstate": {"type": ["string", "null"]},
+    "error_symbol": {"type": ["string", "null"]},
+    "user_problem": {"type": "string", "minLength": 20},
+    "schema_context": {"type": ["string", "null"]},
+    "setup_sql": {"type": ["string", "null"]},
+    "seed_data": {"type": ["string", "null"]},
+    "expected_behavior": {"type": "string", "minLength": 5},
+    "error_category": {
+      "enum": [
+        "syntax_error", "dialect_incompatibility", "version_incompatibility",
+        "function_or_operator_incompatibility", "aggregation_or_grouping",
+        "join_or_query_logic", "null_semantics", "type_or_casting",
+        "date_time_semantics", "schema_or_identifier_issue"
+      ]
+    },
+    "root_cause": {"type": "string", "minLength": 10},
+    "reference_fix_sql": {"type": "string", "minLength": 1},
+    "reference_explanation": {"type": "string", "minLength": 10},
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "primary_evidence_chunk_id": {"type": "string", "pattern": "^smr_[a-z]+_[0-9a-f]{24}$"},
+    "case_flags": {"$ref": "#/$defs/case_flags"},
+    "verification": {"$ref": "#/$defs/verification"},
+    "annotation_source": {"const": "codex_machine_proposed"},
+    "annotation_status": {"const": "unverified"},
+    "generation_run_id": {"type": "string", "minLength": 1},
+    "notes": {"type": "string"}
+  },
+  "$defs": {
+    "compatibility": {
+      "enum": ["compatible", "incompatible", "unknown", "not_applicable"]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "chunk_id", "relevance", "role", "dialect_compatibility",
+        "version_compatibility", "support_summary"
+      ],
+      "properties": {
+        "chunk_id": {"type": "string", "pattern": "^smr_[a-z]+_[0-9a-f]{24}$"},
+        "relevance": {"enum": [1, 2]},
+        "role": {"enum": ["primary", "supporting", "comparison"]},
+        "dialect_compatibility": {"$ref": "#/$defs/compatibility"},
+        "version_compatibility": {"$ref": "#/$defs/compatibility"},
+        "support_summary": {"type": "string", "minLength": 5}
+      }
+    },
+    "case_flags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requires_dialect_reasoning", "requires_version_reasoning",
+        "has_documented_error", "plausible_but_wrong",
+        "compares_mysql_mariadb", "is_duckdb_specific"
+      ],
+      "properties": {
+        "requires_dialect_reasoning": {"type": "boolean"},
+        "requires_version_reasoning": {"type": "boolean"},
+        "has_documented_error": {"type": "boolean"},
+        "plausible_but_wrong": {"type": "boolean"},
+        "compares_mysql_mariadb": {"type": "boolean"},
+        "is_duckdb_specific": {"type": "boolean"}
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["executed", "outcome"],
+      "properties": {
+        "executed": {"type": "boolean"},
+        "outcome": {"type": "string", "minLength": 1},
+        "observed_error": {"type": ["string", "null"]},
+        "observed_result": {}
+      }
+    },
+    "semantic_check": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["oracle_type", "expected", "passed"],
+      "properties": {
+        "oracle_type": {
+          "enum": [
+            "ordered_rows", "unordered_rows", "scalar", "row_count",
+            "database_state", "schema_state", "documented_behavior",
+            "parser_only", "not_available"
+          ]
+        },
+        "expected": {},
+        "observed": {},
+        "passed": {"type": "boolean"}
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method", "status", "engine", "engine_version", "original",
+        "fixed", "semantic_check", "details"
+      ],
+      "properties": {
+        "method": {"enum": ["execution", "parser", "documentation_only"]},
+        "status": {"enum": ["passed", "failed", "not_available"]},
+        "engine": {"type": "string", "minLength": 1},
+        "engine_version": {"type": ["string", "null"]},
+        "original": {"$ref": "#/$defs/outcome"},
+        "fixed": {"$ref": "#/$defs/outcome"},
+        "semantic_check": {"$ref": "#/$defs/semantic_check"},
+        "details": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

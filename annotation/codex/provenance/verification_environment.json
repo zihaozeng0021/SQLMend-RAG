@@ -1,0 +1,36 @@
+{
+  "checked_at_utc": "2026-08-28T04:04:18Z",
+  "python_version": "3.12.7",
+  "available_execution_engines": {
+    "sqlite": {
+      "interface": "Python sqlite3 module",
+      "engine_version": "3.45.3",
+      "used_for_matching_cases": true
+    },
+    "duckdb": {
+      "interface": "duckdb Python package",
+      "engine_version": "1.5.5",
+      "used_for_matching_cases": true
+    }
+  },
+  "unavailable_execution_engines": {
+    "postgresql": {
+      "client_binaries_present": false,
+      "reason": "psql and postgres were not present; no matching server runtime was available."
+    },
+    "mysql": {
+      "client_binaries_present": false,
+      "reason": "mysql was not present; no matching server runtime was available."
+    },
+    "mariadb": {
+      "client_binaries_present": false,
+      "reason": "mariadb was not present; no matching server runtime was available."
+    }
+  },
+  "container_runtime": {
+    "docker_client_version": "28.3.3",
+    "server_available": false,
+    "reason": "The Docker Desktop Linux engine named pipe was not present."
+  },
+  "policy": "Cases were marked as execution-verified only when a matching available engine reproduced the original outcome, executed the repair, and satisfied a semantic oracle. Other cases remain explicitly documentation-only."
+}

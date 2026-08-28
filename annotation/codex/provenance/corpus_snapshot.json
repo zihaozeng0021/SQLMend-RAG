@@ -1,0 +1,10 @@
+{
+  "path": "construction/data/processed/corpus.jsonl",
+  "sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+  "chunk_count": 12000,
+  "snapshot_date": "2026-08-27",
+  "validation_report_path": "construction/reports/validation_report.json",
+  "validation_report_sha256": "637f127bcb0cf687fff6c53e3ea71188f901917a3db8b10586a3b21820f86184",
+  "validation_status": "PASS",
+  "read_only_input": true
+}

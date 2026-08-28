@@ -1,0 +1,481 @@
+{
+  "correction_run": "codex-dev-20260828-01-premerge",
+  "reason": "Independent schema, evidence, and execution replay findings",
+  "records": [
+    {
+      "query_id": "DEV0157",
+      "file": "mariadb.jsonl",
+      "changes": [
+        "root_cause",
+        "evidence"
+      ]
+    },
+    {
+      "query_id": "DEV0193",
+      "file": "mariadb.jsonl",
+      "changes": [
+        "sql",
+        "user_problem",
+        "schema_context",
+        "setup_sql",
+        "seed_data",
+        "expected_behavior",
+        "root_cause",
+        "reference_fix_sql",
+        "reference_explanation",
+        "evidence",
+        "verification.semantic_check"
+      ]
+    },
+    {
+      "query_id": "DEV0194",
+      "file": "mariadb.jsonl",
+      "changes": [
+        "sql",
+        "error_message",
+        "user_problem",
+        "schema_context",
+        "root_cause",
+        "reference_fix_sql",
+        "reference_explanation",
+        "evidence",
+        "verification.semantic_check"
+      ]
+    },
+    {
+      "query_id": "DEV0074",
+      "file": "mysql.jsonl",
+      "changes": [
+        "reference_fix_sql",
+        "reference_explanation",
+        "notes",
+        "verification.semantic_check.expected",
+        "verification.details"
+      ]
+    },
+    {
+      "query_id": "DEV0037",
+      "file": "postgresql.jsonl",
+      "changes": [
+        "sql",
+        "user_problem",
+        "schema_context",
+        "expected_behavior",
+        "root_cause",
+        "reference_fix_sql",
+        "reference_explanation",
+        "notes",
+        "evidence:+concrete_array_append_declaration"
+      ]
+    },
+    {
+      "query_id": "DEV0101",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0102",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0103",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0104",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0105",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0106",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "verification.semantic_check.oracle_type:schema_and_rows->database_state"
+      ]
+    },
+    {
+      "query_id": "DEV0107",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "case_flags.has_documented_error:true->false"
+      ]
+    },
+    {
+      "query_id": "DEV0108",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0109",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0110",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "verification.semantic_check.oracle_type:table_state->database_state"
+      ]
+    },
+    {
+      "query_id": "DEV0111",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "version_status:range->legacy"
+      ]
+    },
+    {
+      "query_id": "DEV0112",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "version_status:range->legacy"
+      ]
+    },
+    {
+      "query_id": "DEV0113",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "version_status:range->legacy"
+      ]
+    },
+    {
+      "query_id": "DEV0114",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "version_status:range->legacy"
+      ]
+    },
+    {
+      "query_id": "DEV0115",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0116",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "sql",
+        "error_message",
+        "user_problem",
+        "expected_behavior",
+        "root_cause",
+        "reference_fix_sql",
+        "reference_explanation",
+        "evidence",
+        "verification"
+      ]
+    },
+    {
+      "query_id": "DEV0117",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0118",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0119",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0120",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0121",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0122",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0123",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0124",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0125",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0126",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0127",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0128",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "sql",
+        "seed_data",
+        "user_problem",
+        "expected_behavior",
+        "root_cause",
+        "reference_fix_sql",
+        "reference_explanation",
+        "evidence.support_summary",
+        "case_flags.requires_dialect_reasoning",
+        "verification"
+      ]
+    },
+    {
+      "query_id": "DEV0129",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0130",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0131",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0132",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0133",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "verification.semantic_check.oracle_type:constraint_behavior->database_state",
+        "verification.semantic_check.test_sql",
+        "case_flags.has_documented_error:true->false"
+      ]
+    },
+    {
+      "query_id": "DEV0134",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0135",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0136",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0137",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "evidence"
+      ]
+    },
+    {
+      "query_id": "DEV0138",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "verification.semantic_check.oracle_type:table_state->database_state",
+        "expected_behavior",
+        "reference_fix_sql",
+        "reference_explanation",
+        "evidence:+automatic_integer_primary_key",
+        "verification"
+      ]
+    },
+    {
+      "query_id": "DEV0139",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "verification.semantic_check.oracle_type:storage_type->scalar",
+        "expected_behavior",
+        "reference_fix_sql",
+        "reference_explanation",
+        "verification"
+      ]
+    },
+    {
+      "query_id": "DEV0140",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "verification.semantic_check.oracle_type:scalar_and_type->scalar",
+        "evidence",
+        "verification.fixed.observed_result"
+      ]
+    },
+    {
+      "query_id": "DEV0141",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0142",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0143",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0144",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0145",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0146",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    },
+    {
+      "query_id": "DEV0147",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "seed_data",
+        "expected_behavior",
+        "verification"
+      ]
+    },
+    {
+      "query_id": "DEV0148",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "verification.semantic_check.oracle_type:constraint_behavior->database_state",
+        "sql",
+        "case_flags.has_documented_error:true->false"
+      ]
+    },
+    {
+      "query_id": "DEV0149",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected",
+        "schema_context",
+        "setup_sql",
+        "error_message",
+        "user_problem",
+        "expected_behavior",
+        "root_cause",
+        "reference_explanation",
+        "evidence.support_summary",
+        "verification"
+      ]
+    },
+    {
+      "query_id": "DEV0150",
+      "file": "sqlite.jsonl",
+      "changes": [
+        "verification.semantic_check.expected_result->expected"
+      ]
+    }
+  ]
+}

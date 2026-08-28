@@ -1,0 +1,251 @@
+{
+  "status": "PASS",
+  "checks_passed": 24,
+  "checks_failed": 0,
+  "checks": [
+    {
+      "check": "json_schema_validation",
+      "status": "PASS",
+      "observed": 0,
+      "required": 0,
+      "failures": []
+    },
+    {
+      "check": "generated_artifact_schema_validation",
+      "status": "PASS",
+      "observed": 0,
+      "required": 0,
+      "failures": []
+    },
+    {
+      "check": "kb_validation_pass",
+      "status": "PASS",
+      "observed": "PASS",
+      "required": "PASS",
+      "failures": []
+    },
+    {
+      "check": "exact_record_count",
+      "status": "PASS",
+      "observed": 250,
+      "required": 250,
+      "failures": []
+    },
+    {
+      "check": "exact_query_id_set",
+      "status": "PASS",
+      "observed": {
+        "count": 250,
+        "unique": 250
+      },
+      "required": "DEV0001 through DEV0250 exactly once",
+      "failures": []
+    },
+    {
+      "check": "exact_ordered_normalized_shard_merge",
+      "status": "PASS",
+      "observed": 0,
+      "required": 0,
+      "failures": []
+    },
+    {
+      "check": "exactly_50_per_dialect",
+      "status": "PASS",
+      "observed": {
+        "postgresql": 50,
+        "mysql": 50,
+        "sqlite": 50,
+        "mariadb": 50,
+        "duckdb": 50
+      },
+      "required": {
+        "postgresql": 50,
+        "mysql": 50,
+        "sqlite": 50,
+        "mariadb": 50,
+        "duckdb": 50
+      },
+      "failures": []
+    },
+    {
+      "check": "error_category_coverage_and_cap",
+      "status": "PASS",
+      "observed": {
+        "syntax_error": 25,
+        "dialect_incompatibility": 25,
+        "version_incompatibility": 25,
+        "function_or_operator_incompatibility": 25,
+        "aggregation_or_grouping": 25,
+        "join_or_query_logic": 25,
+        "null_semantics": 25,
+        "type_or_casting": 25,
+        "date_time_semantics": 25,
+        "schema_or_identifier_issue": 25
+      },
+      "required": "all ten categories represented; each <=50",
+      "failures": []
+    },
+    {
+      "check": "case_schema_and_semantics",
+      "status": "PASS",
+      "observed": 0,
+      "required": 0,
+      "failures": []
+    },
+    {
+      "check": "evidence_ids_and_dialects",
+      "status": "PASS",
+      "observed": 0,
+      "required": 0,
+      "failures": []
+    },
+    {
+      "check": "dialect_version_and_error_claim_support",
+      "status": "PASS",
+      "observed": 0,
+      "required": 0,
+      "failures": []
+    },
+    {
+      "check": "sensitive_case_targets_per_dialect",
+      "status": "PASS",
+      "observed": {
+        "postgresql": {
+          "requires_dialect_reasoning": 17,
+          "requires_version_reasoning": 10,
+          "has_documented_error": 8,
+          "plausible_but_wrong": 48,
+          "compares_mysql_mariadb": 0,
+          "is_duckdb_specific": 0
+        },
+        "mysql": {
+          "requires_dialect_reasoning": 38,
+          "requires_version_reasoning": 10,
+          "has_documented_error": 6,
+          "plausible_but_wrong": 24,
+          "compares_mysql_mariadb": 0,
+          "is_duckdb_specific": 0
+        },
+        "sqlite": {
+          "requires_dialect_reasoning": 38,
+          "requires_version_reasoning": 10,
+          "has_documented_error": 20,
+          "plausible_but_wrong": 48,
+          "compares_mysql_mariadb": 0,
+          "is_duckdb_specific": 0
+        },
+        "mariadb": {
+          "requires_dialect_reasoning": 34,
+          "requires_version_reasoning": 10,
+          "has_documented_error": 11,
+          "plausible_but_wrong": 44,
+          "compares_mysql_mariadb": 2,
+          "is_duckdb_specific": 0
+        },
+        "duckdb": {
+          "requires_dialect_reasoning": 47,
+          "requires_version_reasoning": 13,
+          "has_documented_error": 24,
+          "plausible_but_wrong": 50,
+          "compares_mysql_mariadb": 0,
+          "is_duckdb_specific": 47
+        }
+      },
+      "required": "each dialect: >=15 dialect-sensitive and >=10 version-sensitive",
+      "failures": []
+    },
+    {
+      "check": "documented_error_minimum",
+      "status": "PASS",
+      "observed": 69,
+      "required": ">=30",
+      "failures": []
+    },
+    {
+      "check": "plausible_but_wrong_minimum",
+      "status": "PASS",
+      "observed": 214,
+      "required": ">=50",
+      "failures": []
+    },
+    {
+      "check": "selected_verification_method_pass_rate",
+      "status": "PASS",
+      "observed": 1.0,
+      "required": ">=0.90 among passed/failed selected-method checks",
+      "failures": []
+    },
+    {
+      "check": "no_exact_sql_problem_duplicates",
+      "status": "PASS",
+      "observed": 0,
+      "required": 0,
+      "failures": []
+    },
+    {
+      "check": "estimated_near_duplicate_record_rate",
+      "status": "PASS",
+      "observed": {
+        "rate": 0.0,
+        "pairs": []
+      },
+      "required": "<0.05 using global token-set Jaccard >=0.82",
+      "failures": []
+    },
+    {
+      "check": "retrieval_input_snapshot_binding_hard_gate",
+      "status": "PASS",
+      "observed": 0,
+      "required": 0,
+      "failures": []
+    },
+    {
+      "check": "candidate_pool_and_complete_qrels",
+      "status": "PASS",
+      "observed": 0,
+      "required": 0,
+      "failures": []
+    },
+    {
+      "check": "retrieval_runs_metrics_and_embedding_provenance",
+      "status": "PASS",
+      "observed": 0,
+      "required": 0,
+      "failures": []
+    },
+    {
+      "check": "query_source_leakage_hard_gate",
+      "status": "PASS",
+      "observed": [],
+      "required": [],
+      "failures": []
+    },
+    {
+      "check": "execution_replay_and_exact_semantic_oracles",
+      "status": "PASS",
+      "observed": 0,
+      "required": 0,
+      "failures": []
+    },
+    {
+      "check": "independent_quality_audit_50_cases",
+      "status": "PASS",
+      "observed": {
+        "reviewed": 50,
+        "failures": 0
+      },
+      "required": {
+        "reviewed": 50,
+        "failures": 0
+      },
+      "failures": []
+    },
+    {
+      "check": "all_declared_core_artifacts_present",
+      "status": "PASS",
+      "observed": [],
+      "required": [],
+      "failures": []
+    }
+  ]
+}
