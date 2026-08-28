@@ -1,0 +1,6 @@
+duckdb==1.5.5
+fastembed==0.8.0
+jsonschema==4.23.0
+numpy==1.26.4
+protobuf==5.29.6
+scikit-learn==1.5.1

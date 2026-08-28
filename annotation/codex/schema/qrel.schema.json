@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sqlmendrag.local/schema/qrel.schema.json",
+  "title": "SQLMendRAG machine-proposed pooled relevance judgment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "query_id", "chunk_id", "relevance", "judgment_origin", "judgment_method"
+  ],
+  "properties": {
+    "query_id": {"type": "string", "pattern": "^DEV[0-9]{4}$"},
+    "chunk_id": {"type": "string", "pattern": "^smr_[a-z]+_[0-9a-f]{24}$"},
+    "relevance": {"enum": [0, 1, 2]},
+    "judgment_origin": {"const": "codex_machine_proposed"},
+    "judgment_method": {"type": "string", "minLength": 1}
+  }
+}

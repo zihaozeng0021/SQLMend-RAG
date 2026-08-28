@@ -1,0 +1,42 @@
+{
+  "generation_run_id": "codex-dev-20260828-01",
+  "started_at_utc": "2026-08-28T03:26:35Z",
+  "repository_commit_at_start": "7e85cacda6fd9ff6a8acc18448005ab5920af8b8",
+  "prompt_path": "annotation/codex/prompts/generation_prompt.md",
+  "schema_version": "1.0.0",
+  "python_version": "3.12.7",
+  "retrieval_runtime": {
+    "scikit_learn": "1.5.1",
+    "numpy": "1.26.4",
+    "bm25_implementation": "annotation/codex/scripts/build_candidate_pools.py",
+    "fastembed": "0.8.0",
+    "dense_method": "FastEmbed neural text embeddings with BAAI/bge-small-en-v1.5 and cosine similarity",
+    "fallback_method": "TF-IDF followed by deterministic truncated-SVD LSA and cosine similarity",
+    "note": "Annotation-specific development pooling; still not claimed as the final course production retriever.",
+    "resolved_model_repository": "qdrant/bge-small-en-v1.5-onnx-q",
+    "resolved_model_revision": "52398278842ec682c6f32300af41344b1c0b0bb2"
+  },
+  "retrieval_run_observation": {
+    "process_started_at_utc": "2026-08-28T04:01:49Z",
+    "command": "python annotation/codex/scripts/build_candidate_pools.py --root . --dense-backend fastembed",
+    "model_cache_latest_file_mtime_before_process_utc": "2026-08-28T03:29:41Z",
+    "provenance_limitation": "The process was already in memory when provenance-writing code was upgraded. The final release therefore uses an explicitly disclosed post-hoc unchanged-cache binding; it does not claim the current builder file hash proves the earlier in-memory code image."
+  },
+  "execution_verification": {
+    "sqlite_engine_version": "3.45.3",
+    "sqlite_execution_cases": 45,
+    "duckdb_engine_version": "1.5.5",
+    "duckdb_execution_cases": 33,
+    "policy": "Execution promotion requires raw original/fixed replay plus a separately reviewed exact-result, predicate, schema, or database-state oracle."
+  },
+  "qrel_policy": {
+    "labels": [0, 1, 2],
+    "judgment_count": 13449,
+    "coverage": "every candidate in each saved pool; absent query-document pairs are unjudged",
+    "warning": "Machine-derived pooled development judgments are circular diagnostics, not independent human evaluation qrels."
+  },
+  "annotation_origin": "codex_machine_proposed",
+  "human_verified": false,
+  "eligible_for_assignment_final_eval": false,
+  "completed_at_utc": "2026-08-28T05:44:58Z"
+}

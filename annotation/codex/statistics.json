@@ -1,0 +1,160 @@
+{
+  "total_cases": 250,
+  "cases_per_dialect": {
+    "postgresql": 50,
+    "mysql": 50,
+    "sqlite": 50,
+    "mariadb": 50,
+    "duckdb": 50
+  },
+  "cases_per_version": {
+    "18.6": 10,
+    "14.24": 14,
+    "17.11": 19,
+    "14": 5,
+    "14.5": 1,
+    "8.1": 1,
+    "8.0.46": 34,
+    "8.4.11": 8,
+    "8.0.30": 1,
+    "8.0.22": 2,
+    "8.0.21": 1,
+    "8.0.17": 3,
+    "8.0.27": 1,
+    "3.45.3": 45,
+    "unknown": 1,
+    "pre-3.37.0": 1,
+    "pre-3.39.0": 1,
+    "pre-3.43.0": 1,
+    "pre-3.38.0": 1,
+    "current": 14,
+    "11.4.10": 24,
+    "10.8": 3,
+    "10.2.0": 1,
+    "10.6.0": 1,
+    "10.7": 2,
+    "10.5.0": 1,
+    "11.1": 1,
+    "10.2.4": 1,
+    "11.6": 1,
+    "10.4": 1,
+    "1.5": 37,
+    "0.10.0": 2,
+    "1.1.0": 1,
+    "1.2.0": 3,
+    "1.3.0": 2,
+    "0.7.0": 1,
+    "1.3.2": 1,
+    "1.4.0": 1,
+    "1.5.0": 1,
+    "1.2.2": 1
+  },
+  "cases_per_error_category": {
+    "syntax_error": 25,
+    "dialect_incompatibility": 25,
+    "version_incompatibility": 25,
+    "function_or_operator_incompatibility": 25,
+    "aggregation_or_grouping": 25,
+    "join_or_query_logic": 25,
+    "null_semantics": 25,
+    "type_or_casting": 25,
+    "date_time_semantics": 25,
+    "schema_or_identifier_issue": 25
+  },
+  "cases_per_version_status": {
+    "exact": 146,
+    "range": 47,
+    "legacy": 5,
+    "unknown": 1,
+    "current": 51
+  },
+  "case_flags_per_dialect": {
+    "postgresql": {
+      "requires_dialect_reasoning": 17,
+      "requires_version_reasoning": 10,
+      "has_documented_error": 8,
+      "plausible_but_wrong": 48,
+      "compares_mysql_mariadb": 0,
+      "is_duckdb_specific": 0
+    },
+    "mysql": {
+      "requires_dialect_reasoning": 38,
+      "requires_version_reasoning": 10,
+      "has_documented_error": 6,
+      "plausible_but_wrong": 24,
+      "compares_mysql_mariadb": 0,
+      "is_duckdb_specific": 0
+    },
+    "sqlite": {
+      "requires_dialect_reasoning": 38,
+      "requires_version_reasoning": 10,
+      "has_documented_error": 20,
+      "plausible_but_wrong": 48,
+      "compares_mysql_mariadb": 0,
+      "is_duckdb_specific": 0
+    },
+    "mariadb": {
+      "requires_dialect_reasoning": 34,
+      "requires_version_reasoning": 10,
+      "has_documented_error": 11,
+      "plausible_but_wrong": 44,
+      "compares_mysql_mariadb": 2,
+      "is_duckdb_specific": 0
+    },
+    "duckdb": {
+      "requires_dialect_reasoning": 47,
+      "requires_version_reasoning": 13,
+      "has_documented_error": 24,
+      "plausible_but_wrong": 50,
+      "compares_mysql_mariadb": 0,
+      "is_duckdb_specific": 47
+    }
+  },
+  "dialect_sensitive_cases": 174,
+  "version_sensitive_cases": 53,
+  "documented_error_cases": 69,
+  "plausible_but_wrong_cases": 214,
+  "average_evidence_passages": 1.208,
+  "verification_method_distribution": {
+    "documentation_only": 172,
+    "execution": 78
+  },
+  "verification_status_distribution": {
+    "passed": 250
+  },
+  "verification_pass_rate": 1.0,
+  "execution_verified_cases": 78,
+  "cases_by_evidence_source_type": {
+    "official_docs": 139,
+    "release_notes": 30,
+    "error_reference": 28,
+    "project_docs": 74,
+    "migration_guide": 10
+  },
+  "evidence_passages_by_source_type": {
+    "official_docs": 151,
+    "release_notes": 30,
+    "error_reference": 28,
+    "project_docs": 83,
+    "migration_guide": 10
+  },
+  "duplicate_detection": {
+    "exact_duplicate_pairs": 0,
+    "near_duplicate_pairs": 0,
+    "near_duplicate_record_count": 0,
+    "estimated_near_duplicate_record_rate": 0.0
+  },
+  "estimated_near_duplicate_record_rate": 0.0,
+  "candidate_pool_records": 250,
+  "qrel_judgments": 13449,
+  "qrel_labels": {
+    "0": 9216,
+    "1": 3931,
+    "2": 302
+  },
+  "leakage_status": {
+    "PASS": 250
+  },
+  "mysql_mariadb_comparison_cases": 2,
+  "duckdb_specific_cases": 47
+}

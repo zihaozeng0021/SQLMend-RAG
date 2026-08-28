@@ -10,3 +10,5 @@ construction/data/raw/collection_index.jsonl
 construction/data/interim/*.jsonl
 construction/data/processed/corpus_fixed.jsonl
 construction/HISTORY.md
+annotation/codex/work/model_cache/
+annotation/codex/HISTORY.md

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sqlmendrag.local/schema/query_source_leakage.schema.json",
+  "title": "SQLMendRAG query-to-source lexical leakage result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "query_id", "max_contiguous_natural_language_tokens",
+    "max_query_5gram_containment", "max_sequence_ratio",
+    "full_explanatory_sentence_copied", "worst_chunk_id", "status", "rules"
+  ],
+  "properties": {
+    "query_id": {"type": "string", "pattern": "^DEV[0-9]{4}$"},
+    "max_contiguous_natural_language_tokens": {"type": "integer", "minimum": 0},
+    "max_query_5gram_containment": {"type": "number", "minimum": 0, "maximum": 1},
+    "max_sequence_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+    "full_explanatory_sentence_copied": {"type": "boolean"},
+    "worst_chunk_id": {
+      "type": ["string", "null"],
+      "pattern": "^smr_[a-z]+_[0-9a-f]{24}$"
+    },
+    "status": {"enum": ["PASS", "WARN", "FAIL"]},
+    "rules": {"type": "object"}
+  }
+}
