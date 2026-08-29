@@ -1,0 +1,10 @@
+retriever_id: hybrid_rrf_formal_v1
+algorithm: reciprocal_rank_fusion
+rrf_k: 60
+fusion_depth: 30
+output_depth: 30
+tie_breaking:
+  - descending_rrf_score
+  - ascending_best_component_rank
+  - ascending_chunk_id
+

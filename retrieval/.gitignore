@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Generated, reproducibly rebuildable local indices and model snapshots.
+indices/bm25/*
+indices/dense/*
+!indices/bm25/.gitkeep
+!indices/dense/.gitkeep
+
+# Downloaded only to verify the pinned historical annotation model.
+reproduction/model_cache/

@@ -1,0 +1,18 @@
+retriever_id: dense_formal_v1
+model_id: intfloat/e5-base-v2
+model_revision: f52bf8ec8c7124536f0efb74aca902b2995e5bcd
+device: cpu
+batch_size: 64
+top_k: 30
+query_prefix: "query: "
+document_prefix: "passage: "
+normalize_embeddings: true
+similarity: inner_product
+search: exact_matrix_multiplication
+dtype: float32
+pooling: mean
+max_input_length: 256
+model_inference_precision: dynamic_int8_cpu
+cpu_threads: 14
+document_template: sqlmend-passage-v1
+random_seed: 42

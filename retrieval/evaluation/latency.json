@@ -1,0 +1,122 @@
+{
+  "build_performance": {
+    "bm25_index_build_seconds": 1.6304979999986244,
+    "bm25_index_size_bytes": 12207753,
+    "dense_corpus_encoding_seconds": 1141.2718451000037,
+    "dense_embedding_index_size_bytes": 37331893,
+    "dense_index_build_seconds": 0.06879269999626558,
+    "dense_model_cache_size_bytes": 438967710,
+    "dense_model_load_or_download_seconds": 9.584548999999242
+  },
+  "cold_start": {
+    "bm25_seconds": 0.5555454999994254,
+    "dense_seconds": 33.62684099999751
+  },
+  "cold_start_scope": "index/model load plus frozen corpus/config binding validation; excludes process launch",
+  "environment": {
+    "clock": "time.perf_counter monotonic high-resolution clock",
+    "corpus_chunks": 12000,
+    "cpu": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+    "device_used_for_official_run": "cpu",
+    "embedding_dimension": 768,
+    "gpu": null,
+    "logical_cpu_count": 20,
+    "operating_system": "Windows-11-10.0.26200-SP0",
+    "package_versions": {
+      "PyYAML": "6.0.1",
+      "huggingface-hub": "0.36.2",
+      "numpy": "1.26.4",
+      "psutil": "5.9.0",
+      "rank-bm25": "0.2.2",
+      "sentence-transformers": "5.1.0",
+      "torch": "2.13.0",
+      "transformers": "4.57.6"
+    },
+    "physical_cpu_count": 14,
+    "python_version": "3.12.7",
+    "ram_bytes": 34070847488
+  },
+  "evaluation_label": "machine-proposed development evaluation",
+  "machine_proposed_development_only": true,
+  "query_count": 250,
+  "repetitions": 1,
+  "warm_query_latency": {
+    "bm25": {
+      "maximum_ms": 351.766800005862,
+      "mean_ms": 214.58680199994706,
+      "median_ms": 208.21770000111428,
+      "p50_ms": 208.21770000111428,
+      "p95_ms": 293.10784000190324,
+      "queries_per_second": 4.660118845520829,
+      "sample_count": 250
+    },
+    "dense": {
+      "query_encoding": {
+        "maximum_ms": 85.36549999553245,
+        "mean_ms": 36.93923159976839,
+        "median_ms": 35.743700002058176,
+        "p50_ms": 35.743700002058176,
+        "p95_ms": 46.124600000985076,
+        "queries_per_second": 27.071488947979905,
+        "sample_count": 250
+      },
+      "total": {
+        "maximum_ms": 97.10379999887664,
+        "mean_ms": 45.56658119952772,
+        "median_ms": 44.78075000588433,
+        "p50_ms": 44.78075000588433,
+        "p95_ms": 55.03689999750349,
+        "queries_per_second": 21.945908024593354,
+        "sample_count": 250
+      },
+      "vector_search": {
+        "maximum_ms": 11.738300003344193,
+        "mean_ms": 8.627349599759327,
+        "median_ms": 8.580850000726059,
+        "p50_ms": 8.580850000726059,
+        "p95_ms": 10.030545001063729,
+        "queries_per_second": 115.91045296551985,
+        "sample_count": 250
+      }
+    },
+    "hybrid": {
+      "bm25_component": {
+        "maximum_ms": 351.766800005862,
+        "mean_ms": 214.58680199994706,
+        "median_ms": 208.21770000111428,
+        "p50_ms": 208.21770000111428,
+        "p95_ms": 293.10784000190324,
+        "queries_per_second": 4.660118845520829,
+        "sample_count": 250
+      },
+      "dense_component": {
+        "maximum_ms": 97.10379999887664,
+        "mean_ms": 45.56658119952772,
+        "median_ms": 44.78075000588433,
+        "p50_ms": 44.78075000588433,
+        "p95_ms": 55.03689999750349,
+        "queries_per_second": 21.945908024593354,
+        "sample_count": 250
+      },
+      "rrf_fusion": {
+        "maximum_ms": 1.0942000008071773,
+        "mean_ms": 0.39604559980216436,
+        "median_ms": 0.3897499991580844,
+        "p50_ms": 0.3897499991580844,
+        "p95_ms": 0.5020049989980178,
+        "queries_per_second": 2524.9617733400582,
+        "sample_count": 250
+      },
+      "total": {
+        "maximum_ms": 409.8511000047438,
+        "mean_ms": 260.54942879927694,
+        "median_ms": 253.56854999336065,
+        "p50_ms": 253.56854999336065,
+        "p95_ms": 347.99810999902536,
+        "queries_per_second": 3.838043340215433,
+        "sample_count": 250
+      }
+    }
+  },
+  "warmup_queries": 3
+}

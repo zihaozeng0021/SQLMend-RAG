@@ -1,0 +1,19 @@
+serializer_version: sqlmend-query-v1
+newline_normalization: crlf_and_cr_to_lf
+omit_empty_sections: true
+section_order:
+  - dialect
+  - version
+  - question
+  - observed_error_or_behavior
+  - sql
+allowed_source_fields:
+  - dialect
+  - version
+  - user_problem
+  - error_message
+  - error_code
+  - sqlstate
+  - error_symbol
+  - sql
+

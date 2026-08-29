@@ -1,0 +1,17 @@
+{
+  "bm25": {
+    "byte_identical": true,
+    "first_sha256": "e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98",
+    "second_sha256": "e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98"
+  },
+  "dense": {
+    "byte_identical": true,
+    "first_sha256": "eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd",
+    "second_sha256": "eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd"
+  },
+  "hybrid": {
+    "byte_identical": true,
+    "first_sha256": "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468",
+    "second_sha256": "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468"
+  }
+}
