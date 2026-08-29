@@ -1,0 +1,72 @@
+{
+  "corpus": {
+    "allowed_dialects": [
+      "duckdb",
+      "mariadb",
+      "mysql",
+      "postgresql",
+      "sqlite"
+    ],
+    "approximate_unique_word_count": 35646,
+    "chunk_order": "ascending_chunk_id",
+    "chunk_order_sha256": "5d99691b6993822ae5ba30fd40b941ff6566b8dad9cc8a819305d10091a34d8d",
+    "corpus_path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/construction/data/processed/corpus.jsonl",
+    "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+    "dialect_counts": {
+      "duckdb": 2400,
+      "mariadb": 2400,
+      "mysql": 2400,
+      "postgresql": 2400,
+      "sqlite": 2400
+    },
+    "record_count": 12000,
+    "total_word_count": 1663145,
+    "unique_chunk_ids": 12000
+  },
+  "failures": [],
+  "machine_proposed_development_only": true,
+  "observed": {
+    "approximate_unique_word_count": 35646,
+    "candidate_pool_record_count": 250,
+    "candidate_pool_sha256": "0d8a89ad0eb39b3e481e58668c15df9416da69bf750100ec695f5d150f3f8d85",
+    "dialect_counts": {
+      "duckdb": 50,
+      "mariadb": 50,
+      "mysql": 50,
+      "postgresql": 50,
+      "sqlite": 50
+    },
+    "dialect_sensitive_count": 174,
+    "qrel_count": 13449,
+    "qrel_label_counts": {
+      "0": 9216,
+      "1": 3931,
+      "2": 302
+    },
+    "queries_with_relevance_2": 250,
+    "query_count": 250,
+    "total_word_count": 1663145,
+    "version_sensitive_count": 53
+  },
+  "required": {
+    "approximate_unique_word_count": 35646,
+    "dialect_counts": {
+      "duckdb": 50,
+      "mariadb": 50,
+      "mysql": 50,
+      "postgresql": 50,
+      "sqlite": 50
+    },
+    "dialect_sensitive_count": 174,
+    "qrel_count": 13449,
+    "qrel_label_counts": {
+      "0": 9216,
+      "1": 3931,
+      "2": 302
+    },
+    "query_count": 250,
+    "total_word_count": 1663145,
+    "version_sensitive_count": 53
+  },
+  "status": "PASS"
+}

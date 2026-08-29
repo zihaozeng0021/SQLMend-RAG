@@ -1,0 +1,855 @@
+{
+  "checks": [
+    {
+      "check_id": "engineering.configs.frozen_hashes",
+      "explanation": "All formal baseline, serializer, and evaluation configs match the frozen bytes.",
+      "observed_value": {
+        "bm25_baseline.yaml": "0588102a6b7fd1366f1cdf43a93c2a64962b872500e86d48c256fac8e063f04f",
+        "dense_baseline.yaml": "7dcf4eb21a50607a6a8ef7b23a5125646fde08d17e8cf83ffa9d80602c419a68",
+        "evaluation.yaml": "5f7afd8afca53b3a0f9e82bff5b6ea516487fca8ed80a4d367e29a18416d9c3e",
+        "hybrid_rrf_baseline.yaml": "7ae8ab8daddb5dd047f0a5adea8649e5ce72a29800622a442659e8faad51d972",
+        "query_serializer.yaml": "1cae7043486f46fd5992740f9cebf69b6e2ce9c16ec65e016a6e219b184717e4"
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "bm25_baseline.yaml": "0588102a6b7fd1366f1cdf43a93c2a64962b872500e86d48c256fac8e063f04f",
+        "dense_baseline.yaml": "7dcf4eb21a50607a6a8ef7b23a5125646fde08d17e8cf83ffa9d80602c419a68",
+        "evaluation.yaml": "5f7afd8afca53b3a0f9e82bff5b6ea516487fca8ed80a4d367e29a18416d9c3e",
+        "hybrid_rrf_baseline.yaml": "7ae8ab8daddb5dd047f0a5adea8649e5ce72a29800622a442659e8faad51d972",
+        "query_serializer.yaml": "1cae7043486f46fd5992740f9cebf69b6e2ce9c16ec65e016a6e219b184717e4"
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.tests.current_source",
+      "explanation": "The full automated test suite passed against the current source/config/test bytes.",
+      "observed_value": {
+        "current_source_tree_sha256": "d804a637d0c64b2f79170f929d1e9520f37060b13e0edefc797728f438572562",
+        "reported_status": "PASS",
+        "returncode": 0,
+        "source_stable_during_tests": true,
+        "tested_source_tree_sha256": "d804a637d0c64b2f79170f929d1e9520f37060b13e0edefc797728f438572562",
+        "tested_source_tree_sha256_after": "d804a637d0c64b2f79170f929d1e9520f37060b13e0edefc797728f438572562"
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "reported_status": "PASS",
+        "returncode": 0,
+        "tested_source_equals_current_source": true
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.corpus.sha256",
+      "explanation": "The corpus byte hash matches the frozen production snapshot.",
+      "observed_value": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "recommended_remediation": "No remediation required.",
+      "required_value": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.corpus.record_count",
+      "explanation": "The corpus contains the required number of valid, uniquely identified chunks.",
+      "observed_value": 12000,
+      "recommended_remediation": "No remediation required.",
+      "required_value": 12000,
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.corpus.dialects",
+      "explanation": "All five allowed dialects have the required frozen distribution.",
+      "observed_value": {
+        "duckdb": 2400,
+        "mariadb": 2400,
+        "mysql": 2400,
+        "postgresql": 2400,
+        "sqlite": 2400
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "duckdb": 2400,
+        "mariadb": 2400,
+        "mysql": 2400,
+        "postgresql": 2400,
+        "sqlite": 2400
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.indices.current_corpus_config_binding",
+      "explanation": "Both index payloads are hash-valid and bound to the current corpus rendering and frozen configs.",
+      "observed_value": {
+        "bm25_document_count": 12000,
+        "bm25_payload_sha256": "1018016821310c928c013df4c50e370008aa1256319d800084c511d9c3275c7b",
+        "dense_chunk_ids_sha256": "eb72f3962fee2697b7828b3057be84f58ea8eb9619b7e5c9bc49fd9001bde038",
+        "dense_document_count": 12000,
+        "dense_embeddings_sha256": "4d8919377cf3316012b4d5013d6d8a2921be62e5600eaae3b31ec507e4a49f31",
+        "dense_shape": [
+          12000,
+          768
+        ]
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "bm25_document_count": 12000,
+        "corpus_and_config_bindings_match": true,
+        "dense_document_count": 12000,
+        "payload_hashes_match": true
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.queries.snapshot",
+      "explanation": "The complete frozen development-query snapshot is present.",
+      "observed_value": {
+        "dialect_counts": {
+          "duckdb": 50,
+          "mariadb": 50,
+          "mysql": 50,
+          "postgresql": 50,
+          "sqlite": 50
+        },
+        "dialect_sensitive_count": 174,
+        "record_count": 250,
+        "unique_query_ids": 250,
+        "version_sensitive_count": 53
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "dialect_counts": {
+          "duckdb": 50,
+          "mariadb": 50,
+          "mysql": 50,
+          "postgresql": 50,
+          "sqlite": 50
+        },
+        "dialect_sensitive_count": 174,
+        "record_count": 250,
+        "unique_query_ids": 250,
+        "version_sensitive_count": 53
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.qrels.count_and_labels",
+      "explanation": "All explicit qrels, including relevance zero, match the frozen counts.",
+      "observed_value": {
+        "label_counts": {
+          "0": 9216,
+          "1": 3931,
+          "2": 302
+        },
+        "record_count": 13449
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "label_counts": {
+          "0": 9216,
+          "1": 3931,
+          "2": 302
+        },
+        "record_count": 13449
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.qrels.query_coverage",
+      "explanation": "Every known query has explicit judgments and at least one relevance-2 qrel.",
+      "observed_value": {
+        "judged_query_count": 250,
+        "missing_query_ids": [],
+        "missing_relevance_2_query_ids": [],
+        "queries_with_relevance_2": 250,
+        "unknown_query_ids": []
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "judged_query_count": 250,
+        "missing_query_ids": [],
+        "missing_relevance_2_query_ids": [],
+        "queries_with_relevance_2": 250,
+        "unknown_query_ids": []
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.input_validation.exact_artifact",
+      "explanation": "The input-validation report exactly records the independently validated frozen inputs.",
+      "observed_value": {
+        "corpus": {
+          "allowed_dialects": [
+            "duckdb",
+            "mariadb",
+            "mysql",
+            "postgresql",
+            "sqlite"
+          ],
+          "approximate_unique_word_count": 35646,
+          "chunk_order": "ascending_chunk_id",
+          "chunk_order_sha256": "5d99691b6993822ae5ba30fd40b941ff6566b8dad9cc8a819305d10091a34d8d",
+          "corpus_path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/construction/data/processed/corpus.jsonl",
+          "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+          "dialect_counts": {
+            "duckdb": 2400,
+            "mariadb": 2400,
+            "mysql": 2400,
+            "postgresql": 2400,
+            "sqlite": 2400
+          },
+          "record_count": 12000,
+          "total_word_count": 1663145,
+          "unique_chunk_ids": 12000
+        },
+        "failures": [],
+        "machine_proposed_development_only": true,
+        "observed": {
+          "approximate_unique_word_count": 35646,
+          "candidate_pool_record_count": 250,
+          "candidate_pool_sha256": "0d8a89ad0eb39b3e481e58668c15df9416da69bf750100ec695f5d150f3f8d85",
+          "dialect_counts": {
+            "duckdb": 50,
+            "mariadb": 50,
+            "mysql": 50,
+            "postgresql": 50,
+            "sqlite": 50
+          },
+          "dialect_sensitive_count": 174,
+          "qrel_count": 13449,
+          "qrel_label_counts": {
+            "0": 9216,
+            "1": 3931,
+            "2": 302
+          },
+          "queries_with_relevance_2": 250,
+          "query_count": 250,
+          "total_word_count": 1663145,
+          "version_sensitive_count": 53
+        },
+        "required": {
+          "approximate_unique_word_count": 35646,
+          "dialect_counts": {
+            "duckdb": 50,
+            "mariadb": 50,
+            "mysql": 50,
+            "postgresql": 50,
+            "sqlite": 50
+          },
+          "dialect_sensitive_count": 174,
+          "qrel_count": 13449,
+          "qrel_label_counts": {
+            "0": 9216,
+            "1": 3931,
+            "2": 302
+          },
+          "query_count": 250,
+          "total_word_count": 1663145,
+          "version_sensitive_count": 53
+        },
+        "status": "PASS"
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "corpus": {
+          "allowed_dialects": [
+            "duckdb",
+            "mariadb",
+            "mysql",
+            "postgresql",
+            "sqlite"
+          ],
+          "approximate_unique_word_count": 35646,
+          "chunk_order": "ascending_chunk_id",
+          "chunk_order_sha256": "5d99691b6993822ae5ba30fd40b941ff6566b8dad9cc8a819305d10091a34d8d",
+          "corpus_path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/construction/data/processed/corpus.jsonl",
+          "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+          "dialect_counts": {
+            "duckdb": 2400,
+            "mariadb": 2400,
+            "mysql": 2400,
+            "postgresql": 2400,
+            "sqlite": 2400
+          },
+          "record_count": 12000,
+          "total_word_count": 1663145,
+          "unique_chunk_ids": 12000
+        },
+        "failures": [],
+        "machine_proposed_development_only": true,
+        "observed": {
+          "approximate_unique_word_count": 35646,
+          "candidate_pool_record_count": 250,
+          "candidate_pool_sha256": "0d8a89ad0eb39b3e481e58668c15df9416da69bf750100ec695f5d150f3f8d85",
+          "dialect_counts": {
+            "duckdb": 50,
+            "mariadb": 50,
+            "mysql": 50,
+            "postgresql": 50,
+            "sqlite": 50
+          },
+          "dialect_sensitive_count": 174,
+          "qrel_count": 13449,
+          "qrel_label_counts": {
+            "0": 9216,
+            "1": 3931,
+            "2": 302
+          },
+          "queries_with_relevance_2": 250,
+          "query_count": 250,
+          "total_word_count": 1663145,
+          "version_sensitive_count": 53
+        },
+        "required": {
+          "approximate_unique_word_count": 35646,
+          "dialect_counts": {
+            "duckdb": 50,
+            "mariadb": 50,
+            "mysql": 50,
+            "postgresql": 50,
+            "sqlite": 50
+          },
+          "dialect_sensitive_count": 174,
+          "qrel_count": 13449,
+          "qrel_label_counts": {
+            "0": 9216,
+            "1": 3931,
+            "2": 302
+          },
+          "query_count": 250,
+          "total_word_count": 1663145,
+          "version_sensitive_count": 53
+        },
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.qrels.trec_conversion",
+      "explanation": "The TREC qrels preserve every source judgment exactly.",
+      "observed_value": {
+        "matches_source": true,
+        "record_count": 13449
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "matches_source": true,
+        "record_count": 13449
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.queries.serialized_whitelist",
+      "explanation": "Every serialized query exactly matches the deterministic user-field whitelist.",
+      "observed_value": {
+        "expected_query_ids_matched": true,
+        "record_count": 250,
+        "sample_violations": [],
+        "unique_query_ids": 250,
+        "violation_count": 0
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "expected_query_ids_matched": true,
+        "record_count": 250,
+        "unique_query_ids": 250,
+        "violation_count": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.run.bm25",
+      "explanation": "The formal bm25 run is a complete valid top-30 run.",
+      "observed_value": {
+        "all_scores_finite": true,
+        "maximum_results_per_query": 30,
+        "minimum_results_per_query": 30,
+        "missing_query_ids": [],
+        "path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/retrieval/runs/bm25_formal_dev250.trec",
+        "query_count": 250,
+        "result_count": 7500,
+        "sha256": "e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98",
+        "unexpected_query_ids": []
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "continuous_ranks": true,
+        "finite_scores": true,
+        "known_unique_chunk_ids": true,
+        "query_count": 250,
+        "result_count": 7500,
+        "results_per_query": 30
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.run.dense",
+      "explanation": "The formal dense run is a complete valid top-30 run.",
+      "observed_value": {
+        "all_scores_finite": true,
+        "maximum_results_per_query": 30,
+        "minimum_results_per_query": 30,
+        "missing_query_ids": [],
+        "path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/retrieval/runs/dense_formal_dev250.trec",
+        "query_count": 250,
+        "result_count": 7500,
+        "sha256": "eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd",
+        "unexpected_query_ids": []
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "continuous_ranks": true,
+        "finite_scores": true,
+        "known_unique_chunk_ids": true,
+        "query_count": 250,
+        "result_count": 7500,
+        "results_per_query": 30
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.run.hybrid",
+      "explanation": "The formal hybrid run is a complete valid top-30 run.",
+      "observed_value": {
+        "all_scores_finite": true,
+        "maximum_results_per_query": 30,
+        "minimum_results_per_query": 30,
+        "missing_query_ids": [],
+        "path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/retrieval/runs/hybrid_rrf_formal_dev250.trec",
+        "query_count": 250,
+        "result_count": 7500,
+        "sha256": "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468",
+        "unexpected_query_ids": []
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "continuous_ranks": true,
+        "finite_scores": true,
+        "known_unique_chunk_ids": true,
+        "query_count": 250,
+        "result_count": 7500,
+        "results_per_query": 30
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.hybrid.exact_rrf_and_provenance",
+      "explanation": "Hybrid run and provenance are the exact fixed RRF of the validated components.",
+      "observed_value": {
+        "component_rank_provenance_exact": true,
+        "expected_rows": 7500,
+        "hybrid_run_exact_rrf": true,
+        "observed_rows": 7500
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "component_rank_provenance_exact": true,
+        "hybrid_run_exact_rrf": true
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.runs.repeated_byte_identity",
+      "explanation": "Repeated full official runs are byte-identical and match current artifacts.",
+      "observed_value": {
+        "bm25": {
+          "actual": "e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98",
+          "evidence": {
+            "byte_identical": true,
+            "first_sha256": "e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98",
+            "second_sha256": "e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98"
+          },
+          "valid": true
+        },
+        "dense": {
+          "actual": "eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd",
+          "evidence": {
+            "byte_identical": true,
+            "first_sha256": "eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd",
+            "second_sha256": "eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd"
+          },
+          "valid": true
+        },
+        "hybrid": {
+          "actual": "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468",
+          "evidence": {
+            "byte_identical": true,
+            "first_sha256": "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468",
+            "second_sha256": "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468"
+          },
+          "valid": true
+        }
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": "For all three systems, first_sha256 == second_sha256 == current run hash and byte_identical is true.",
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.runs.recorded_hashes",
+      "explanation": "Recorded run hashes agree with the formal TREC artifacts.",
+      "observed_value": {
+        "manifest_present": true,
+        "systems": {
+          "bm25": {
+            "actual": "e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98",
+            "recorded": [
+              "e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98",
+              "e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98",
+              "e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98"
+            ]
+          },
+          "dense": {
+            "actual": "eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd",
+            "recorded": [
+              "eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd",
+              "eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd",
+              "eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd"
+            ]
+          },
+          "hybrid": {
+            "actual": "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468",
+            "recorded": [
+              "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468",
+              "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468",
+              "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468"
+            ]
+          }
+        }
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": "All present run-hash metadata (including repeated hashes) equals the current run bytes.",
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.qrels.effective_merge",
+      "explanation": "Effective qrels and their metadata exactly record the frozen-base plus supplemental merge.",
+      "observed_value": {
+        "effective_qrel_count": 13449,
+        "matches_generated_trec": true,
+        "metadata_matches": true,
+        "observed_metadata": {
+          "base_qrels_sha256": "04f78adf95ef09821780f74c81db3379870ad0fe65033944cc1877acde1f5a81",
+          "effective_qrel_count": 13449,
+          "effective_qrels_sha256": "04f78adf95ef09821780f74c81db3379870ad0fe65033944cc1877acde1f5a81",
+          "protected_source_unchanged": true,
+          "supplemental_qrel_count": 0,
+          "supplemental_qrels_present": false
+        },
+        "supplemental_qrel_count": 0,
+        "supplemental_qrels_present": false
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "expected_metadata": {
+          "base_qrels_sha256": "04f78adf95ef09821780f74c81db3379870ad0fe65033944cc1877acde1f5a81",
+          "effective_qrel_count": 13449,
+          "effective_qrels_sha256": "04f78adf95ef09821780f74c81db3379870ad0fe65033944cc1877acde1f5a81",
+          "protected_source_unchanged": true,
+          "supplemental_qrel_count": 0,
+          "supplemental_qrels_present": false
+        },
+        "matches_generated_trec": true,
+        "metadata_matches": true
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.pool_expansion.exact_artifacts",
+      "explanation": "Pool-expansion requests and all Judged@K summaries exactly match current formal runs.",
+      "observed_value": {
+        "expected_unique_request_count": 10003,
+        "observed_unique_request_count": 10003,
+        "request_records_exact": true,
+        "summary_exact": true
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "request_records_exact": true,
+        "summary_exact": true
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "evaluation.judged_at_30",
+      "explanation": "At least one formal top-30 result is unjudged; evaluation publication is blocked.",
+      "observed_value": {
+        "computed": {
+          "bm25": 0.3841333333333333,
+          "dense": 0.2592,
+          "hybrid": 0.4009333333333333
+        },
+        "unjudged_top30_occurrences": {
+          "bm25": 4619,
+          "dense": 5556,
+          "hybrid": 4493
+        }
+      },
+      "recommended_remediation": "Request judgments using pool_expansion_required.jsonl; never map missing qrels to zero.",
+      "required_value": {
+        "bm25": 1.0,
+        "dense": 1.0,
+        "hybrid": 1.0
+      },
+      "status": "BLOCKED"
+    },
+    {
+      "check_id": "engineering.judged_coverage.exact_artifact",
+      "explanation": "The judged-coverage artifact exactly matches direct formal-run coverage.",
+      "observed_value": {
+        "evaluation_integrity_status": "BLOCKED",
+        "evaluation_label": "machine-proposed development evaluation",
+        "per_system": {
+          "bm25_formal": {
+            "Judged@10": 0.6024,
+            "Judged@20": 0.47,
+            "Judged@30": 0.3841333333333333,
+            "Judged@5": 0.7152,
+            "query_count": 250
+          },
+          "dense_formal": {
+            "Judged@10": 0.3752,
+            "Judged@20": 0.3054,
+            "Judged@30": 0.2592,
+            "Judged@5": 0.4608,
+            "query_count": 250
+          },
+          "hybrid_rrf_formal": {
+            "Judged@10": 0.5764,
+            "Judged@20": 0.4698,
+            "Judged@30": 0.4009333333333333,
+            "Judged@5": 0.6608,
+            "query_count": 250
+          }
+        },
+        "unjudged_documents_are_not_relevance_zero": true
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "evaluation_integrity_status": "BLOCKED",
+        "evaluation_label": "machine-proposed development evaluation",
+        "per_system": {
+          "bm25_formal": {
+            "Judged@10": 0.6024,
+            "Judged@20": 0.47,
+            "Judged@30": 0.3841333333333333,
+            "Judged@5": 0.7152,
+            "query_count": 250
+          },
+          "dense_formal": {
+            "Judged@10": 0.3752,
+            "Judged@20": 0.3054,
+            "Judged@30": 0.2592,
+            "Judged@5": 0.4608,
+            "query_count": 250
+          },
+          "hybrid_rrf_formal": {
+            "Judged@10": 0.5764,
+            "Judged@20": 0.4698,
+            "Judged@30": 0.4009333333333333,
+            "Judged@5": 0.6608,
+            "query_count": 250
+          }
+        },
+        "unjudged_documents_are_not_relevance_zero": true
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "evaluation.pool_summary",
+      "explanation": "Pool expansion is required before formal evaluation metrics may be published.",
+      "observed_value": {
+        "computed_unjudged_top30_occurrences": 14668,
+        "pool_expansion_required": true,
+        "reported_status": "BLOCKED",
+        "reported_unjudged_top30_occurrences": 14668,
+        "summary_consistent": true
+      },
+      "recommended_remediation": "Complete the requested judgments externally and rerun the pool audit.",
+      "required_value": {
+        "computed_unjudged_top30_occurrences": 0,
+        "pool_expansion_required": false,
+        "reported_status": "PASS",
+        "summary_consistent": true
+      },
+      "status": "BLOCKED"
+    },
+    {
+      "check_id": "engineering.annotation_reproduction.evidence_contract",
+      "explanation": "Annotation-retriever provenance evidence is coherent and isolated from formal baselines.",
+      "observed_value": {
+        "annotation_reproduction_status": "PARTIAL",
+        "system_statuses": {
+          "bm25": "PASS",
+          "dense": "PASS",
+          "hybrid_rrf": "PASS"
+        },
+        "violations": []
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "inputs_match": true,
+        "legacy_run_files": [],
+        "system_run_hash_or_absence_matches_status": true,
+        "violations": []
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.manifest.current_artifact_binding",
+      "explanation": "Manifest hashes, source identity, release name, and statuses bind the current candidate.",
+      "observed_value": {
+        "bound_hash_count": 40,
+        "recorded_engineering_status": "PASS",
+        "recorded_evaluation_status": "BLOCKED",
+        "release": "retrieval-baseline-v1-candidate",
+        "violations": []
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "all_current_artifact_hashes_match": true,
+        "release_and_statuses_consistent": true,
+        "source_tree_matches": true,
+        "violations": []
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.blocked_metric_suppression",
+      "explanation": "Blocked evaluation publishes only an explicit sentinel and no stale metric bundle.",
+      "observed_value": {
+        "metrics_published": false,
+        "overall_status": "BLOCKED",
+        "payload_exact": true,
+        "stale_publishable_artifacts": [],
+        "unexpected_or_missing_fields": []
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "metrics_published": false,
+        "overall_status": "BLOCKED",
+        "payload_exact": true,
+        "stale_publishable_artifacts": [],
+        "unexpected_or_missing_fields": []
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.latency.complete_evidence",
+      "explanation": "Latency evidence covers every formal query, all serving components, build sizes, and the runtime environment.",
+      "observed_value": {
+        "expected_sample_count": 250,
+        "query_count": 250,
+        "repetitions": 1,
+        "violation_count": 0,
+        "violations": [],
+        "warmup_queries": 3
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "all_component_sample_counts": 250,
+        "all_statistics_finite_non_negative": true,
+        "environment_and_build_metadata_present": true,
+        "query_count": 250,
+        "warmup_queries_minimum": 3
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.required_files",
+      "explanation": "All artifacts required at this judgment-coverage state exist.",
+      "observed_value": {
+        "missing_files": [],
+        "present_file_count": 30,
+        "required_file_count": 30
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "missing_files": []
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.protected_paths",
+      "explanation": "Protected construction and annotation files are byte-identical before and after work.",
+      "observed_value": {
+        "after_tree_sha256": "0d53bc19626850bd469eda2350d117a9fcfb2e5758dd84b9c92a7a60fa15bd26",
+        "before_tree_sha256": "0d53bc19626850bd469eda2350d117a9fcfb2e5758dd84b9c92a7a60fa15bd26",
+        "current_matches_recorded_after": true,
+        "current_tree_sha256": "0d53bc19626850bd469eda2350d117a9fcfb2e5758dd84b9c92a7a60fa15bd26",
+        "differences": {
+          "added": [],
+          "changed": [],
+          "removed": []
+        },
+        "protected_paths_unchanged": true
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "before_equals_after": true,
+        "differences": {
+          "added": [],
+          "changed": [],
+          "removed": []
+        },
+        "protected_paths_unchanged": true
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.required_report_phrases",
+      "explanation": "All required reports preserve the development-data label and pooled-Recall wording.",
+      "observed_value": {
+        "reports/baseline_report.md": {
+          "machine_proposed_development_evaluation": true,
+          "missing_required_sections": [],
+          "pooled_recall_wording": true
+        },
+        "reports/completion_report.md": {
+          "machine_proposed_development_evaluation": true,
+          "missing_required_sections": [],
+          "pooled_recall_wording": true
+        },
+        "reports/failure_analysis.md": {
+          "machine_proposed_development_evaluation": true,
+          "missing_required_sections": [],
+          "pooled_recall_wording": true
+        },
+        "reports/provenance_audit.md": {
+          "machine_proposed_development_evaluation": true,
+          "missing_required_sections": [],
+          "pooled_recall_wording": true
+        }
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "all_reports_contain": "machine-proposed development evaluation",
+        "all_required_report_sections_present": true,
+        "recall_wording": "pooled Recall"
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "engineering.manifest.final_status_binding",
+      "explanation": "Manifest statuses exactly match this validation pass and the reproduction evidence.",
+      "observed_value": {
+        "annotation_reproduction_status": "PARTIAL",
+        "engineering_status": "PASS",
+        "evaluation_integrity_status": "BLOCKED",
+        "retrieval_quality_status": "NOT_EVALUATED"
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "annotation_reproduction_status": "PARTIAL",
+        "engineering_status": "PASS",
+        "evaluation_integrity_status": "BLOCKED",
+        "retrieval_quality_status": "NOT_EVALUATED"
+      },
+      "status": "PASS"
+    }
+  ],
+  "engineering_status": "PASS",
+  "evaluation_integrity_status": "BLOCKED",
+  "evaluation_label": "machine-proposed development evaluation",
+  "machine_proposed_development_only": true,
+  "overall_success": false,
+  "retrieval_quality_status": "NOT_EVALUATED",
+  "schema_version": "sqlmend-validation-v1"
+}

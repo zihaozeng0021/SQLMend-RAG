@@ -1,0 +1,8 @@
+{
+  "evaluation_label": "machine-proposed development evaluation",
+  "metrics_published": false,
+  "reason": "At least one formal top-30 document is unjudged.",
+  "required_action": "Obtain external judgments for pool_expansion_required.jsonl, merge them into a separately versioned evaluation qrels file without editing protected inputs, then rerun the pool audit and evaluation.",
+  "status": "BLOCKED",
+  "unjudged_documents_are_not_relevance_zero": true
+}

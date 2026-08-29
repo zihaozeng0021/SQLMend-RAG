@@ -1,0 +1,11 @@
+retriever_id: bm25_formal_v1
+algorithm: BM25Okapi
+k1: 1.5
+b: 0.75
+top_k: 30
+stemming: false
+stopword_removal: false
+lowercase: true
+tokenizer_version: sqlmend-lexical-v1
+document_template: sqlmend-passage-v1
+
