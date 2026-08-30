@@ -24,7 +24,7 @@
     },
     "pooling": "union of BM25, dense embedding, and source-linked case evidence"
   },
-  "empirical_ranking_reproduction_status": "PASS",
+  "empirical_ranking_reproduction_status": "PARTIAL",
   "evaluation_label": "machine-proposed development evaluation",
   "formal_baseline_independence": {
     "bm25": "rank_bm25 BM25Okapi k1=1.5 with strict user-field serializer",
@@ -35,14 +35,14 @@
   },
   "formal_results_outside_current_judgment_pool": {
     "pool_audit_available": true,
-    "pool_expansion_required": true,
-    "top30_occurrences": 14668,
-    "unique_query_chunk_pairs": 10003
+    "pool_expansion_required": false,
+    "top30_occurrences": 0,
+    "unique_query_chunk_pairs": 0
   },
   "historical_query_contains_annotation_only_fields": true,
   "historical_query_is_never_used_by_formal_baselines": true,
   "inputs": {
-    "candidate_pools_sha256": "0d8a89ad0eb39b3e481e58668c15df9416da69bf750100ec695f5d150f3f8d85",
+    "candidate_pools_sha256": "86549c5b1bb59cb1557c747db37c66b77a0812c8a8f9ff02dd2d75c0be87a60f",
     "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
     "embedding_model_sha256": "13a7ce3fa931cd23a575b05221d284f0327ee1820ad30f3a327024ba56d7ee43",
     "implementation_sha256": "5f54379847353ec8c04c9d85483fe24d9b9908f3c389ffd2d467fdd081d0719b",
@@ -118,25 +118,25 @@
     },
     "dense": {
       "comparison_metrics": {
-        "exact_top30_sequence_match_count": 250,
-        "exact_top30_sequence_match_rate": 1.0,
-        "exact_top30_set_match_count": 250,
-        "exact_top30_set_match_rate": 1.0,
-        "mean_jaccard_at_30": 1.0,
-        "mean_kendall_correlation_on_common_documents": 1.0,
-        "mean_reciprocal_rank_biased_overlap": 0.9999999999999999,
-        "mean_top30_set_overlap": 1.0,
+        "exact_top30_sequence_match_count": 148,
+        "exact_top30_sequence_match_rate": 0.592,
+        "exact_top30_set_match_count": 247,
+        "exact_top30_set_match_rate": 0.988,
+        "mean_jaccard_at_30": 0.999225806451613,
+        "mean_kendall_correlation_on_common_documents": 0.9974594417077176,
+        "mean_reciprocal_rank_biased_overlap": 0.9982014908608511,
+        "mean_top30_set_overlap": 0.9996,
         "missing_stored_documents": 0,
-        "out_of_pool_query_chunk_pair_count": 0,
-        "queries_with_out_of_pool_documents": 0,
+        "out_of_pool_query_chunk_pair_count": 1,
+        "queries_with_out_of_pool_documents": 1,
         "query_count": 250,
         "score_difference_reason": "candidate-pool scores are historical values rounded to 8 decimals",
         "score_differences": {
-          "compared_common_scores": 7500,
-          "exact_after_8_decimal_rounding_count": 7500,
-          "exact_after_8_decimal_rounding_rate": 1.0,
-          "maximum_absolute_difference": 0.0,
-          "mean_absolute_difference": 0.0
+          "compared_common_scores": 7497,
+          "exact_after_8_decimal_rounding_count": 3,
+          "exact_after_8_decimal_rounding_rate": 0.00040016006402561027,
+          "maximum_absolute_difference": 0.0001893699999999665,
+          "mean_absolute_difference": 3.296958116579968e-05
         }
       },
       "configuration": {
@@ -150,19 +150,19 @@
         "top_k": 30
       },
       "model_snapshot_verified": true,
-      "reproduced_run_sha256": "766178797dcc3411a12772fdde585cce37717801483650d4dc83063f3f402164",
-      "status": "PASS"
+      "reproduced_run_sha256": "2bf6e3bb0028dda8faab58fbc656954880fdb9bed63506124838b99d89e72c5a",
+      "status": "PARTIAL"
     },
     "hybrid_rrf": {
       "comparison_metrics": {
-        "exact_top30_sequence_match_count": 250,
-        "exact_top30_sequence_match_rate": 1.0,
-        "exact_top30_set_match_count": 250,
-        "exact_top30_set_match_rate": 1.0,
-        "mean_jaccard_at_30": 1.0,
-        "mean_kendall_correlation_on_common_documents": 1.0,
-        "mean_reciprocal_rank_biased_overlap": 0.9999999999999999,
-        "mean_top30_set_overlap": 1.0,
+        "exact_top30_sequence_match_count": 216,
+        "exact_top30_sequence_match_rate": 0.864,
+        "exact_top30_set_match_count": 247,
+        "exact_top30_set_match_rate": 0.988,
+        "mean_jaccard_at_30": 0.999225806451613,
+        "mean_kendall_correlation_on_common_documents": 0.9981977011494253,
+        "mean_reciprocal_rank_biased_overlap": 0.9993888195438829,
+        "mean_top30_set_overlap": 0.9996,
         "missing_stored_documents": 0,
         "out_of_pool_query_chunk_pair_count": 0,
         "queries_with_out_of_pool_documents": 0,
@@ -174,8 +174,8 @@
         "rrf_constant": 60,
         "top_k": 30
       },
-      "reproduced_run_sha256": "ad11d4a3e59d32fc0299a5c97dcc63bd0778b0d575e85acdefc72115ac39d148",
-      "status": "PASS"
+      "reproduced_run_sha256": "5451788e7e4a058fd5c5f4e888e8000deb8909bf2eda3e2c4e751c1cad49a036",
+      "status": "PARTIAL"
     }
   }
 }

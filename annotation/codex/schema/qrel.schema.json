@@ -12,6 +12,8 @@
     "chunk_id": {"type": "string", "pattern": "^smr_[a-z]+_[0-9a-f]{24}$"},
     "relevance": {"enum": [0, 1, 2]},
     "judgment_origin": {"const": "codex_machine_proposed"},
-    "judgment_method": {"type": "string", "minLength": 1}
+    "judgment_method": {"type": "string", "minLength": 1},
+    "confidence": {"enum": ["low", "medium", "high"]},
+    "resolution": {"type": "string", "minLength": 1}
   }
 }

@@ -5,7 +5,7 @@
 - Total cases: 250
 - Documented-error cases: 69
 - Plausible-but-wrong cases: 214
-- Qrel judgments: 13449
+- Qrel judgments: 23452
 - Estimated near-duplicate record rate: 0.0000%
 
 ## Cases per dialect

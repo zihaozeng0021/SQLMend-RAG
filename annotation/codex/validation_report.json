@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "checks_passed": 24,
+  "checks_passed": 25,
   "checks_failed": 0,
   "checks": [
     {
@@ -201,6 +201,13 @@
     },
     {
       "check": "candidate_pool_and_complete_qrels",
+      "status": "PASS",
+      "observed": 0,
+      "required": 0,
+      "failures": []
+    },
+    {
+      "check": "v1_top30_blind_refresh_integrity",
       "status": "PASS",
       "observed": 0,
       "required": 0,

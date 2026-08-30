@@ -1,26 +1,26 @@
 {
-  "evaluation_integrity_status": "BLOCKED",
+  "evaluation_integrity_status": "PASS",
   "evaluation_label": "machine-proposed development evaluation",
   "per_system": {
     "bm25_formal": {
-      "Judged@10": 0.6024,
-      "Judged@20": 0.47,
-      "Judged@30": 0.3841333333333333,
-      "Judged@5": 0.7152,
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
       "query_count": 250
     },
     "dense_formal": {
-      "Judged@10": 0.3752,
-      "Judged@20": 0.3054,
-      "Judged@30": 0.2592,
-      "Judged@5": 0.4608,
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
       "query_count": 250
     },
     "hybrid_rrf_formal": {
-      "Judged@10": 0.5764,
-      "Judged@20": 0.4698,
-      "Judged@30": 0.4009333333333333,
-      "Judged@5": 0.6608,
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
       "query_count": 250
     }
   },

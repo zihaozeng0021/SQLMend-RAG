@@ -1,8 +1,12 @@
-# SQLMendRAG Codex development annotations
+# SQLMendRAG Codex development annotations (main v1)
 
 This directory contains a 250-record, machine-proposed development set for
 SQLMendRAG. It exists to develop and debug retrieval, prompting, generation,
 verification, and evaluation code.
+
+The current main annotation is **v1, dataset revision 1.1.0**. Version changes
+are recorded in `annotation/VERSION_HISTORY.md`. The experimental v2 annotation
+was abandoned and is not read by the retrieval pipeline.
 
 It is **not** the assignment's final manually labelled evaluation set. It must
 not be counted toward the required 1,000+ human annotations, and it must not be
@@ -21,8 +25,8 @@ production `corpus.jsonl`, never the fixed-size baseline.
 ## Main artifacts
 
 - `dev_250.jsonl`: one machine-proposed SQL debugging case per physical line.
-- `candidate_pools.jsonl`: the machine-labelled union of BM25, neural dense-embedding, and source-linked candidates.
-- `qrels_machine_proposed.jsonl`: one judged query/chunk pair per line, including labels 0, 1, and 2.
+- `candidate_pools.jsonl`: the historical annotation-retriever pool, with labels synchronized to the current main qrels for its candidate subset.
+- `qrels_machine_proposed.jsonl`: the main v1 judgment ledger. It includes the complete frozen formal-baseline Top-30 union plus preserved historical v1 pairs.
 - `query_source_leakage.jsonl`: per-case query/source lexical leakage checks.
 - `execution_evidence.jsonl`: structured verification summaries extracted from the cases.
 - `validation_report.json`: acceptance-criterion PASS/FAIL report.
@@ -33,8 +37,10 @@ production `corpus.jsonl`, never the fixed-size baseline.
 - `schema/`: machine-readable JSON Schemas.
 - `prompts/`: the frozen generation specification.
 - `provenance/`: corpus and retrieval run metadata.
+- `provenance/top30_blind_refresh.json`: compact integrity, agreement, scope, transition, and model record for the v1 Top-30 refresh.
 - `scripts/`: reproducible pooling, validation, reporting, and audit tools.
 - `reports/`: detailed/mirrored validation, statistics, retrieval metrics, leakage, and audit results.
+- `reports/top30_annotation_sensitivity.json`: baseline-metric movement under blind pass A, pass B, and adjudicated labels.
 
 ## Relevance judgements
 
@@ -44,12 +50,18 @@ Every candidate in every saved pool has an explicit machine-proposed label:
 - `1`: judged partially useful or contextual;
 - `2`: judged directly supportive of the diagnosis, repair, or compatibility claim.
 
-A missing query/chunk pair is unjudged. Missing pairs must never be silently
-interpreted as relevance 0. Source-linked evidence labels come from the case
-review; other 0/1 labels are deterministic context-overlap/retrieval-agreement
-heuristics rather than independent semantic or human judgments. Consequently,
-the saved retrieval metrics are circular, exploratory development diagnostics,
-not unbiased estimates and not final human evaluation results.
+A missing query/chunk pair is unjudged and must never be silently interpreted
+as relevance 0. In revision 1.1.0, all 14,232 pairs in the exact union of the
+three frozen formal baseline Top-30 runs are judged. Explicit source-linked
+case evidence remains authoritative. Other formal-scope labels come from two
+independent answer-free blind passes, with a third blind adjudication for label
+disagreements. Historical pairs outside that scope retain the original
+deterministic heuristic labels.
+
+This removes the previous missing-qrel blocker and substantially reduces
+single-pass label noise, but the result is still machine-proposed development
+data. The two blind passes used the same model family and can share bias; the
+metrics remain pooled and are not unbiased human held-out estimates.
 
 ## Sensitive-case targets
 
@@ -79,9 +91,10 @@ python annotation/codex/validate_annotations.py --root .
 ```
 
 The validator recomputes case/schema checks, query hashes, leakage results,
-pool/qrel/run consistency, RRF metrics, audit case hashes, replay input hashes,
-and execution-oracle comparisons. A saved `PASS` field is never sufficient on
-its own. The ignored neural-model cache is machine-local; its resolved revision
+pool/qrel/run consistency, Top-30 refresh hashes and coverage, RRF metrics,
+audit case hashes, replay input hashes, and execution-oracle comparisons. A
+saved `PASS` field is never sufficient on its own. The ignored neural-model
+cache is machine-local; its resolved revision
 and every snapshot-file hash are frozen in
 `provenance/embedding_model.json`.
 

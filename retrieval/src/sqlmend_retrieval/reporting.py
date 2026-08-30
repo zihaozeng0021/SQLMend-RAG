@@ -574,6 +574,24 @@ def generate_failure_analysis(
 
     pool_summary = read_json(paths.pool_expansion / "pool_expansion_summary.json", {})
     evaluation_blocked = pool_summary.get("evaluation_integrity_status") != "PASS"
+    if evaluation_blocked:
+        evaluation_statement = (
+            "由于 judgment pool 不完整，所有正式 overall、slice、CI、pairwise 与单案例 "
+            "metric delta 都是 **NOT_PUBLISHED (BLOCKED)**；这些案例不能替代补判后的指标。"
+        )
+        follow_up_statement = (
+            "先完成 pool expansion；若完整评估仍显示方言/版本或 chunk 回退，再在 "
+            "Stage 7 或 chunk-boundary review 中处理，补判前不调参。"
+        )
+    else:
+        evaluation_statement = (
+            "当前三路正式 Top-30 judgment pool 完整，overall、slice、CI 与 pairwise 指标已发布；"
+            "单案例只用于解释已发布结果，不能替代独立人工 held-out 评估。"
+        )
+        follow_up_statement = (
+            "结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，"
+            "保留固定 v1 和当前 qrels，不按案例反向改标签。"
+        )
 
     lines = [
         "# 检索失败分析",
@@ -586,7 +604,8 @@ def generate_failure_analysis(
         "",
         f"Pool 状态：`{pool_summary.get('evaluation_integrity_status', 'UNKNOWN')}`；未判定 top-30 出现次数：`{pool_summary.get('unjudged_top30_occurrence_count')}`；唯一扩池请求：`{pool_summary.get('pool_expansion_record_count')}`。",
         "",
-        "这里的“成功/失败/改善/损害”只按首个显式 relevance-2 的观察排名定义。由于 judgment pool 不完整，所有正式 overall、slice、CI、pairwise 与单案例 metric delta 都是 **NOT_PUBLISHED (BLOCKED)**；这些案例不能替代人工补判后的指标。",
+        "这里的“成功/失败/改善/损害”只按首个显式 relevance-2 的观察排名定义。"
+        + evaluation_statement,
         "",
         "## 类别覆盖",
         "",
@@ -625,13 +644,13 @@ def generate_failure_analysis(
                 f"- 类别：{'；'.join(case_tags[query_id])}",
                 f"- dialect/version：`{query.get('dialect')}` / `{query.get('version')}`",
                 f"- serialized query SHA-256：`{serialized.get('serialized_text_sha256')}`",
-                "- follow-up/后续：先完成 pool expansion；若完整评估仍显示方言/版本或 chunk 回退，再在 Stage 7 或 chunk-boundary review 中处理，补判前不调参。",
+                "- follow-up/后续：" + follow_up_statement,
                 "- serialized query（直接取自冻结 audit 文件）：",
                 "",
             ]
         )
         for serialized_line in str(serialized.get("serialized_text") or "").split("\n"):
-            lines.append(f"    {serialized_line}")
+            lines.append(f"    {serialized_line}" if serialized_line else "")
         lines.extend(["", "- relevance-2 evidence passages："])
         relevant_ids = sorted(
             chunk_id for chunk_id, relevance in qrels.get(query_id, {}).items() if relevance == 2
@@ -721,22 +740,36 @@ def generate_failure_analysis(
             )
         lines.append("- diagnosis：" + "；".join(diagnosis) + "。")
 
-        future: list[str] = ["先按 pool_expansion_required.jsonl 对未判定结果作外部补判"]
+        future: list[str] = (
+            ["先按 pool_expansion_required.jsonl 对未判定结果作外部补判"]
+            if evaluation_blocked
+            else ["使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels"]
+        )
         if query_id in dialect_failures or query_id in version_failures:
-            future.append("若补判后回退仍成立，在 Stage 7 检验方言/版本感知检索")
+            future.append(
+                "若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索"
+                if not evaluation_blocked
+                else "若补判后回退仍成立，在 Stage 7 检验方言/版本感知检索"
+            )
         if query_id in chunk_risk_cases:
             future.append("人工检查 relevance-2 passage 的 section 与 chunk 边界")
-        future.append("补判前不据此调模型、RRF 或 qrels")
+        future.append(
+            "创新实验建立新系统版本，不覆盖 v1 或当前 qrels"
+            if not evaluation_blocked
+            else "补判前不据此调模型、RRF 或 qrels"
+        )
         lines.extend(["- future handling：" + "；".join(future) + "。", ""])
 
-    lines.extend(
-        [
-            "## Pool expansion 交接",
-            "",
-            "完整未判定请求位于 `retrieval/pool_expansion/pool_expansion_required.jsonl`；它保存实际 passage 快照、三个系统的出现位置与 component ranks。人工或独立标注应写入独立的 `retrieval/qrels/pool_expansion_judgments.jsonl`，不得编辑受保护 qrels 或把未判定项自动写成 0。补判后必须重跑 check-pool、evaluate、test、受保护目录 after audit 与 finalize。",
-            "",
-        ]
+    pool_handoff = (
+        "完整未判定请求位于 `retrieval/pool_expansion/pool_expansion_required.jsonl`；它保存实际 "
+        "passage 快照、三个系统的出现位置与 component ranks。人工或独立标注应写入独立的 "
+        "`retrieval/qrels/pool_expansion_judgments.jsonl`，不得编辑受保护 qrels 或把未判定项自动写成 0。"
+        "补判后必须重跑 check-pool、evaluate、test、受保护目录 after audit 与 finalize。"
+        if evaluation_blocked
+        else "当前 `retrieval/pool_expansion/pool_expansion_required.jsonl` 为空。新增 retriever 或修改 run "
+        "若引入未判断 pair，必须先按版本化标注流程补齐；不得把 missing qrel 自动写成 0。"
     )
+    lines.extend(["## Pool expansion 交接", "", pool_handoff, ""])
     output = paths.reports / "failure_analysis.md"
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text("\n".join(lines), encoding="utf-8", newline="\n")

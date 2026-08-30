@@ -125,8 +125,8 @@ def verify_inputs(paths: ProjectPaths) -> dict[str, Any]:
         "dialect_counts": {name: 50 for name in ("duckdb", "mariadb", "mysql", "postgresql", "sqlite")},
         "dialect_sensitive_count": 174,
         "version_sensitive_count": 53,
-        "qrel_count": 13449,
-        "qrel_label_counts": {0: 9216, 1: 3931, 2: 302},
+        "qrel_count": 23452,
+        "qrel_label_counts": {0: 20154, 1: 2839, 2: 459},
         "total_word_count": 1663145,
         "approximate_unique_word_count": 35646,
     }

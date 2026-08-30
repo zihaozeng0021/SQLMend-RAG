@@ -1,44 +1,4 @@
 {
-  "scope": "pooled machine-proposed development evaluation",
-  "warning": "Exploratory only: non-evidence labels are deterministic machine heuristics that partly use lexical overlap/retrieval agreement, so these metrics are circular and are not a substitute for independent human qrels or held-out test metrics.",
-  "systems": {
-    "bm25": {
-      "mrr": 0.723067,
-      "precision@5": 0.5256,
-      "recall@5": 0.167793,
-      "ndcg@5": 0.471995,
-      "precision@10": 0.4612,
-      "recall@10": 0.290623,
-      "ndcg@10": 0.46998,
-      "precision@30": 0.3852,
-      "recall@30": 0.693644,
-      "ndcg@30": 0.559035
-    },
-    "dense": {
-      "mrr": 0.701535,
-      "precision@5": 0.48,
-      "recall@5": 0.156251,
-      "ndcg@5": 0.442454,
-      "precision@10": 0.4196,
-      "recall@10": 0.261959,
-      "ndcg@10": 0.439632,
-      "precision@30": 0.313467,
-      "recall@30": 0.5534,
-      "ndcg@30": 0.486362
-    },
-    "hybrid_rrf": {
-      "mrr": 0.819896,
-      "precision@5": 0.62,
-      "recall@5": 0.209628,
-      "ndcg@5": 0.554512,
-      "precision@10": 0.5264,
-      "recall@10": 0.335509,
-      "ndcg@10": 0.545801,
-      "precision@30": 0.360933,
-      "recall@30": 0.647322,
-      "ndcg@30": 0.580344
-    }
-  },
   "dense_metadata": {
     "method": "fastembed_neural_text_embedding_cosine",
     "model_name": "BAAI/bge-small-en-v1.5",
@@ -48,5 +8,45 @@
     "resolved_repository": "qdrant/bge-small-en-v1.5-onnx-q",
     "resolved_revision": "52398278842ec682c6f32300af41344b1c0b0bb2",
     "snapshot_manifest_sha256": "96de455d68206045c9752118bceced33cb0d65efff2d268ef3462db39dbaa0c5"
-  }
+  },
+  "scope": "expanded pooled machine-proposed development evaluation",
+  "systems": {
+    "bm25": {
+      "mrr": 0.643078,
+      "ndcg@10": 0.396653,
+      "ndcg@30": 0.49479,
+      "ndcg@5": 0.396101,
+      "precision@10": 0.3132,
+      "precision@30": 0.2692,
+      "precision@5": 0.3648,
+      "recall@10": 0.260503,
+      "recall@30": 0.627064,
+      "recall@5": 0.15884
+    },
+    "dense": {
+      "mrr": 0.676131,
+      "ndcg@10": 0.405393,
+      "ndcg@30": 0.473123,
+      "ndcg@5": 0.402267,
+      "precision@10": 0.3224,
+      "precision@30": 0.237867,
+      "precision@5": 0.376,
+      "recall@10": 0.263823,
+      "recall@30": 0.542197,
+      "recall@5": 0.16011
+    },
+    "hybrid_rrf": {
+      "mrr": 0.738153,
+      "ndcg@10": 0.46355,
+      "ndcg@30": 0.526478,
+      "ndcg@5": 0.470432,
+      "precision@10": 0.362,
+      "precision@30": 0.254667,
+      "precision@5": 0.4416,
+      "recall@10": 0.302531,
+      "recall@30": 0.596762,
+      "recall@5": 0.196501
+    }
+  },
+  "warning": "Exploratory only: the legacy pool contained circular deterministic heuristic labels; the current formal Top-30 union is blind machine-labelled, not human gold, and pooled metrics are not corpus-exhaustive recall."
 }

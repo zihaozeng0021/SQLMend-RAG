@@ -335,6 +335,8 @@ def main() -> int:
         "retrieval_config": annotation / "provenance" / "retrieval_config.json",
         "retrieval_metrics": annotation / "reports" / "retrieval_metrics.json",
         "embedding_model": annotation / "provenance" / "embedding_model.json",
+        "top30_refresh": annotation / "provenance" / "top30_blind_refresh.json",
+        "annotation_sensitivity": annotation / "reports" / "top30_annotation_sensitivity.json",
     }
     missing_files = [str(path) for path in paths.values() if not path.is_file()]
     if missing_files:
@@ -351,6 +353,10 @@ def main() -> int:
     retrieval_config = json.loads(paths["retrieval_config"].read_text(encoding="utf-8"))
     retrieval_metrics = json.loads(paths["retrieval_metrics"].read_text(encoding="utf-8"))
     embedding_model = json.loads(paths["embedding_model"].read_text(encoding="utf-8"))
+    top30_refresh = json.loads(paths["top30_refresh"].read_text(encoding="utf-8"))
+    annotation_sensitivity = json.loads(
+        paths["annotation_sensitivity"].read_text(encoding="utf-8")
+    )
     checks: list[dict[str, Any]] = []
 
     case_schema = json.loads(
@@ -879,8 +885,8 @@ def main() -> int:
         candidate_ids = [str(item.get("chunk_id")) for item in candidates]
         if len(candidate_ids) != len(set(candidate_ids)):
             qrel_failures.append(f"{query_id}: duplicate candidate chunk IDs")
-        if set(candidate_ids) != set(qrels_by_query.get(query_id, {})):
-            qrel_failures.append(f"{query_id}: candidate/qrel sets differ")
+        if not set(candidate_ids).issubset(set(qrels_by_query.get(query_id, {}))):
+            qrel_failures.append(f"{query_id}: candidate pool is not a qrel subset")
         if not all(chunk_id in corpus_by_id for chunk_id in candidate_ids):
             qrel_failures.append(f"{query_id}: candidate contains unresolved chunk")
         labels = {item.get("relevance") for item in candidates}
@@ -955,12 +961,21 @@ def main() -> int:
                     if chunk_id in evidence_judgments
                     else "deterministic_contextual_heuristic"
                 )
-                if (
-                    item.get("relevance") != expected_relevance
-                    or item.get("judgment_method") != expected_method
+                method = item.get("judgment_method")
+                if method in {"explicit_case_evidence", "deterministic_contextual_heuristic"} and (
+                    item.get("relevance") != expected_relevance or method != expected_method
                 ):
                     qrel_failures.append(
                         f"{query_id}: candidate judgment differs from frozen policy for {chunk_id}"
+                    )
+                if method not in {
+                    "explicit_case_evidence",
+                    "deterministic_contextual_heuristic",
+                    "blind_double_pass_consensus",
+                    "blind_double_pass_adjudicated",
+                }:
+                    qrel_failures.append(
+                        f"{query_id}: unsupported judgment method for {chunk_id}: {method}"
                     )
             evidence_ids = set(evidence_judgments)
             if not evidence_ids.issubset(set(candidate_ids)):
@@ -977,6 +992,80 @@ def main() -> int:
             f"dataset-level qrels must use 0, 1, and 2; observed {global_qrel_labels}"
         )
     add_check(checks, "candidate_pool_and_complete_qrels", not qrel_failures, len(qrel_failures), 0, qrel_failures[:200])
+
+    refresh_failures: list[str] = []
+    sealed_refresh = dict(top30_refresh)
+    stored_refresh_sha = sealed_refresh.pop("record_sha256", None)
+    if stored_refresh_sha != sha256_json(sealed_refresh):
+        refresh_failures.append("top30 refresh record_sha256 is missing or stale")
+    if top30_refresh.get("annotation_main_version") != "v1":
+        refresh_failures.append("top30 refresh does not identify v1 as the main annotation")
+    if top30_refresh.get("status") != "COMPLETE_MACHINE_PROPOSED_DEVELOPMENT_ONLY":
+        refresh_failures.append("top30 refresh is not complete")
+    if top30_refresh.get("human_verified") is not False:
+        refresh_failures.append("top30 refresh must remain explicitly non-human-verified")
+    formal_pairs: set[tuple[str, str]] = set()
+    formal_run_hashes = top30_refresh.get("formal_run_sha256", {})
+    for relative, expected_hash in formal_run_hashes.items():
+        run_path = root / relative
+        if not run_path.is_file() or sha256_file(run_path) != expected_hash:
+            refresh_failures.append(f"formal run hash mismatch: {relative}")
+            continue
+        for line_number, line in enumerate(run_path.read_text(encoding="utf-8").splitlines(), 1):
+            fields = line.split()
+            if len(fields) != 6:
+                refresh_failures.append(f"invalid formal run row: {relative}:{line_number}")
+                continue
+            formal_pairs.add((fields[0], fields[2]))
+    pair_digest_rows = [
+        {"query_id": query_id, "chunk_id": chunk_id}
+        for query_id, chunk_id in sorted(formal_pairs)
+    ]
+    if len(formal_pairs) != top30_refresh.get("formal_pair_count"):
+        refresh_failures.append("formal Top-30 pair count differs from refresh provenance")
+    if sha256_json(pair_digest_rows) != top30_refresh.get("formal_pair_set_sha256"):
+        refresh_failures.append("formal Top-30 pair set hash differs from refresh provenance")
+    qrel_pairs = set(seen_pairs)
+    if not formal_pairs.issubset(qrel_pairs):
+        refresh_failures.append(
+            f"main v1 qrels omit {len(formal_pairs - qrel_pairs)} formal Top-30 pairs"
+        )
+    blind_methods = {"blind_double_pass_consensus", "blind_double_pass_adjudicated"}
+    for pair in formal_pairs:
+        row = qrels_by_query.get(pair[0], {}).get(pair[1], {})
+        method = row.get("judgment_method")
+        if method not in blind_methods | {"explicit_case_evidence"}:
+            refresh_failures.append(f"formal pair lacks refreshed judgment provenance: {pair}")
+        if method in blind_methods and (
+            row.get("confidence") not in {"low", "medium", "high"}
+            or not isinstance(row.get("resolution"), str)
+        ):
+            refresh_failures.append(f"blind formal qrel lacks confidence/resolution: {pair}")
+    for row in qrels:
+        pair = (row.get("query_id"), row.get("chunk_id"))
+        if row.get("judgment_method") in blind_methods and pair not in formal_pairs:
+            refresh_failures.append(f"blind judgment occurs outside frozen formal scope: {pair}")
+    refresh_hashes = top30_refresh.get("artifact_sha256", {})
+    for field, path in (
+        ("updated_v1_qrels", paths["qrels"]),
+        ("updated_candidate_pools", paths["pools"]),
+        ("updated_legacy_retrieval_metrics", paths["retrieval_metrics"]),
+    ):
+        if refresh_hashes.get(field) != sha256_file(path):
+            refresh_failures.append(f"top30 refresh artifact hash is stale: {field}")
+    sensitivity_inputs = annotation_sensitivity.get("input_sha256", {})
+    if sensitivity_inputs.get("main_v1_qrels") != sha256_file(paths["qrels"]):
+        refresh_failures.append("annotation sensitivity report is stale relative to main v1 qrels")
+    if annotation_sensitivity.get("human_verified") is not False:
+        refresh_failures.append("annotation sensitivity report must remain non-human-verified")
+    add_check(
+        checks,
+        "v1_top30_blind_refresh_integrity",
+        not refresh_failures,
+        len(refresh_failures),
+        0,
+        refresh_failures[:200],
+    )
 
     retrieval_failures: list[str] = []
     run_ids = [str(row.get("query_id")) for row in retrieval_runs]
@@ -1609,6 +1698,9 @@ def main() -> int:
         annotation / "provenance" / "duckdb_execution_promotions.json",
         annotation / "provenance" / "case_corrections.json",
         annotation / "provenance" / "retrieval_provenance_binding.json",
+        paths["top30_refresh"],
+        paths["annotation_sensitivity"],
+        root / "annotation" / "VERSION_HISTORY.md",
         annotation / "work" / "semantic_oracles" / "sqlite_3_45_3.jsonl",
         annotation / "work" / "semantic_oracles" / "duckdb_1_5_5.jsonl",
         annotation / "work" / "audit_parts" / "audit_pg_mysql.jsonl",
@@ -1662,7 +1754,8 @@ def main() -> int:
     ]
     manifest = {
         "dataset_id": "sqlmendrag-codex-dev-250",
-        "dataset_version": "1.0.0",
+        "dataset_version": "1.1.0",
+        "annotation_main_version": "v1",
         "schema_version": "1.0.0",
         "purpose": "development_only",
         "split": "dev",

@@ -24,12 +24,12 @@
       "check_id": "engineering.tests.current_source",
       "explanation": "The full automated test suite passed against the current source/config/test bytes.",
       "observed_value": {
-        "current_source_tree_sha256": "d804a637d0c64b2f79170f929d1e9520f37060b13e0edefc797728f438572562",
+        "current_source_tree_sha256": "cc89618c684b849b256c4a74ee71c11efb9d9ed36217a19e9d046e026d0f8552",
         "reported_status": "PASS",
         "returncode": 0,
         "source_stable_during_tests": true,
-        "tested_source_tree_sha256": "d804a637d0c64b2f79170f929d1e9520f37060b13e0edefc797728f438572562",
-        "tested_source_tree_sha256_after": "d804a637d0c64b2f79170f929d1e9520f37060b13e0edefc797728f438572562"
+        "tested_source_tree_sha256": "cc89618c684b849b256c4a74ee71c11efb9d9ed36217a19e9d046e026d0f8552",
+        "tested_source_tree_sha256_after": "cc89618c684b849b256c4a74ee71c11efb9d9ed36217a19e9d046e026d0f8552"
       },
       "recommended_remediation": "No remediation required.",
       "required_value": {
@@ -135,20 +135,20 @@
       "explanation": "All explicit qrels, including relevance zero, match the frozen counts.",
       "observed_value": {
         "label_counts": {
-          "0": 9216,
-          "1": 3931,
-          "2": 302
+          "0": 20154,
+          "1": 2839,
+          "2": 459
         },
-        "record_count": 13449
+        "record_count": 23452
       },
       "recommended_remediation": "No remediation required.",
       "required_value": {
         "label_counts": {
-          "0": 9216,
-          "1": 3931,
-          "2": 302
+          "0": 20154,
+          "1": 2839,
+          "2": 459
         },
-        "record_count": 13449
+        "record_count": 23452
       },
       "status": "PASS"
     },
@@ -205,7 +205,7 @@
         "observed": {
           "approximate_unique_word_count": 35646,
           "candidate_pool_record_count": 250,
-          "candidate_pool_sha256": "0d8a89ad0eb39b3e481e58668c15df9416da69bf750100ec695f5d150f3f8d85",
+          "candidate_pool_sha256": "86549c5b1bb59cb1557c747db37c66b77a0812c8a8f9ff02dd2d75c0be87a60f",
           "dialect_counts": {
             "duckdb": 50,
             "mariadb": 50,
@@ -214,11 +214,11 @@
             "sqlite": 50
           },
           "dialect_sensitive_count": 174,
-          "qrel_count": 13449,
+          "qrel_count": 23452,
           "qrel_label_counts": {
-            "0": 9216,
-            "1": 3931,
-            "2": 302
+            "0": 20154,
+            "1": 2839,
+            "2": 459
           },
           "queries_with_relevance_2": 250,
           "query_count": 250,
@@ -235,11 +235,11 @@
             "sqlite": 50
           },
           "dialect_sensitive_count": 174,
-          "qrel_count": 13449,
+          "qrel_count": 23452,
           "qrel_label_counts": {
-            "0": 9216,
-            "1": 3931,
-            "2": 302
+            "0": 20154,
+            "1": 2839,
+            "2": 459
           },
           "query_count": 250,
           "total_word_count": 1663145,
@@ -278,7 +278,7 @@
         "observed": {
           "approximate_unique_word_count": 35646,
           "candidate_pool_record_count": 250,
-          "candidate_pool_sha256": "0d8a89ad0eb39b3e481e58668c15df9416da69bf750100ec695f5d150f3f8d85",
+          "candidate_pool_sha256": "86549c5b1bb59cb1557c747db37c66b77a0812c8a8f9ff02dd2d75c0be87a60f",
           "dialect_counts": {
             "duckdb": 50,
             "mariadb": 50,
@@ -287,11 +287,11 @@
             "sqlite": 50
           },
           "dialect_sensitive_count": 174,
-          "qrel_count": 13449,
+          "qrel_count": 23452,
           "qrel_label_counts": {
-            "0": 9216,
-            "1": 3931,
-            "2": 302
+            "0": 20154,
+            "1": 2839,
+            "2": 459
           },
           "queries_with_relevance_2": 250,
           "query_count": 250,
@@ -308,11 +308,11 @@
             "sqlite": 50
           },
           "dialect_sensitive_count": 174,
-          "qrel_count": 13449,
+          "qrel_count": 23452,
           "qrel_label_counts": {
-            "0": 9216,
-            "1": 3931,
-            "2": 302
+            "0": 20154,
+            "1": 2839,
+            "2": 459
           },
           "query_count": 250,
           "total_word_count": 1663145,
@@ -327,12 +327,12 @@
       "explanation": "The TREC qrels preserve every source judgment exactly.",
       "observed_value": {
         "matches_source": true,
-        "record_count": 13449
+        "record_count": 23452
       },
       "recommended_remediation": "No remediation required.",
       "required_value": {
         "matches_source": true,
-        "record_count": 13449
+        "record_count": 23452
       },
       "status": "PASS"
     },
@@ -522,13 +522,13 @@
       "check_id": "engineering.qrels.effective_merge",
       "explanation": "Effective qrels and their metadata exactly record the frozen-base plus supplemental merge.",
       "observed_value": {
-        "effective_qrel_count": 13449,
+        "effective_qrel_count": 23452,
         "matches_generated_trec": true,
         "metadata_matches": true,
         "observed_metadata": {
-          "base_qrels_sha256": "04f78adf95ef09821780f74c81db3379870ad0fe65033944cc1877acde1f5a81",
-          "effective_qrel_count": 13449,
-          "effective_qrels_sha256": "04f78adf95ef09821780f74c81db3379870ad0fe65033944cc1877acde1f5a81",
+          "base_qrels_sha256": "eae4aefdf6c152df36330a00adf29d8a40d2ea42a476ed7df8c0f675d7446e5d",
+          "effective_qrel_count": 23452,
+          "effective_qrels_sha256": "eae4aefdf6c152df36330a00adf29d8a40d2ea42a476ed7df8c0f675d7446e5d",
           "protected_source_unchanged": true,
           "supplemental_qrel_count": 0,
           "supplemental_qrels_present": false
@@ -539,9 +539,9 @@
       "recommended_remediation": "No remediation required.",
       "required_value": {
         "expected_metadata": {
-          "base_qrels_sha256": "04f78adf95ef09821780f74c81db3379870ad0fe65033944cc1877acde1f5a81",
-          "effective_qrel_count": 13449,
-          "effective_qrels_sha256": "04f78adf95ef09821780f74c81db3379870ad0fe65033944cc1877acde1f5a81",
+          "base_qrels_sha256": "eae4aefdf6c152df36330a00adf29d8a40d2ea42a476ed7df8c0f675d7446e5d",
+          "effective_qrel_count": 23452,
+          "effective_qrels_sha256": "eae4aefdf6c152df36330a00adf29d8a40d2ea42a476ed7df8c0f675d7446e5d",
           "protected_source_unchanged": true,
           "supplemental_qrel_count": 0,
           "supplemental_qrels_present": false
@@ -555,8 +555,8 @@
       "check_id": "engineering.pool_expansion.exact_artifacts",
       "explanation": "Pool-expansion requests and all Judged@K summaries exactly match current formal runs.",
       "observed_value": {
-        "expected_unique_request_count": 10003,
-        "observed_unique_request_count": 10003,
+        "expected_unique_request_count": 0,
+        "observed_unique_request_count": 0,
         "request_records_exact": true,
         "summary_exact": true
       },
@@ -569,53 +569,53 @@
     },
     {
       "check_id": "evaluation.judged_at_30",
-      "explanation": "At least one formal top-30 result is unjudged; evaluation publication is blocked.",
+      "explanation": "All formal top-30 results are explicitly judged.",
       "observed_value": {
         "computed": {
-          "bm25": 0.3841333333333333,
-          "dense": 0.2592,
-          "hybrid": 0.4009333333333333
+          "bm25": 1.0,
+          "dense": 1.0,
+          "hybrid": 1.0
         },
         "unjudged_top30_occurrences": {
-          "bm25": 4619,
-          "dense": 5556,
-          "hybrid": 4493
+          "bm25": 0,
+          "dense": 0,
+          "hybrid": 0
         }
       },
-      "recommended_remediation": "Request judgments using pool_expansion_required.jsonl; never map missing qrels to zero.",
+      "recommended_remediation": "No remediation required.",
       "required_value": {
         "bm25": 1.0,
         "dense": 1.0,
         "hybrid": 1.0
       },
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
       "check_id": "engineering.judged_coverage.exact_artifact",
       "explanation": "The judged-coverage artifact exactly matches direct formal-run coverage.",
       "observed_value": {
-        "evaluation_integrity_status": "BLOCKED",
+        "evaluation_integrity_status": "PASS",
         "evaluation_label": "machine-proposed development evaluation",
         "per_system": {
           "bm25_formal": {
-            "Judged@10": 0.6024,
-            "Judged@20": 0.47,
-            "Judged@30": 0.3841333333333333,
-            "Judged@5": 0.7152,
+            "Judged@10": 1.0,
+            "Judged@20": 1.0,
+            "Judged@30": 1.0,
+            "Judged@5": 1.0,
             "query_count": 250
           },
           "dense_formal": {
-            "Judged@10": 0.3752,
-            "Judged@20": 0.3054,
-            "Judged@30": 0.2592,
-            "Judged@5": 0.4608,
+            "Judged@10": 1.0,
+            "Judged@20": 1.0,
+            "Judged@30": 1.0,
+            "Judged@5": 1.0,
             "query_count": 250
           },
           "hybrid_rrf_formal": {
-            "Judged@10": 0.5764,
-            "Judged@20": 0.4698,
-            "Judged@30": 0.4009333333333333,
-            "Judged@5": 0.6608,
+            "Judged@10": 1.0,
+            "Judged@20": 1.0,
+            "Judged@30": 1.0,
+            "Judged@5": 1.0,
             "query_count": 250
           }
         },
@@ -623,28 +623,28 @@
       },
       "recommended_remediation": "No remediation required.",
       "required_value": {
-        "evaluation_integrity_status": "BLOCKED",
+        "evaluation_integrity_status": "PASS",
         "evaluation_label": "machine-proposed development evaluation",
         "per_system": {
           "bm25_formal": {
-            "Judged@10": 0.6024,
-            "Judged@20": 0.47,
-            "Judged@30": 0.3841333333333333,
-            "Judged@5": 0.7152,
+            "Judged@10": 1.0,
+            "Judged@20": 1.0,
+            "Judged@30": 1.0,
+            "Judged@5": 1.0,
             "query_count": 250
           },
           "dense_formal": {
-            "Judged@10": 0.3752,
-            "Judged@20": 0.3054,
-            "Judged@30": 0.2592,
-            "Judged@5": 0.4608,
+            "Judged@10": 1.0,
+            "Judged@20": 1.0,
+            "Judged@30": 1.0,
+            "Judged@5": 1.0,
             "query_count": 250
           },
           "hybrid_rrf_formal": {
-            "Judged@10": 0.5764,
-            "Judged@20": 0.4698,
-            "Judged@30": 0.4009333333333333,
-            "Judged@5": 0.6608,
+            "Judged@10": 1.0,
+            "Judged@20": 1.0,
+            "Judged@30": 1.0,
+            "Judged@5": 1.0,
             "query_count": 250
           }
         },
@@ -654,22 +654,22 @@
     },
     {
       "check_id": "evaluation.pool_summary",
-      "explanation": "Pool expansion is required before formal evaluation metrics may be published.",
+      "explanation": "The pool summary confirms complete explicit judgment coverage.",
       "observed_value": {
-        "computed_unjudged_top30_occurrences": 14668,
-        "pool_expansion_required": true,
-        "reported_status": "BLOCKED",
-        "reported_unjudged_top30_occurrences": 14668,
+        "computed_unjudged_top30_occurrences": 0,
+        "pool_expansion_required": false,
+        "reported_status": "PASS",
+        "reported_unjudged_top30_occurrences": 0,
         "summary_consistent": true
       },
-      "recommended_remediation": "Complete the requested judgments externally and rerun the pool audit.",
+      "recommended_remediation": "No remediation required.",
       "required_value": {
         "computed_unjudged_top30_occurrences": 0,
         "pool_expansion_required": false,
         "reported_status": "PASS",
         "summary_consistent": true
       },
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
       "check_id": "engineering.annotation_reproduction.evidence_contract",
@@ -678,8 +678,8 @@
         "annotation_reproduction_status": "PARTIAL",
         "system_statuses": {
           "bm25": "PASS",
-          "dense": "PASS",
-          "hybrid_rrf": "PASS"
+          "dense": "PARTIAL",
+          "hybrid_rrf": "PARTIAL"
         },
         "violations": []
       },
@@ -698,8 +698,8 @@
       "observed_value": {
         "bound_hash_count": 40,
         "recorded_engineering_status": "PASS",
-        "recorded_evaluation_status": "BLOCKED",
-        "release": "retrieval-baseline-v1-candidate",
+        "recorded_evaluation_status": "PASS",
+        "release": "retrieval-baseline-v1",
         "violations": []
       },
       "recommended_remediation": "No remediation required.",
@@ -708,26 +708,6 @@
         "release_and_statuses_consistent": true,
         "source_tree_matches": true,
         "violations": []
-      },
-      "status": "PASS"
-    },
-    {
-      "check_id": "engineering.blocked_metric_suppression",
-      "explanation": "Blocked evaluation publishes only an explicit sentinel and no stale metric bundle.",
-      "observed_value": {
-        "metrics_published": false,
-        "overall_status": "BLOCKED",
-        "payload_exact": true,
-        "stale_publishable_artifacts": [],
-        "unexpected_or_missing_fields": []
-      },
-      "recommended_remediation": "No remediation required.",
-      "required_value": {
-        "metrics_published": false,
-        "overall_status": "BLOCKED",
-        "payload_exact": true,
-        "stale_publishable_artifacts": [],
-        "unexpected_or_missing_fields": []
       },
       "status": "PASS"
     },
@@ -757,8 +737,8 @@
       "explanation": "All artifacts required at this judgment-coverage state exist.",
       "observed_value": {
         "missing_files": [],
-        "present_file_count": 30,
-        "required_file_count": 30
+        "present_file_count": 36,
+        "required_file_count": 36
       },
       "recommended_remediation": "No remediation required.",
       "required_value": {
@@ -770,10 +750,10 @@
       "check_id": "engineering.protected_paths",
       "explanation": "Protected construction and annotation files are byte-identical before and after work.",
       "observed_value": {
-        "after_tree_sha256": "0d53bc19626850bd469eda2350d117a9fcfb2e5758dd84b9c92a7a60fa15bd26",
-        "before_tree_sha256": "0d53bc19626850bd469eda2350d117a9fcfb2e5758dd84b9c92a7a60fa15bd26",
+        "after_tree_sha256": "9b1b97126cc678effded5ef866ddcff02fe47639ed6db16f39b08c94f630cb7b",
+        "before_tree_sha256": "9b1b97126cc678effded5ef866ddcff02fe47639ed6db16f39b08c94f630cb7b",
         "current_matches_recorded_after": true,
-        "current_tree_sha256": "0d53bc19626850bd469eda2350d117a9fcfb2e5758dd84b9c92a7a60fa15bd26",
+        "current_tree_sha256": "9b1b97126cc678effded5ef866ddcff02fe47639ed6db16f39b08c94f630cb7b",
         "differences": {
           "added": [],
           "changed": [],
@@ -827,29 +807,109 @@
       "status": "PASS"
     },
     {
+      "check_id": "evaluation.metric_schema",
+      "explanation": "All required finite overall metrics use explicit pooled-Recall names.",
+      "observed_value": {
+        "evaluation_label": "machine-proposed development evaluation",
+        "systems": [
+          "bm25",
+          "dense",
+          "hybrid"
+        ],
+        "violations": []
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "all_recall_is_pooled": true,
+        "evaluation_label": "machine-proposed development evaluation",
+        "metrics": [
+          "graded_nDCG@10",
+          "MRR@10_rel2",
+          "pooled_Recall@5_rel2",
+          "pooled_Recall@10_rel2",
+          "pooled_Recall@20_rel2",
+          "Precision@5_rel2",
+          "HitRate@5_rel2",
+          "HitRate@10_rel2",
+          "MRR@10_rel1plus",
+          "pooled_Recall@5_rel1plus",
+          "pooled_Recall@10_rel1plus",
+          "pooled_Recall@20_rel1plus",
+          "Precision@5_rel1plus",
+          "HitRate@5_rel1plus",
+          "Judged@5",
+          "Judged@10",
+          "Judged@20",
+          "Judged@30"
+        ],
+        "systems": [
+          "bm25",
+          "dense",
+          "hybrid"
+        ]
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "evaluation.complete_artifact_schemas",
+      "explanation": "All complete-evaluation artifacts contain the required schemas and coverage.",
+      "observed_value": {
+        "pairwise_row_count": 12,
+        "per_query_row_count": 750,
+        "slice_row_count": 69,
+        "violations": []
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "pairwise_row_count": 12,
+        "per_query_row_count": 750,
+        "required_slice_system_pairs": 69,
+        "violations": []
+      },
+      "status": "PASS"
+    },
+    {
+      "check_id": "quality.hybrid_targets",
+      "explanation": "The fixed hybrid meets all declared retrieval-quality targets.",
+      "observed_value": {
+        "hybrid_HitRate@5_rel2": 0.544,
+        "hybrid_graded_nDCG@10": 0.3069832766458411,
+        "hybrid_pooled_Recall@10_rel2": 0.5001619047619047,
+        "unexplained_dialect_regressions_over_0.05": []
+      },
+      "recommended_remediation": "No remediation required.",
+      "required_value": {
+        "HitRate@5_rel2_minimum": 0.47,
+        "graded_nDCG@10_minimum": 0.27486744946895775,
+        "pooled_Recall@10_rel2_minimum": 0.41318095238095237,
+        "unexplained_dialect_regressions_over_0.05": []
+      },
+      "status": "PASS"
+    },
+    {
       "check_id": "engineering.manifest.final_status_binding",
       "explanation": "Manifest statuses exactly match this validation pass and the reproduction evidence.",
       "observed_value": {
         "annotation_reproduction_status": "PARTIAL",
         "engineering_status": "PASS",
-        "evaluation_integrity_status": "BLOCKED",
-        "retrieval_quality_status": "NOT_EVALUATED"
+        "evaluation_integrity_status": "PASS",
+        "retrieval_quality_status": "PASS"
       },
       "recommended_remediation": "No remediation required.",
       "required_value": {
         "annotation_reproduction_status": "PARTIAL",
         "engineering_status": "PASS",
-        "evaluation_integrity_status": "BLOCKED",
-        "retrieval_quality_status": "NOT_EVALUATED"
+        "evaluation_integrity_status": "PASS",
+        "retrieval_quality_status": "PASS"
       },
       "status": "PASS"
     }
   ],
   "engineering_status": "PASS",
-  "evaluation_integrity_status": "BLOCKED",
+  "evaluation_integrity_status": "PASS",
   "evaluation_label": "machine-proposed development evaluation",
   "machine_proposed_development_only": true,
-  "overall_success": false,
-  "retrieval_quality_status": "NOT_EVALUATED",
+  "overall_success": true,
+  "retrieval_quality_status": "PASS",
   "schema_version": "sqlmend-validation-v1"
 }

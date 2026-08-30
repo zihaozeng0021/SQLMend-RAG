@@ -28,7 +28,7 @@
   "observed": {
     "approximate_unique_word_count": 35646,
     "candidate_pool_record_count": 250,
-    "candidate_pool_sha256": "0d8a89ad0eb39b3e481e58668c15df9416da69bf750100ec695f5d150f3f8d85",
+    "candidate_pool_sha256": "86549c5b1bb59cb1557c747db37c66b77a0812c8a8f9ff02dd2d75c0be87a60f",
     "dialect_counts": {
       "duckdb": 50,
       "mariadb": 50,
@@ -37,11 +37,11 @@
       "sqlite": 50
     },
     "dialect_sensitive_count": 174,
-    "qrel_count": 13449,
+    "qrel_count": 23452,
     "qrel_label_counts": {
-      "0": 9216,
-      "1": 3931,
-      "2": 302
+      "0": 20154,
+      "1": 2839,
+      "2": 459
     },
     "queries_with_relevance_2": 250,
     "query_count": 250,
@@ -58,11 +58,11 @@
       "sqlite": 50
     },
     "dialect_sensitive_count": 174,
-    "qrel_count": 13449,
+    "qrel_count": 23452,
     "qrel_label_counts": {
-      "0": 9216,
-      "1": 3931,
-      "2": 302
+      "0": 20154,
+      "1": 2839,
+      "2": 459
     },
     "query_count": 250,
     "total_word_count": 1663145,
