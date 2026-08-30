@@ -1,0 +1,21 @@
+{
+  "schema_version": "sqlmend-retrieval-v1-baseline-lock-v1",
+  "tracked_file_count": 76,
+  "tracked_tree_algorithm": "sha256(concat(sorted(relative_path + NUL + file_sha256 + LF)))",
+  "tracked_tree_sha256": "d22695ce633a3cd5d3e4d4c2acb03dc03dee54ffc013c9f99a2f849f6141fee6",
+  "critical_files": {
+    "retrieval/baseline/config/evaluation.yaml": "5f7afd8afca53b3a0f9e82bff5b6ea516487fca8ed80a4d367e29a18416d9c3e",
+    "retrieval/baseline/config/query_serializer.yaml": "1cae7043486f46fd5992740f9cebf69b6e2ce9c16ec65e016a6e219b184717e4",
+    "retrieval/baseline/manifest.json": "f84b72df436ac362eef4e5a6227ef42135e1e1f06c1752f947dd495c4c9bcf20",
+    "retrieval/baseline/qrels/qrels_effective_dev250.trec": "eae4aefdf6c152df36330a00adf29d8a40d2ea42a476ed7df8c0f675d7446e5d",
+    "retrieval/baseline/runs/bm25_formal_dev250.trec": "e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98",
+    "retrieval/baseline/runs/dense_formal_dev250.trec": "eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd",
+    "retrieval/baseline/runs/hybrid_rrf_formal_dev250.trec": "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468",
+    "retrieval/baseline/serialized_queries/dev_250_queries.jsonl": "e9cc591b815e9afb584381ad60c6872b7c36d82e65e255e6dc7045e21ecbdb3c"
+  },
+  "input_files": {
+    "annotation/codex/dev_250.jsonl": "2ce81dd27690795266fc5cc813dc1999f8c55d86ed1605fd6e1013213a416fae",
+    "annotation/codex/qrels_machine_proposed.jsonl": "bc672f2767762d253e8c9dc239d37d00bdb88a547c0c80585788c8c9021e8d3f",
+    "construction/data/processed/corpus.jsonl": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3"
+  }
+}

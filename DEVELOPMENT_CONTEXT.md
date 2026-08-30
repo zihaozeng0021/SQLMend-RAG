@@ -4,7 +4,7 @@
 >
 > Last verified: 2026-08-30 (UTC+8)
 >
-> 当前阶段：知识库已完成；Codex annotation 的当前主版本为 **v1**（dataset revision `1.1.0`），正式 Top-30 开发 pool 已完整判断；固定 retrieval baseline 的工程、评估完整性和质量门禁均已通过，可以开始正式 retrieval v1（dialect/version-aware）的后续开发。
+> 当前阶段：知识库、machine-proposed development annotation、冻结 retrieval baseline，以及正式 retrieval v1（dialect-aware、version-aware、field-aware lexical reranking）均已完成验证。Retrieval v1 的五系统 Top-30 pool 完整、质量门禁与独立 validation 均通过；generator、UI 和最终人工 held-out dataset 仍未实现。
 
 ## 1. 这份文件的用途
 
@@ -63,7 +63,7 @@
 |---|---|---|
 | Q1 | 语料来源、采集、清洗、分块、存储；应用与示例查询；文档/chunk/word/type 数量 | 知识库工程已完成，最终报告尚未写 |
 | Q2 | 简单友好的 UI；5 条查询、结果与查询速度 | `PLANNED` |
-| Q3 | sparse、dense、hybrid；检索创新；Precision@K、Recall@K、MRR、nDCG 等 rank-aware 指标与案例 | 固定 baseline 已实现并通过工程、评估完整性和质量门禁；机器开发评估已发布，正式 retrieval v1（dialect/version-aware）阶段可开始 |
+| Q3 | sparse、dense、hybrid；检索创新；Precision@K、Recall@K、MRR、nDCG 等 rank-aware 指标与案例 | 固定 baseline 与正式 retrieval v1 已实现；五系统 ablation、切片、案例、latency、manifest 和 validation 均通过，结论仅适用于机器开发评估 |
 | Q4 | 生成/分类方法选择与预处理；自行建立至少 1,000 条无重复、尽量平衡的人工 held-out records；IAA 至少 80%（推荐 3 名 annotators，2 名也可）；任务指标、RAG 指标和性能指标 | `PLANNED` |
 | Q5 | 下游创新；若有多个创新必须做单项与组合 ablation；解释具体问题与案例 | `PLANNED` |
 
@@ -83,7 +83,7 @@
 | `retrieval/baseline/` 工程 | `VERIFIED_COMPLETE` | BM25、零样本 E5、两路 RRF、审计、测试、性能与发布门禁均已实现并与当前源码快照绑定 |
 | 正式检索评估完整性 | `PASS` | BM25、dense、hybrid 的 `Judged@5/10/20/30` 均为 1.0，完整评估工件已原子发布 |
 | 检索质量 | `PASS_FOR_MACHINE_DEVELOPMENT_EVAL` | hybrid 在四个主指标上均领先并通过既定门禁；结论只适用于当前机器开发集 |
-| 方言/版本感知检索创新 | `PLANNED_NEXT` | 可在保留固定 baseline 对照的前提下开始正式 retrieval v1 |
+| `retrieval/retrieval-v1/` | `VERIFIED_COMPLETE_FOR_DEVELOPMENT_ONLY` | 五套独立系统、Dialect/Version awareness、lexical reranker、完整 pool、60 tests、manifest 与 12/12 validation checks 均通过；没有修改冻结 baseline |
 | Grounded generator / SQL repair | `PLANNED` | 尚未实现 |
 | 最终人工 held-out 数据 | `PLANNED` | 仍需至少 1,000 条人工记录和 IAA >= 80% |
 | UI 与 5 条演示查询 | `PLANNED` | 尚未实现 |
@@ -99,6 +99,21 @@ retrieval_quality_status=PASS
 annotation_reproduction_status=PARTIAL
 overall_success=true
 ```
+
+当前 retrieval v1 的发布状态对象：
+
+```text
+release=retrieval-v1
+engineering_status=PASS
+evaluation_integrity_status=PASS
+retrieval_quality_status=PASS
+Judged@30=1.0 for all five formal systems
+overall_success=true
+source_tree_sha256=d55c547ee2c3972012e174a58ccf7bd0f33a57091deb0147cccb2aeeef0e76a9
+protected_before_after_current_identical=true
+```
+
+最终系统相对冻结 Hybrid 的 machine-proposed development 结果：graded nDCG@10 `+0.038587`、MRR@10_rel2 `+0.062806`、pooled Recall@10_rel2 `+0.059467`；dialect-sensitive Wrong-Dialect@5 相对下降 `63.68%`，version-sensitive Wrong-Version@5 相对下降 `66.67%`。全部 Phase 7/8/9 与最终门禁通过。权威数值见 `retrieval/retrieval-v1/evaluation/` 和 `reports/retrieval_v1_report.md`；不得称为人工 gold 或 held-out test 结果。
 
 当前 checkout 的证据绑定：
 
@@ -563,14 +578,14 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 
 这些工作不是全部串行依赖。当前可推进三条线：
 
-1. `PLANNED_NEXT` **正式 retrieval v1（dialect/version-aware）**：保留固定 baseline 和当前 qrels 作为对照；新系统若扩大候选 pool，先完成相同口径的盲补判再比较；
-2. `PLANNED` **human evaluation protocol**：在任何相关调参前冻结 held-out split、schema、指南、抽样、平衡、annotator 和 adjudication 流程；
-3. `PLANNED` **product scaffolding**：generator 和 UI 可以基于当前冻结 baseline 接口并行开发。
+1. `VERIFIED_COMPLETE_FOR_DEVELOPMENT_ONLY` **正式 retrieval v1**：保留冻结 baseline 对照，五系统结果已发布；任何未来新 retriever 若扩大候选 pool，仍须先完成相同口径的盲补判；
+2. `PLANNED_NEXT` **human evaluation protocol**：在任何相关调参前冻结 held-out split、schema、指南、抽样、平衡、annotator 和 adjudication 流程；
+3. `PLANNED` **product scaffolding**：generator 和 UI 可基于冻结 baseline/retrieval v1 接口开发，但不属于已完成阶段。
 
 随后按各自依赖推进：
 
-1. 新建正式 retrieval v1（dialect/version-aware），并保留 retrieval baseline 作为不可覆盖对照；retrieval v1 与 annotation v1 是两个独立版本轴，不要与已放弃的 annotation v2 混淆；
-2. 评估 reranker、query rewriting、HyDE 或其他创新；多个创新必须提供独立与组合配置以支持 ablation；
+1. 保持 retrieval v1 与 annotation v1 两个版本轴独立，不要与已放弃的 annotation v2 混淆；未来检索创新必须使用新 system ID/config/artifact 并继续保留 baseline/v1 对照；
+2. 若继续评估 query rewriting、HyDE 或其他检索创新，多个创新必须提供独立与组合配置以支持 ablation，并先完成 pool coverage gate；
 3. 实现 grounded SQL diagnosis/repair generator，答案引用可检查证据，并加入 unsupported-claim/faithfulness 检查；
 4. 实现简单 UI。服务启动时加载并保持热的 BM25、DenseIndex 和模型，不要逐请求执行 CLI；
 5. 完成任务指标、faithfulness、answer relevance、context precision/relevance，以及 latency、吞吐量、成本、可扩展性评估；
@@ -652,6 +667,21 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 - [Latency](retrieval/baseline/evaluation/latency.json)
 - [Test evidence](retrieval/baseline/reports/test_results.json)
 
+### Retrieval v1
+
+- [Retrieval v1 README](retrieval/retrieval-v1/README.md)
+- [Retrieval v1 manifest](retrieval/retrieval-v1/manifest.json)
+- [Retrieval v1 validation](retrieval/retrieval-v1/reports/validation_report.json)
+- [Five-system report and cases](retrieval/retrieval-v1/reports/retrieval_v1_report.md)
+- [Acceptance gates](retrieval/retrieval-v1/evaluation/acceptance.json)
+- [Five-system comparison](retrieval/retrieval-v1/evaluation/comparison_results.json)
+- [Judged coverage](retrieval/retrieval-v1/evaluation/judged_coverage.json)
+- [Pool expansion summary](retrieval/retrieval-v1/pool_expansion/pool_expansion_summary.json)
+- [Pool expansion requests](retrieval/retrieval-v1/pool_expansion/pool_expansion_required.jsonl)
+- [Latency](retrieval/retrieval-v1/reports/latency.json)
+- [Test evidence](retrieval/retrieval-v1/reports/test_results.json)
+- [Protected before/after audits](retrieval/retrieval-v1/reports/protected_paths_after.json)
+
 ## 19. 本文件维护协议
 
 每次阶段状态、冻结输入、接口契约、主要 blocker 或课程解释发生变化时更新本文。普通内部重构如果不改变开发者需要知道的事实，可以不更新。
@@ -678,3 +708,5 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 | 2026-08-30 | 当前检索系统定名为 baseline；方言与版本感知的正式系统定名为 retrieval v1 | baseline 固定为 BM25 + pinned E5 + two-channel RRF；后续创新不得覆盖 baseline |
 | 2026-08-29 | 根 `README.md` 留作最终用户文档；根 `DEVELOPMENT_CONTEXT.md` 维护内部状态 | 避免把交接细节、临时 blocker 和用户安装文档混在一起 |
 | 2026-08-30 | 当前 retrieval baseline 正式证据重新绑定并通过 | source tree SHA 为 `104d6f59...`；95 tests、protected after audit、`finalize -> validate` 共同构成当前证据 |
+| 2026-08-30 | Retrieval v1 采用 soft metadata bonuses 与 deterministic field-aware lexical reranker | 不硬删除跨方言或旧文档；版本冲突只依据 corpus metadata/明确文本边界；reranker 只读合法在线字段与 passage，不使用开发标签 |
+| 2026-08-30 | Retrieval v1 五系统 release 通过正式干净重建 | 五系统 `Judged@30=1.0`、pool expansion 为 0、60 tests、12/12 validation checks、protected bytes unchanged；当前结果只称 machine-proposed development evaluation |

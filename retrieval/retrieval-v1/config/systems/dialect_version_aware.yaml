@@ -1,0 +1,25 @@
+system_id: hybrid_rrf_dialect_version_aware_v1
+stage: dialect_and_version_awareness
+run_tag: hybrid_rrf_dialect_version_aware_v1
+candidate_source: frozen_bm25_dense_top30_rrf_union
+component_depth: 30
+candidate_depth_maximum: 60
+output_depth: 30
+score_policy: additive_metadata_bonus
+dialect_bonuses:
+  compatible: 0.004
+  related: 0.003
+  unknown: 0.002
+  incompatible: 0.0
+version_bonuses:
+  compatible: 0.005
+  general: 0.0015
+  unknown: 0.001
+  not_applicable: 0.001
+  incompatible: 0.0
+related_dialect_pairs:
+  - [mysql, mariadb]
+tie_breaking:
+  - descending_adjusted_score
+  - ascending_baseline_rank
+  - ascending_chunk_id

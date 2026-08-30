@@ -1,0 +1,77 @@
+{
+  "evaluation_label": "machine-proposed development evaluation",
+  "recall_semantics": "pooled Recall",
+  "schema_version": "sqlmend-retrieval-v1-overall-metrics-v1",
+  "systems": {
+    "hybrid_rrf_dialect_aware_v1": {
+      "HitRate@5_rel2": 0.568,
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "MRR@10_rel2": 0.45321904761904763,
+      "Unknown-Version@5": 0.0112,
+      "Unresolved-Current@5": 0.0376,
+      "Wrong-Dialect@5": 0.1008,
+      "Wrong-Version@5": 0.004,
+      "graded_nDCG@10": 0.32562349666028406,
+      "pooled_Recall@10_rel2": 0.5191619047619048
+    },
+    "hybrid_rrf_dialect_version_aware_v1": {
+      "HitRate@5_rel2": 0.588,
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "MRR@10_rel2": 0.4688952380952381,
+      "Unknown-Version@5": 0.0072,
+      "Unresolved-Current@5": 0.0272,
+      "Wrong-Dialect@5": 0.09440000000000001,
+      "Wrong-Version@5": 0.0008,
+      "graded_nDCG@10": 0.329306414119906,
+      "pooled_Recall@10_rel2": 0.5366952380952381
+    },
+    "hybrid_rrf_dialect_version_lexical_rerank_v1": {
+      "HitRate@5_rel2": 0.632,
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "MRR@10_rel2": 0.49474761904761905,
+      "Unknown-Version@5": 0.0088,
+      "Unresolved-Current@5": 0.0288,
+      "Wrong-Dialect@5": 0.0952,
+      "Wrong-Version@5": 0.0008,
+      "graded_nDCG@10": 0.3455699774887917,
+      "pooled_Recall@10_rel2": 0.5596285714285714
+    },
+    "hybrid_rrf_frozen_control_v1": {
+      "HitRate@5_rel2": 0.544,
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "MRR@10_rel2": 0.43194126984126985,
+      "Unknown-Version@5": 0.0096,
+      "Unresolved-Current@5": 0.0328,
+      "Wrong-Dialect@5": 0.27040000000000003,
+      "Wrong-Version@5": 0.0032,
+      "graded_nDCG@10": 0.3069832766458411,
+      "pooled_Recall@10_rel2": 0.5001619047619047
+    },
+    "hybrid_rrf_version_aware_v1": {
+      "HitRate@5_rel2": 0.576,
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "MRR@10_rel2": 0.4506063492063492,
+      "Unknown-Version@5": 0.008,
+      "Unresolved-Current@5": 0.0272,
+      "Wrong-Dialect@5": 0.172,
+      "Wrong-Version@5": 0.0016,
+      "graded_nDCG@10": 0.31748671347717516,
+      "pooled_Recall@10_rel2": 0.5080285714285714
+    }
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "benchmark_scope": "incremental online ranking over preloaded inputs; frozen retrieval is not rerun",
+  "clock": "time.perf_counter monotonic high-resolution clock",
+  "each_query_measured_at_least_once": true,
+  "evaluation_label": "machine-proposed development evaluation",
+  "frozen_hybrid_reference": {
+    "description": "frozen measured reference; copied without remeasurement",
+    "latency_type": "frozen_measured_reference",
+    "query_count": 250,
+    "sample_count": 250,
+    "source_artifact": "retrieval/baseline/evaluation/latency.json",
+    "system_id": "hybrid_rrf_frozen_control_v1",
+    "total_latency_ms": {
+      "mean_ms": 260.54942879927694,
+      "p50_ms": 253.56854999336065,
+      "p95_ms": 347.99810999902536
+    }
+  },
+  "machine_proposed_development_only": true,
+  "measured_incremental_online_latency": {
+    "dialect_metadata_rerank": {
+      "latency_type": "measured_increment",
+      "mean_ms": 13.65228960046079,
+      "measurement_scope": "metadata reranking increment over preloaded frozen RRF candidates",
+      "p50_ms": 13.079099997412413,
+      "p95_ms": 24.53717499738559,
+      "query_count": 250,
+      "repetitions": 1,
+      "sample_count": 250,
+      "system_id": "hybrid_rrf_dialect_aware_v1"
+    },
+    "dialect_version_metadata_rerank": {
+      "latency_type": "measured_increment",
+      "mean_ms": 12.323733200319111,
+      "measurement_scope": "metadata reranking increment over preloaded frozen RRF candidates",
+      "p50_ms": 11.5812499934691,
+      "p95_ms": 23.34447499961242,
+      "query_count": 250,
+      "repetitions": 1,
+      "sample_count": 250,
+      "system_id": "hybrid_rrf_dialect_version_aware_v1"
+    },
+    "lexical_reranker": {
+      "latency_type": "measured_increment",
+      "mean_ms": 0.7047472000704147,
+      "measurement_scope": "lexical reranker only; dialect+version increment excluded",
+      "p50_ms": 0.6193500012159348,
+      "p95_ms": 1.1096849935711361,
+      "query_count": 250,
+      "repetitions": 1,
+      "sample_count": 250,
+      "system_id": "hybrid_rrf_dialect_version_lexical_rerank_v1"
+    },
+    "version_metadata_rerank": {
+      "latency_type": "measured_increment",
+      "mean_ms": 13.874387600575574,
+      "measurement_scope": "metadata reranking increment over preloaded frozen RRF candidates",
+      "p50_ms": 13.617500000691507,
+      "p95_ms": 25.20840499928453,
+      "query_count": 250,
+      "repetitions": 1,
+      "sample_count": 250,
+      "system_id": "hybrid_rrf_version_aware_v1"
+    }
+  },
+  "query_count": 250,
+  "repetitions": 1,
+  "schema_version": "sqlmend-retrieval-v1-latency-v1",
+  "setup": {
+    "candidates_preloaded": true,
+    "configs_preloaded": true,
+    "lexical_index_build_ms": 2835.8390999928815,
+    "lexical_index_preloaded": true,
+    "queries_preloaded": true,
+    "setup_excluded_from_incremental_online_latency": true
+  },
+  "systems": {
+    "hybrid_rrf_dialect_aware_v1": {
+      "estimate_formula": "frozen measured Hybrid total + measured dialect_metadata_rerank increment",
+      "increment_components": [
+        "dialect_metadata_rerank"
+      ],
+      "incremental": {
+        "mean_ms": 13.65228960046079,
+        "method": "measured_increment",
+        "p50_ms": 13.079099997412413,
+        "p95_ms": 24.53717499738559
+      },
+      "incremental_online_latency_ms": {
+        "mean_ms": 13.65228960046079,
+        "p50_ms": 13.079099997412413,
+        "p95_ms": 24.53717499738559
+      },
+      "mean_ms": 274.20171839973773,
+      "method": "estimate",
+      "p50_ms": 266.64764999077306,
+      "p95_ms": 372.53528499641095,
+      "percentile_estimate_note": "P50/P95 are componentwise sums because frozen per-query samples are not remeasured or paired with v1 increments",
+      "system_id": "hybrid_rrf_dialect_aware_v1",
+      "total_latency_estimate_ms": {
+        "mean_ms": 274.20171839973773,
+        "p50_ms": 266.64764999077306,
+        "p95_ms": 372.53528499641095
+      },
+      "total_latency_type": "estimate"
+    },
+    "hybrid_rrf_dialect_version_aware_v1": {
+      "estimate_formula": "frozen measured Hybrid total + measured dialect_version_metadata_rerank increment",
+      "increment_components": [
+        "dialect_version_metadata_rerank"
+      ],
+      "incremental": {
+        "mean_ms": 12.323733200319111,
+        "method": "measured_increment",
+        "p50_ms": 11.5812499934691,
+        "p95_ms": 23.34447499961242
+      },
+      "incremental_online_latency_ms": {
+        "mean_ms": 12.323733200319111,
+        "p50_ms": 11.5812499934691,
+        "p95_ms": 23.34447499961242
+      },
+      "mean_ms": 272.87316199959605,
+      "method": "estimate",
+      "p50_ms": 265.14979998682975,
+      "p95_ms": 371.3425849986378,
+      "percentile_estimate_note": "P50/P95 are componentwise sums because frozen per-query samples are not remeasured or paired with v1 increments",
+      "system_id": "hybrid_rrf_dialect_version_aware_v1",
+      "total_latency_estimate_ms": {
+        "mean_ms": 272.87316199959605,
+        "p50_ms": 265.14979998682975,
+        "p95_ms": 371.3425849986378
+      },
+      "total_latency_type": "estimate"
+    },
+    "hybrid_rrf_dialect_version_lexical_rerank_v1": {
+      "estimate_formula": "frozen measured Hybrid total + measured dialect_version_metadata_rerank increment + measured lexical_reranker increment",
+      "increment_components": [
+        "dialect_version_metadata_rerank",
+        "lexical_reranker"
+      ],
+      "incremental": {
+        "mean_ms": 13.028480400389526,
+        "method": "componentwise_estimate_from_measured_increments",
+        "p50_ms": 12.200599994685035,
+        "p95_ms": 24.454159993183556
+      },
+      "incremental_online_latency_ms": {
+        "mean_ms": 13.028480400389526,
+        "p50_ms": 12.200599994685035,
+        "p95_ms": 24.454159993183556
+      },
+      "incremental_online_latency_type": "componentwise_estimate_from_measured_increments",
+      "mean_ms": 273.57790919966646,
+      "method": "estimate",
+      "p50_ms": 265.7691499880457,
+      "p95_ms": 372.4522699922089,
+      "percentile_estimate_note": "P50/P95 are componentwise sums because component samples are not paired end-to-end with the frozen reference",
+      "reranker_incremental": {
+        "mean_ms": 0.7047472000704147,
+        "method": "measured_increment",
+        "p50_ms": 0.6193500012159348,
+        "p95_ms": 1.1096849935711361
+      },
+      "system_id": "hybrid_rrf_dialect_version_lexical_rerank_v1",
+      "total_latency_estimate_ms": {
+        "mean_ms": 273.57790919966646,
+        "p50_ms": 265.7691499880457,
+        "p95_ms": 372.4522699922089
+      },
+      "total_latency_type": "estimate"
+    },
+    "hybrid_rrf_frozen_control_v1": {
+      "incremental": null,
+      "mean_ms": 260.54942879927694,
+      "method": "frozen_measured_reference",
+      "p50_ms": 253.56854999336065,
+      "p95_ms": 347.99810999902536,
+      "source_artifact": "retrieval/baseline/evaluation/latency.json",
+      "system_id": "hybrid_rrf_frozen_control_v1",
+      "total_latency_ms": {
+        "mean_ms": 260.54942879927694,
+        "p50_ms": 253.56854999336065,
+        "p95_ms": 347.99810999902536
+      },
+      "total_latency_type": "frozen_measured_reference"
+    },
+    "hybrid_rrf_version_aware_v1": {
+      "estimate_formula": "frozen measured Hybrid total + measured version_metadata_rerank increment",
+      "increment_components": [
+        "version_metadata_rerank"
+      ],
+      "incremental": {
+        "mean_ms": 13.874387600575574,
+        "method": "measured_increment",
+        "p50_ms": 13.617500000691507,
+        "p95_ms": 25.20840499928453
+      },
+      "incremental_online_latency_ms": {
+        "mean_ms": 13.874387600575574,
+        "p50_ms": 13.617500000691507,
+        "p95_ms": 25.20840499928453
+      },
+      "mean_ms": 274.4238163998525,
+      "method": "estimate",
+      "p50_ms": 267.18604999405215,
+      "p95_ms": 373.2065149983099,
+      "percentile_estimate_note": "P50/P95 are componentwise sums because frozen per-query samples are not remeasured or paired with v1 increments",
+      "system_id": "hybrid_rrf_version_aware_v1",
+      "total_latency_estimate_ms": {
+        "mean_ms": 274.4238163998525,
+        "p50_ms": 267.18604999405215,
+        "p95_ms": 373.2065149983099
+      },
+      "total_latency_type": "estimate"
+    }
+  },
+  "warmup_queries_per_stage": 3
+}

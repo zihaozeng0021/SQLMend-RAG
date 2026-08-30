@@ -1,0 +1,239 @@
+{
+  "check_count": 12,
+  "checks": [
+    {
+      "details": {
+        "checked_locked_file_count": 11,
+        "tracked_baseline_file_count": 76,
+        "tracked_baseline_tree_sha256": "d22695ce633a3cd5d3e4d4c2acb03dc03dee54ffc013c9f99a2f849f6141fee6"
+      },
+      "errors": [],
+      "name": "baseline_static_lock",
+      "status": "PASS"
+    },
+    {
+      "details": {
+        "before_after_current_identical": true,
+        "file_count": 8633,
+        "tree_sha256": "c9de54eaced544968d1a5e9f713888f8e452173ad070df2cc8016160ce2012ad"
+      },
+      "errors": [],
+      "name": "protected_before_after_current",
+      "status": "PASS"
+    },
+    {
+      "details": {
+        "corpus_record_count": 12000,
+        "hashes": {
+          "annotation/codex/dev_250.jsonl": "2ce81dd27690795266fc5cc813dc1999f8c55d86ed1605fd6e1013213a416fae",
+          "construction/data/processed/corpus.jsonl": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+          "retrieval/baseline/qrels/qrels_effective_dev250.trec": "eae4aefdf6c152df36330a00adf29d8a40d2ea42a476ed7df8c0f675d7446e5d",
+          "retrieval/baseline/runs/bm25_formal_dev250.trec": "e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98",
+          "retrieval/baseline/runs/dense_formal_dev250.trec": "eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd",
+          "retrieval/baseline/runs/hybrid_rrf_formal_dev250.trec": "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468",
+          "retrieval/baseline/serialized_queries/dev_250_queries.jsonl": "e9cc591b815e9afb584381ad60c6872b7c36d82e65e255e6dc7045e21ecbdb3c"
+        },
+        "qrel_count": 23452,
+        "qrel_label_counts": {
+          "0": 20154,
+          "1": 2839,
+          "2": 459
+        },
+        "query_count": 250
+      },
+      "errors": [],
+      "name": "input_hashes_and_counts",
+      "status": "PASS"
+    },
+    {
+      "details": {
+        "allowed_source_fields": [
+          "dialect",
+          "error_code",
+          "error_message",
+          "error_symbol",
+          "sql",
+          "sqlstate",
+          "user_problem",
+          "version"
+        ],
+        "frozen_byte_identical": true,
+        "query_count": 250,
+        "sha256": "e9cc591b815e9afb584381ad60c6872b7c36d82e65e255e6dc7045e21ecbdb3c"
+      },
+      "errors": [],
+      "name": "safe_serialized_queries",
+      "status": "PASS"
+    },
+    {
+      "details": {
+        "all_run_candidates_in_component_union": true,
+        "candidate_union_maximum": 60,
+        "candidate_union_minimum": 45,
+        "depth": 30,
+        "provenance_row_counts": {
+          "hybrid_rrf_dialect_aware_v1": 7500,
+          "hybrid_rrf_dialect_version_aware_v1": 7500,
+          "hybrid_rrf_dialect_version_lexical_rerank_v1": 7500,
+          "hybrid_rrf_frozen_control_v1": 7500,
+          "hybrid_rrf_version_aware_v1": 7500
+        },
+        "query_count_per_run": 250,
+        "run_tags": {
+          "hybrid_rrf_dialect_aware_v1": "hybrid_rrf_dialect_aware_v1",
+          "hybrid_rrf_dialect_version_aware_v1": "hybrid_rrf_dialect_version_aware_v1",
+          "hybrid_rrf_dialect_version_lexical_rerank_v1": "hybrid_rrf_dialect_version_lexical_rerank_v1",
+          "hybrid_rrf_frozen_control_v1": "hybrid_rrf_formal_v1",
+          "hybrid_rrf_version_aware_v1": "hybrid_rrf_version_aware_v1"
+        },
+        "system_ids": [
+          "hybrid_rrf_frozen_control_v1",
+          "hybrid_rrf_dialect_aware_v1",
+          "hybrid_rrf_version_aware_v1",
+          "hybrid_rrf_dialect_version_aware_v1",
+          "hybrid_rrf_dialect_version_lexical_rerank_v1"
+        ]
+      },
+      "errors": [],
+      "name": "five_configs_runs_and_candidate_union",
+      "status": "PASS"
+    },
+    {
+      "details": {
+        "systems": {
+          "hybrid_rrf_dialect_aware_v1": "2dfd62c9097f8e3b92fb97db9977a485724bda46571dee7c6c765727e70bcf4b",
+          "hybrid_rrf_dialect_version_aware_v1": "ac1947f9d46c018538fd70213d977f355f79f225e5f9d5703a92f44cc88e4ebe",
+          "hybrid_rrf_dialect_version_lexical_rerank_v1": "774d2d1c90e8e8d58479130a9e016e8a4699cd9ff4b8f72dbf95a3b6f49be566",
+          "hybrid_rrf_frozen_control_v1": "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468",
+          "hybrid_rrf_version_aware_v1": "4dd3ec3cbecb43714a4a68585e401d92518c919c7cf1d90714c500f7a7666eaa"
+        }
+      },
+      "errors": [],
+      "name": "duplicate_run_determinism",
+      "status": "PASS"
+    },
+    {
+      "details": {
+        "Judged@30": 1.0,
+        "evaluation_integrity_status": "PASS",
+        "systems": [
+          "hybrid_rrf_frozen_control_v1",
+          "hybrid_rrf_dialect_aware_v1",
+          "hybrid_rrf_version_aware_v1",
+          "hybrid_rrf_dialect_version_aware_v1",
+          "hybrid_rrf_dialect_version_lexical_rerank_v1"
+        ],
+        "unjudged_top30_occurrence_count": 0
+      },
+      "errors": [],
+      "name": "pool_completeness",
+      "status": "PASS"
+    },
+    {
+      "details": {
+        "metrics": [
+          "graded_nDCG@10",
+          "MRR@10_rel2",
+          "pooled_Recall@10_rel2",
+          "HitRate@5_rel2",
+          "Judged@5",
+          "Judged@10",
+          "Judged@20",
+          "Judged@30",
+          "Wrong-Dialect@5",
+          "Wrong-Version@5",
+          "Unknown-Version@5",
+          "Unresolved-Current@5"
+        ],
+        "per_query_row_count": 1250,
+        "query_count_per_system": 250,
+        "slice_row_count": 35,
+        "system_count": 5
+      },
+      "errors": [],
+      "name": "metrics_recomputed_from_qrels",
+      "status": "PASS"
+    },
+    {
+      "details": {
+        "phase_status": {
+          "final": "PASS",
+          "phase7": "PASS",
+          "phase8": "PASS",
+          "phase9": "PASS"
+        },
+        "retrieval_quality_status": "PASS"
+      },
+      "errors": [],
+      "name": "acceptance_recomputed",
+      "status": "PASS"
+    },
+    {
+      "details": {
+        "query_count": 250,
+        "repetitions": 1,
+        "systems": {
+          "hybrid_rrf_dialect_aware_v1": {
+            "mean_ms": 274.20171839973773,
+            "p50_ms": 266.64764999077306,
+            "p95_ms": 372.53528499641095
+          },
+          "hybrid_rrf_dialect_version_aware_v1": {
+            "mean_ms": 272.87316199959605,
+            "p50_ms": 265.14979998682975,
+            "p95_ms": 371.3425849986378
+          },
+          "hybrid_rrf_dialect_version_lexical_rerank_v1": {
+            "mean_ms": 273.57790919966646,
+            "p50_ms": 265.7691499880457,
+            "p95_ms": 372.4522699922089
+          },
+          "hybrid_rrf_frozen_control_v1": {
+            "mean_ms": 260.54942879927694,
+            "p50_ms": 253.56854999336065,
+            "p95_ms": 347.99810999902536
+          },
+          "hybrid_rrf_version_aware_v1": {
+            "mean_ms": 274.4238163998525,
+            "p50_ms": 267.18604999405215,
+            "p95_ms": 373.2065149983099
+          }
+        }
+      },
+      "errors": [],
+      "name": "latency_schema_and_arithmetic",
+      "status": "PASS"
+    },
+    {
+      "details": {
+        "before_after_current_identical": true,
+        "source_file_count": 35,
+        "source_tree_sha256": "d55c547ee2c3972012e174a58ccf7bd0f33a57091deb0147cccb2aeeef0e76a9"
+      },
+      "errors": [],
+      "name": "test_evidence_and_source_hash",
+      "status": "PASS"
+    },
+    {
+      "details": {
+        "file_count": 70,
+        "rebuilt_byte_contract_identical": true,
+        "tree_sha256": "a68e24c86cea36f53e71165da3b08b49b846213837bd4c5966b6d03d8b4fdc9d"
+      },
+      "errors": [],
+      "name": "manifest_all_hashes",
+      "status": "PASS"
+    }
+  ],
+  "engineering_status": "PASS",
+  "errors": [],
+  "evaluation_integrity_status": "PASS",
+  "evaluation_label": "machine-proposed development evaluation",
+  "failed_check_count": 0,
+  "machine_proposed_development_only": true,
+  "overall_success": true,
+  "passed_check_count": 12,
+  "retrieval_quality_status": "PASS",
+  "schema_version": "sqlmend-retrieval-v1-validation-v1",
+  "status": "PASS"
+}

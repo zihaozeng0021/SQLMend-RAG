@@ -1,0 +1,9 @@
+{
+  "all_candidates_come_from_frozen_component_runs": true,
+  "maximum_candidates_per_query": 60,
+  "minimum_candidates_per_query": 45,
+  "query_count": 250,
+  "schema_version": "sqlmend-retrieval-v1-candidate-union-v1",
+  "source": "frozen BM25 top30 union frozen Dense top30, scored with frozen RRF k=60",
+  "unique_query_chunk_pair_count": 14232
+}

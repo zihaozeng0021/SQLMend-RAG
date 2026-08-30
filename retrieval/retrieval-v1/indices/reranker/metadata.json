@@ -1,0 +1,13 @@
+{
+  "algorithm": "field_aware_candidate_bm25",
+  "average_document_length": 155.18933333333334,
+  "b": 0.75,
+  "build_seconds": 3.0581715000007534,
+  "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+  "document_count": 12000,
+  "k1": 1.5,
+  "persistence": "statistics are deterministically rebuilt; no pickle is loaded",
+  "schema_version": "sqlmend-field-lexical-index-v1",
+  "tokenizer_version": "sqlmend-field-lexical-v1",
+  "vocabulary_size": 38054
+}

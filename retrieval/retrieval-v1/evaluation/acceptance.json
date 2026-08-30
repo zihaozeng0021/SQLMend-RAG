@@ -1,0 +1,159 @@
+{
+  "final": {
+    "overall_mrr_delta": {
+      "description": "Final overall MRR@10_rel2 delta versus frozen Hybrid",
+      "observed": 0.0628063492063492,
+      "passed": true,
+      "required_minimum": 0.0
+    },
+    "overall_ndcg_delta": {
+      "description": "Final overall graded nDCG@10 delta versus frozen Hybrid",
+      "observed": 0.03858670084295063,
+      "passed": true,
+      "required_minimum": 0.02
+    },
+    "overall_recall_delta": {
+      "description": "Final overall pooled Recall@10_rel2 delta versus frozen Hybrid",
+      "observed": 0.05946666666666667,
+      "passed": true,
+      "required_minimum": -0.01
+    },
+    "wrong_dialect_reduction": {
+      "description": "Final dialect-sensitive Wrong-Dialect@5 relative reduction",
+      "observed": 0.6367713004484306,
+      "passed": true,
+      "required_minimum": 0.3
+    },
+    "wrong_version_reduction": {
+      "description": "Final version-sensitive Wrong-Version@5 relative reduction",
+      "observed": 0.6666666666666667,
+      "passed": true,
+      "required_minimum": 0.3
+    }
+  },
+  "phase7": {
+    "dialect_sensitive_ndcg_delta": {
+      "description": "Dialect-sensitive graded nDCG@10 delta versus frozen Hybrid",
+      "observed": 0.017252942790634607,
+      "passed": true,
+      "required_minimum": 0.0
+    },
+    "dialect_slice_regressions": {
+      "description": "No dialect slice nDCG@10 regression exceeds the configured limit",
+      "passed": true,
+      "rows": [
+        {
+          "baseline": 0.2682822065458198,
+          "delta": 0.026776012815250883,
+          "dialect": "postgresql",
+          "passed": true,
+          "phase7": 0.2950582193610707
+        },
+        {
+          "baseline": 0.3844606541016802,
+          "delta": 0.024791235121941257,
+          "dialect": "mysql",
+          "passed": true,
+          "phase7": 0.40925188922362143
+        },
+        {
+          "baseline": 0.1732258349441225,
+          "delta": 0.019701312730780574,
+          "dialect": "sqlite",
+          "passed": true,
+          "phase7": 0.19292714767490307
+        },
+        {
+          "baseline": 0.3636584075954493,
+          "delta": 0.009723863931350385,
+          "dialect": "mariadb",
+          "passed": true,
+          "phase7": 0.3733822715267997
+        },
+        {
+          "baseline": 0.34528928004213383,
+          "delta": 0.012208675472891395,
+          "dialect": "duckdb",
+          "passed": true,
+          "phase7": 0.3574979555150252
+        }
+      ]
+    },
+    "overall_ndcg_delta": {
+      "description": "Overall graded nDCG@10 delta versus frozen Hybrid",
+      "observed": 0.018640220014442987,
+      "passed": true,
+      "required_minimum": -0.01
+    },
+    "wrong_dialect_reduction": {
+      "description": "Dialect-sensitive Wrong-Dialect@5 relative reduction versus frozen Hybrid",
+      "observed": 0.6143497757847534,
+      "passed": true,
+      "required_minimum": 0.3
+    }
+  },
+  "phase8": {
+    "combined_overall_ndcg_vs_phase7": {
+      "description": "Combined overall graded nDCG@10 delta versus Phase 7",
+      "observed": 0.0036829174596219594,
+      "passed": true,
+      "required_minimum": -0.01
+    },
+    "combined_recall_vs_baseline": {
+      "description": "Combined overall pooled Recall@10_rel2 delta versus frozen Hybrid",
+      "observed": 0.03653333333333342,
+      "passed": true,
+      "required_minimum": -0.01
+    },
+    "version_sensitive_ndcg_delta": {
+      "description": "Version-sensitive graded nDCG@10 delta for version-only ablation",
+      "observed": 0.010921707841465178,
+      "passed": true,
+      "required_minimum": 0.0
+    },
+    "wrong_version_reduction": {
+      "description": "Version-sensitive Wrong-Version@5 relative reduction for version-only ablation",
+      "observed": 0.6666666666666667,
+      "passed": true,
+      "required_minimum": 0.3
+    }
+  },
+  "phase9": {
+    "mrr_delta": 0.02585238095238096,
+    "ndcg_delta": 0.01626356336888568,
+    "one_primary_gain_and_other_preserved": {
+      "maximum_other_regression": 0.005,
+      "passed": true,
+      "required_gain": 0.01
+    },
+    "recall_delta": {
+      "description": "Reranked pooled Recall@10_rel2 delta versus combined unreranked",
+      "observed": 0.02293333333333325,
+      "passed": true,
+      "required_minimum": -0.01
+    },
+    "sensitive_slice_regressions": {
+      "passed": true,
+      "rows": [
+        {
+          "ndcg_delta": 0.020521981439424297,
+          "passed": true,
+          "slice": "dialect-sensitive"
+        },
+        {
+          "ndcg_delta": 0.027928578859307385,
+          "passed": true,
+          "slice": "version-sensitive"
+        }
+      ]
+    }
+  },
+  "retrieval_quality_status": "PASS",
+  "schema_version": "sqlmend-retrieval-v1-acceptance-v1",
+  "status": {
+    "final": "PASS",
+    "phase7": "PASS",
+    "phase8": "PASS",
+    "phase9": "PASS"
+  }
+}
