@@ -1,0 +1,5 @@
+indices/reranker/model_cache/
+*.egg-info/
+__pycache__/
+.pytest_cache/
+

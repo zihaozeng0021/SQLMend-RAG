@@ -1,0 +1,69 @@
+{
+  "cutoffs": [
+    5,
+    10,
+    20,
+    30
+  ],
+  "evaluation_integrity_status": "PASS",
+  "evaluation_label": "machine-proposed development evaluation",
+  "machine_proposed_development_only": true,
+  "overall": {
+    "Judged@10": 1.0,
+    "Judged@20": 1.0,
+    "Judged@30": 1.0,
+    "Judged@5": 1.0,
+    "query_count_per_system": 250,
+    "system_count": 5
+  },
+  "per_system": {
+    "hybrid_rrf_dialect_aware_v1": {
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "query_count": 250
+    },
+    "hybrid_rrf_dialect_version_aware_v1": {
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "query_count": 250
+    },
+    "hybrid_rrf_dialect_version_lexical_rerank_v1": {
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "query_count": 250
+    },
+    "hybrid_rrf_frozen_control_v1": {
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "query_count": 250
+    },
+    "hybrid_rrf_version_aware_v1": {
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "query_count": 250
+    }
+  },
+  "pool_depth": 30,
+  "pool_expansion_record_count": 0,
+  "pool_expansion_required": false,
+  "required_Judged@30": 1.0,
+  "schema_version": "sqlmend-retrieval-v1-pool-audit-v1",
+  "system_ids": [
+    "hybrid_rrf_frozen_control_v1",
+    "hybrid_rrf_dialect_aware_v1",
+    "hybrid_rrf_version_aware_v1",
+    "hybrid_rrf_dialect_version_aware_v1",
+    "hybrid_rrf_dialect_version_lexical_rerank_v1"
+  ],
+  "unjudged_top30_occurrence_count": 0
+}

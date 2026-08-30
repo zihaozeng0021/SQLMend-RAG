@@ -2,6 +2,8 @@
 
 本目录实现三套独立、可审计基线：BM25 稀疏检索、零样本 E5 稠密检索，以及只融合前两者排名的 RRF hybrid。流水线自行控制语料加载、schema 验证、查询序列化、索引、精确检索、融合、TREC 导出、pool 审计、评估、性能记录和验证；第三方库只提供算法组件，不会把语料或查询发送给托管检索/RAG 服务。
 
+版本身份说明：本目录及其 release 仅称为 **retrieval baseline**，不是 retrieval v1。之后加入方言与版本感知的正式检索系统才命名为 **retrieval v1**。现有 `*_formal_v1` run tag 是已被 annotation provenance 按字节哈希绑定的旧兼容标识，其中的 `v1` 不代表当前 retrieval release；不得据此把 baseline 称为 v1，也不得为改名原地重写这些已冻结 run。
+
 这不是 AI6127 整体作业的完成声明。本阶段没有实现方言/版本显式加权、元数据过滤、reranker、query rewriting、HyDE、生成、SQL 修复或 UI。PDF 最终要求的简单 UI、五条界面演示查询、grounded generator、答案级 RAG 指标，以及至少 1,000 条人工标注且标注者一致性不低于 80% 的 held-out 数据，仍须在后续阶段完成。
 
 ## 数据身份与不可变性

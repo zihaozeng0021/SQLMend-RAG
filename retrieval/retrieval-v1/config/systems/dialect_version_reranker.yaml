@@ -1,0 +1,24 @@
+system_id: hybrid_rrf_dialect_version_lexical_rerank_v1
+stage: dialect_version_and_field_aware_lexical_reranking
+run_tag: hybrid_rrf_dialect_version_lexical_rerank_v1
+candidate_source: dialect_version_aware_candidate_set
+component_depth: 30
+candidate_depth_maximum: 60
+output_depth: 30
+algorithm: field_aware_candidate_bm25
+tokenizer_version: sqlmend-field-lexical-v1
+idf_corpus: frozen_12000_chunk_passages
+bm25_k1: 1.5
+bm25_b: 0.75
+field_weights:
+  user_problem: 0.8
+  sql: 0.8
+  observed_error: 1.5
+  exact_error_identifier: 2.0
+field_normalization: query_local_minmax
+blend_method: additive_to_dialect_version_score
+gamma: 0.001
+tie_breaking:
+  - descending_final_score
+  - ascending_dialect_version_candidate_rank
+  - ascending_chunk_id

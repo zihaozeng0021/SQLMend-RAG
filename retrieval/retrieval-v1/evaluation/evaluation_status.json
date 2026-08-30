@@ -1,0 +1,7 @@
+{
+  "Judged@30": 1.0,
+  "evaluation_integrity_status": "PASS",
+  "machine_proposed_development_only": true,
+  "retrieval_quality_status": "PASS",
+  "schema_version": "sqlmend-retrieval-v1-evaluation-status-v1"
+}

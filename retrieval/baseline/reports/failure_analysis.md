@@ -81,7 +81,7 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
 - 类别：BM25 成功而 dense 失败；hybrid 损害排名
 - dialect/version：`postgresql` / `18.6`
 - serialized query SHA-256：`8422333fcb904eb1a455dddb9f1aaf6b56a1c2ed26c808bd97bdb878c0ab08aa`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: postgresql
@@ -117,14 +117,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mysql_be9bc8ec64bb0606d8dc57b4`；score=`0.028370221328`；judgment=`0`；component ranks BM25=`10` / dense=`11`；doc dialect/version=`mysql`/`8.0.46`；title="MySQL Community 8.0.46 Built-in HELP Catalog server-side help"；passage="Title: MySQL Community 8.0.46 Built-in HELP Catalog server-side help Section: MySQL Community 8.0.46 Built-in HELP Catalog server-side help > Window Functions > CUME_DIST CUME_DIST() over_clause Returns the cumulative distribution of a value within a group of values; that is, th…"
 - metric impact：BM25=2；dense=未在 top-30 命中显式 rel=2；hybrid=9。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：实际排名显示 BM25 top-10 命中而 dense 未达 top-10；RRF 后首个 rel=2 相对最佳单路后移或消失于 top-30；top-5 passage 完全匹配 token：bm25=['row_number']; dense=['row_number']; hybrid=['row_number']。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0004
 
 - 类别：BM25 成功而 dense 失败；hybrid 损害排名
 - dialect/version：`postgresql` / `18.6`
 - serialized query SHA-256：`371eaaf353645ca6695decc61ef4f7ed24d3aa034484505006667b789d37fe2b`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: postgresql
@@ -160,14 +160,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_postgresql_068ada87997625141bfa108a`；score=`0.016129032258`；judgment=`2`；component ranks BM25=`2` / dense=`None`；doc dialect/version=`postgresql`/`18.6`；title="SQL Syntax"；passage="Title: SQL Syntax Section: SQL Syntax > Expression Evaluation Rules Context carried from the preceding passage: Boolean expressions ( AND / OR / NOT combinations) in those clauses can be reorganized in any manner allowed by the laws of Boolean algebra. When it is essential to fo…"
 - metric impact：BM25=2；dense=28；hybrid=5。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：实际排名显示 BM25 top-10 命中而 dense 未达 top-10；RRF 后首个 rel=2 相对最佳单路后移或消失于 top-30。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0005
 
 - 类别：BM25 成功而 dense 失败；hybrid 损害排名
 - dialect/version：`postgresql` / `14.24`
 - serialized query SHA-256：`8906583bbdecd49d79a06fc4b0d443aa296c366fda6313ee4cde2c1284564ddd`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: postgresql
@@ -203,14 +203,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_sqlite_93cad3093a08fe8afa49bbb2`；score=`0.015873015873`；judgment=`0`；component ranks BM25=`3` / dense=`None`；doc dialect/version=`sqlite`/`3.53.4`；title="SELECT"；passage="Title: SELECT Section: SELECT > 2.1. Determination of input data (FROM clause processing) The input data used by a simple SELECT query is a set of N rows each M columns wide. If the FROM clause is omitted from a simple SELECT statement, then the input data is implicitly a single…"
 - metric impact：BM25=4；dense=未在 top-30 命中显式 rel=2；hybrid=7。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：实际排名显示 BM25 top-10 命中而 dense 未达 top-10；RRF 后首个 rel=2 相对最佳单路后移或消失于 top-30；top-5 passage 完全匹配 token：bm25=['seq', 'AS ', 'VALUES ']; dense=['AS ', 'VALUES ']; hybrid=['seq', 'AS ', 'VALUES ']。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0009
 
 - 类别：BM25 成功而 dense 失败；hybrid 损害排名；dialect-sensitive 查询中的失败
 - dialect/version：`postgresql` / `17.11`
 - serialized query SHA-256：`157ce9a55cdaf0545e506528ccbc331e610e14b8fd3ce1eadca61d8a723c3a0c`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: postgresql
@@ -246,14 +246,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_duckdb_8957b331d55870b1a651f308`；score=`0.016129032258`；judgment=`0`；component ranks BM25=`None` / dense=`2`；doc dialect/version=`duckdb`/`1.5`；title="PostgreSQL Extension"；passage="Title: PostgreSQL Extension Section: PostgreSQL Extension > Installing and Loading > Settings The extension exposes the following configuration parameters. Table: - Name: `pg_array_as_varchar` | Description: Read PostgreSQL arrays as varchar - enables reading mixed dimensional a…"
 - metric impact：BM25=8；dense=未在 top-30 命中显式 rel=2；hybrid=16。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：实际排名显示 BM25 top-10 命中而 dense 未达 top-10；RRF 后首个 rel=2 相对最佳单路后移或消失于 top-30；目标方言 top-5 文档数（BM25/dense/hybrid）=1/3/2。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0012
 
 - 类别：BM25 成功而 dense 失败
 - dialect/version：`postgresql` / `14`
 - serialized query SHA-256：`cec0e2a7d567ca52a430a40e29bfd0abefbd2b89aefbb4486c9aa564c6ef792a`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: postgresql
@@ -289,14 +289,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_postgresql_47d729e21c2cf084b51e77f5`；score=`0.016129032258`；judgment=`2`；component ranks BM25=`2` / dense=`None`；doc dialect/version=`postgresql`/`14.24`；title="CREATE OPERATOR"；passage="Title: CREATE OPERATOR Section: CREATE OPERATOR > Description Context carried from the preceding passage: The symbol => is reserved by the SQL grammar, so it cannot be used as an operator name. The operator != is mapped to <> on input, so these two names are always equivalent. F…"
 - metric impact：BM25=2；dense=19；hybrid=2。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：实际排名显示 BM25 top-10 命中而 dense 未达 top-10。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0049
 
 - 类别：dense 成功而 BM25 失败；需要语义匹配的案例
 - dialect/version：`postgresql` / `18.6`
 - serialized query SHA-256：`775986f510bc699e442ef4b12931bbc66166bfc0819b77971626769d03eb9985`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: postgresql
@@ -333,14 +333,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_postgresql_08ace9d88290ac99a1ad0f62`；score=`0.028125000000`；judgment=`0`；component ranks BM25=`4` / dense=`20`；doc dialect/version=`postgresql`/`18.6`；title="Release 18.6"；passage="Title: Release 18.6 Section: Release 18.6 > Changes Context carried from the preceding passage: Allow libpq to accept ParameterDescription messages exceeding 30000 bytes (Ning Sun) Previously, this message type was not among those that libpq 's validity heuristics believed could…"
 - metric impact：BM25=未在 top-30 命中显式 rel=2；dense=1；hybrid=10。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：实际排名显示 dense top-10 命中而 BM25 未达 top-10；RRF 后首个 rel=2 相对最佳单路后移或消失于 top-30；top-5 passage 完全匹配 token：bm25=无; dense=无; hybrid=['::']。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0052
 
 - 类别：dense 成功而 BM25 失败；需要语义匹配的案例
 - dialect/version：`mysql` / `8.4.11`
 - serialized query SHA-256：`e755c901e7615b9ade4be5042482d1b27d8b601343b1e37f1d00a0234e566a0f`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: mysql
@@ -381,14 +381,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mariadb_1f791c776f3f489b034ec803`；score=`0.015873015873`；judgment=`0`；component ranks BM25=`3` / dense=`None`；doc dialect/version=`mariadb`/`11.4.10`；title="MariaDB Community Server 11.4.10 Built-in HELP Catalog server-side help"；passage="Title: MariaDB Community Server 11.4.10 Built-in HELP Catalog server-side help Section: MariaDB Community Server 11.4.10 Built-in HELP Catalog server-side help > Compound Statements > Cursor Overview Context carried from the preceding passage: However, it is possible to SELECT f…"
 - metric impact：BM25=未在 top-30 命中显式 rel=2；dense=1；hybrid=2。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：实际排名显示 dense top-10 命中而 BM25 未达 top-10；RRF 后首个 rel=2 相对最佳单路后移或消失于 top-30；top-5 passage 完全匹配 token：bm25=['42000']; dense=['42000', '1331', 'ER_SP_DUP_VAR']; hybrid=['42000', '1331', 'ER_SP_DUP_VAR']。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0066
 
 - 类别：dense 成功而 BM25 失败；version-sensitive 查询中的失败；需要语义匹配的案例
 - dialect/version：`mysql` / `8.0.21`
 - serialized query SHA-256：`9a803ec9b94c774dfdb65b02b0663a7a7f922ac63e7a4ba2e75114568f42506a`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: mysql
@@ -425,14 +425,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mysql_5aed37fdfb078ef74fff179d`；score=`0.027443609023`；judgment=`0`；component ranks BM25=`10` / dense=`16`；doc dialect/version=`mysql`/`8.4.11`；title="MySQL Community 8.4.11 Built-in HELP Catalog server-side help"；passage="Title: MySQL Community 8.4.11 Built-in HELP Catalog server-side help Section: MySQL Community 8.4.11 Built-in HELP Catalog server-side help > Date and Time Functions > FROM_UNIXTIME Syntax: FROM_UNIXTIME(unix_timestamp[,format]) Returns a representation of unix_timestamp as a da…"
 - metric impact：BM25=12；dense=7；hybrid=16。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：实际排名显示 dense top-10 命中而 BM25 未达 top-10；RRF 后首个 rel=2 相对最佳单路后移或消失于 top-30；目标方言 top-5 文档数（BM25/dense/hybrid）=4/4/5；case flag 要求版本推理，但 hybrid 未在 top-10 命中显式 rel=2；top-5 passage 完全匹配 token：bm25=['CAST']; dense=['CAST']; hybrid=['CAST']；rel=2 passage 最大字符数=2035，需检查结构化 chunk 边界；当前不声称它造成排名。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0074
 
 - 类别：dense 成功而 BM25 失败；需要语义匹配的案例
 - dialect/version：`mysql` / `8.0.46`
 - serialized query SHA-256：`e38276f0c47b3a61bc116eb9eb0451092b62658a30849dc79484b010605b2805`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: mysql
@@ -468,14 +468,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mysql_bb7eb0ec1880a8c31c818d19`；score=`0.027236652237`；judgment=`2`；component ranks BM25=`28` / dense=`3`；doc dialect/version=`mysql`/`8.4.11`；title="MySQL Community 8.4.11 Built-in HELP Catalog server-side help"；passage="Title: MySQL Community 8.4.11 Built-in HELP Catalog server-side help Section: MySQL Community 8.4.11 Built-in HELP Catalog server-side help > Aggregate Functions and Modifiers > GROUP_CONCAT Syntax: GROUP_CONCAT(expr) This function returns a string result with the concatenated n…"
 - metric impact：BM25=11；dense=2；hybrid=2。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：实际排名显示 dense top-10 命中而 BM25 未达 top-10；top-5 passage 完全匹配 token：bm25=['GROUP_CONCAT']; dense=['GROUP_CONCAT']; hybrid=['GROUP_CONCAT']。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0081
 
 - 类别：dense 成功而 BM25 失败；需要语义匹配的案例
 - dialect/version：`mysql` / `8.0.46`
 - serialized query SHA-256：`3926118c72d6c678b0895bb7dccd2c83d176453045ddab66992edbef8f9f5824`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: mysql
@@ -511,14 +511,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mysql_47f5cc1cc68fba74f220f9d0`；score=`0.015873015873`；judgment=`0`；component ranks BM25=`None` / dense=`3`；doc dialect/version=`mysql`/`8.4.11`；title="MySQL Community 8.4.11 Built-in HELP Catalog server-side help"；passage="Title: MySQL Community 8.4.11 Built-in HELP Catalog server-side help Section: MySQL Community 8.4.11 Built-in HELP Catalog server-side help > Compound Statements > GET DIAGNOSTICS Context carried from the preceding passage: The procedure produces these results when invoked to in…"
 - metric impact：BM25=未在 top-30 命中显式 rel=2；dense=4；hybrid=8。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：实际排名显示 dense top-10 命中而 BM25 未达 top-10；RRF 后首个 rel=2 相对最佳单路后移或消失于 top-30。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0022
 
 - 类别：hybrid 改善排名
 - dialect/version：`postgresql` / `17.11`
 - serialized query SHA-256：`21c42b6d5432054caf57aa148efc73c9931c9c59d15b177e65d639020e735657`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: postgresql
@@ -557,14 +557,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_duckdb_4be53ca8cca1190635380a9f`；score=`0.016393442623`；judgment=`0`；component ranks BM25=`None` / dense=`1`；doc dialect/version=`duckdb`/`1.5`；title="SELECT Clause"；passage="Title: SELECT Clause Section: SELECT Clause > Examples > `SELECT` List > Aggregates Return the total number of rows in the addresses table: ```sql SELECT count(*) FROM addresses; ``` Return the total number of rows in the addresses table grouped by city: ```sql SELECT city, coun…"
 - metric impact：BM25=2；dense=2；hybrid=1。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：RRF 后首个 rel=2 严格前移；top-5 passage 完全匹配 token：bm25=['>=', 'count']; dense=['count', 'customer_id']; hybrid=['count']。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0051
 
 - 类别：hybrid 改善排名；精确 SQL token 或 error code 主导的可核查案例
 - dialect/version：`mysql` / `8.0.46`
 - serialized query SHA-256：`6c5523f0a11ed98fec7af49059bc83aec92908f860d39ca68386809e65a1c1d3`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: mysql
@@ -606,14 +606,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mysql_05fd97b0efd4bde0848650c5`；score=`0.015873015873`；judgment=`0`；component ranks BM25=`None` / dense=`3`；doc dialect/version=`mysql`/`8.4.11`；title="MySQL Community 8.4.11 Error Catalog error messages"；passage="Title: MySQL Community 8.4.11 Error Catalog error messages Section: MySQL Community 8.4.11 Error Catalog error messages > ER_DUP_SIGNAL_SET Error symbol: ER_DUP_SIGNAL_SET Error number: 1641 SQLSTATE: 42000 Message: Duplicate condition information item '%s'"
 - metric impact：BM25=2；dense=2；hybrid=1。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：RRF 后首个 rel=2 严格前移；top-5 passage 完全匹配 token：bm25=['42000', '1330', 'ER_SP_DUP_PARAM']; dense=['42000', '1330', 'ER_SP_DUP_PARAM']; hybrid=['42000', '1330', 'ER_SP_DUP_PARAM']。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0058
 
 - 类别：hybrid 改善排名
 - dialect/version：`mysql` / `8.4.11`
 - serialized query SHA-256：`af5a31435cd9fd258725a88a0354cbdc3fd6e2992d80c0aba3594547e70761ac`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: mysql
@@ -651,14 +651,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mysql_d0a7906fa1b58383e1d9f3da`；score=`0.016393442623`；judgment=`0`；component ranks BM25=`None` / dense=`1`；doc dialect/version=`mysql`/`8.4.11`；title="MySQL Community 8.4.11 Built-in HELP Catalog server-side help"；passage="Title: MySQL Community 8.4.11 Built-in HELP Catalog server-side help Section: MySQL Community 8.4.11 Built-in HELP Catalog server-side help > Performance Schema Functions > FORMAT_BYTES FORMAT_BYTES(count) Given a numeric byte count, converts it to human-readable format and retu…"
 - metric impact：BM25=6；dense=6；hybrid=3。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：RRF 后首个 rel=2 严格前移；top-5 passage 完全匹配 token：bm25=['::', 'DECIMAL']; dense=['::', 'DECIMAL']; hybrid=['DECIMAL']。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0079
 
 - 类别：hybrid 改善排名
 - dialect/version：`mysql` / `8.0.46`
 - serialized query SHA-256：`ea1dccf192839e70b4ccd4ff9238c06a82cb4a7ca9af3a0e5bbe112eb525cfcb`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: mysql
@@ -695,14 +695,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mysql_b8c98b6eba9c337d02fc86f5`；score=`0.016129032258`；judgment=`0`；component ranks BM25=`None` / dense=`2`；doc dialect/version=`mysql`/`8.0.46`；title="MySQL Community 8.0.46 Built-in HELP Catalog server-side help"；passage="Title: MySQL Community 8.0.46 Built-in HELP Catalog server-side help Section: MySQL Community 8.0.46 Built-in HELP Catalog server-side help > Data Manipulation > UPDATE Context carried from the preceding passage: Rows for which duplicate-key conflicts occur on a unique key value…"
 - metric impact：BM25=6；dense=27；hybrid=1。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：实际排名显示 BM25 top-10 命中而 dense 未达 top-10；RRF 后首个 rel=2 严格前移。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0086
 
 - 类别：hybrid 改善排名
 - dialect/version：`mysql` / `8.4.11`
 - serialized query SHA-256：`85c1ddd81565b0a453290045e282857feb5249869820442a87fdf14a2175a5ce`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: mysql
@@ -738,14 +738,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mysql_dd6deaae37bfbf94211d2681`；score=`0.028218694885`；judgment=`1`；component ranks BM25=`21` / dense=`3`；doc dialect/version=`mysql`/`8.4.11`；title="MySQL Community 8.4.11 Built-in HELP Catalog server-side help"；passage="Title: MySQL Community 8.4.11 Built-in HELP Catalog server-side help Section: MySQL Community 8.4.11 Built-in HELP Catalog server-side help > Cast Functions and Operators > CAST No padding occurs for values shorter than N characters. If the optional length N is not given, MySQL…"
 - metric impact：BM25=5；dense=4；hybrid=3。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：RRF 后首个 rel=2 严格前移；top-5 passage 完全匹配 token：bm25=['CAST', 'VARCHAR']; dense=['CAST', 'VARCHAR']; hybrid=['CAST', 'VARCHAR']。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0006
 
 - 类别：hybrid 损害排名；dialect-sensitive 查询中的失败
 - dialect/version：`postgresql` / `18.6`
 - serialized query SHA-256：`ab2ca20fa3217f91c59e2cb78f57f292362d4edc38a2cc1533a5d2463467b0fc`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: postgresql
@@ -780,14 +780,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_postgresql_1521fb8b5b83f7b1a39f0cb0`；score=`0.027236652237`；judgment=`0`；component ranks BM25=`28` / dense=`3`；doc dialect/version=`postgresql`/`18.6`；title="Release 18.6"；passage="Title: Release 18.6 Section: Release 18.6 > Changes Context carried from the preceding passage: In assert-enabled builds, its assertions could be triggered too. The PostgreSQL Project thanks Hcamael for reporting this problem. (CVE-2026-18024) Fix multirange type handling in pg_…"
 - metric impact：BM25=12；dense=未在 top-30 命中显式 rel=2；hybrid=22。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：RRF 后首个 rel=2 相对最佳单路后移或消失于 top-30；目标方言 top-5 文档数（BM25/dense/hybrid）=2/3/2。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0010
 
 - 类别：dialect-sensitive 查询中的失败
 - dialect/version：`postgresql` / `17.11`
 - serialized query SHA-256：`3afa0fde8b794a12e551b1edd8dca197824910e62b47d4af06a574a9ee5575cd`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: postgresql
@@ -823,14 +823,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mariadb_3de7675a3188bd0fc4d2d4a8`；score=`0.016129032258`；judgment=`0`；component ranks BM25=`2` / dense=`None`；doc dialect/version=`mariadb`/`11.4.10`；title="MariaDB Community Server 11.4.10 Built-in HELP Catalog server-side help"；passage="Title: MariaDB Community Server 11.4.10 Built-in HELP Catalog server-side help Section: MariaDB Community Server 11.4.10 Built-in HELP Catalog server-side help > Data Definition > CONSTRAINT CREATE TABLE product (category INT NOT NULL, id INT NOT NULL, price DECIMAL, PRIMARY KEY…"
 - metric impact：BM25=19；dense=未在 top-30 命中显式 rel=2；hybrid=未在 top-30 命中显式 rel=2。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：RRF 后首个 rel=2 相对最佳单路后移或消失于 top-30；目标方言 top-5 文档数（BM25/dense/hybrid）=0/1/0；top-5 passage 完全匹配 token：bm25=['AUTO_INCREMENT']; dense=['AUTO_INCREMENT']; hybrid=['AUTO_INCREMENT']；rel=2 passage 最大字符数=1519，需检查结构化 chunk 边界；当前不声称它造成排名。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0016
 
 - 类别：dialect-sensitive 查询中的失败
 - dialect/version：`postgresql` / `17.11`
 - serialized query SHA-256：`96c1536b3cb8158702a94c07900d64bd5da28737eab9eef8500cab3474b89e61`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: postgresql
@@ -865,14 +865,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_sqlite_32f02ffcedf34c804d3e9748`；score=`0.016129032258`；judgment=`0`；component ranks BM25=`2` / dense=`None`；doc dialect/version=`sqlite`/`3.53.4`；title="Built-In Scalar SQL Functions"；passage="Title: Built-In Scalar SQL Functions Section: Built-In Scalar SQL Functions > 3. Descriptions of built-in scalar SQL functions Context carried from the preceding passage: The hex() function interprets its argument as a BLOB and returns a string which is the upper-case hexadecima…"
 - metric impact：BM25=未在 top-30 命中显式 rel=2；dense=未在 top-30 命中显式 rel=2；hybrid=未在 top-30 命中显式 rel=2。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：目标方言 top-5 文档数（BM25/dense/hybrid）=1/1/0；top-5 passage 完全匹配 token：bm25=['IFNULL']; dense=['IFNULL']; hybrid=['IFNULL']。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0017
 
 - 类别：dialect-sensitive 查询中的失败
 - dialect/version：`postgresql` / `17.11`
 - serialized query SHA-256：`925ca5719563d00585ad85908c922f4bdf0c1159844504e96736fdb2159c41df`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: postgresql
@@ -907,14 +907,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mysql_c4bfdbf7e1cd6075e993ab0d`；score=`0.025816993464`；judgment=`0`；component ranks BM25=`8` / dense=`30`；doc dialect/version=`mysql`/`8.0.46`；title="MySQL Community 8.0.46 Built-in HELP Catalog server-side help"；passage="Title: MySQL Community 8.0.46 Built-in HELP Catalog server-side help Section: MySQL Community 8.0.46 Built-in HELP Catalog server-side help > String Functions > LPAD Syntax: LPAD(str,len,padstr) Returns the string str, left-padded with the string padstr to a length of len charac…"
 - metric impact：BM25=未在 top-30 命中显式 rel=2；dense=未在 top-30 命中显式 rel=2；hybrid=未在 top-30 命中显式 rel=2。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：目标方言 top-5 文档数（BM25/dense/hybrid）=1/4/1；top-5 passage 完全匹配 token：bm25=['LEN']; dense=['LEN']; hybrid=['LEN']；rel=2 passage 最大字符数=1871，需检查结构化 chunk 边界；当前不声称它造成排名。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0044
 
 - 类别：version-sensitive 查询中的失败
 - dialect/version：`postgresql` / `14`
 - serialized query SHA-256：`d656d970e1c1d807b90e4d64081f3c9a9c3c748cb1a818e746449eaca2fb04dd`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: postgresql
@@ -949,14 +949,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mariadb_6654284883589087835328d3`；score=`0.016129032258`；judgment=`0`；component ranks BM25=`2` / dense=`None`；doc dialect/version=`mariadb`/`11.4.10`；title="MariaDB Community Server 11.4.10 Built-in HELP Catalog server-side help"；passage="Title: MariaDB Community Server 11.4.10 Built-in HELP Catalog server-side help Section: MariaDB Community Server 11.4.10 Built-in HELP Catalog server-side help > Date and Time Functions > Microseconds in MariaDB The TIME, DATETIME, and TIMESTAMP types, along with the temporal fu…"
 - metric impact：BM25=19；dense=未在 top-30 命中显式 rel=2；hybrid=未在 top-30 命中显式 rel=2。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：RRF 后首个 rel=2 相对最佳单路后移或消失于 top-30；case flag 要求版本推理，但 hybrid 未在 top-10 命中显式 rel=2；top-5 passage 完全匹配 token：bm25=['EXTRACT']; dense=['EXTRACT']; hybrid=['EXTRACT']；rel=2 passage 最大字符数=1085，需检查结构化 chunk 边界；当前不声称它造成排名。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0061
 
 - 类别：version-sensitive 查询中的失败
 - dialect/version：`mysql` / `8.0.30`
 - serialized query SHA-256：`c13c518e7bbe22a369eb9a5ea7a8ee9be201725d6b3d7bcdc159e03c5f944f95`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: mysql
@@ -991,14 +991,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mysql_07471ce02424f9ba94861fe6`；score=`0.015873015873`；judgment=`0`；component ranks BM25=`None` / dense=`3`；doc dialect/version=`mysql`/`8.0.46`；title="MySQL Community 8.0.46 Error Catalog error messages"；passage="Title: MySQL Community 8.0.46 Error Catalog error messages Section: MySQL Community 8.0.46 Error Catalog error messages > OBSOLETE_ER_SQL_REPLICA_SKIP_COUNTER_NOT_SETTABLE_IN_GTID_MODE Error symbol: OBSOLETE_ER_SQL_REPLICA_SKIP_COUNTER_NOT_SETTABLE_IN_GTID_MODE Error number: 185…"
 - metric impact：BM25=未在 top-30 命中显式 rel=2；dense=未在 top-30 命中显式 rel=2；hybrid=未在 top-30 命中显式 rel=2。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：目标方言 top-5 文档数（BM25/dense/hybrid）=5/5/5；case flag 要求版本推理，但 hybrid 未在 top-10 命中显式 rel=2；rel=2 passage 最大字符数=2032，需检查结构化 chunk 边界；当前不声称它造成排名。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0106
 
 - 类别：version-sensitive 查询中的失败
 - dialect/version：`sqlite` / `3.45.3`
 - serialized query SHA-256：`a6aa82df552b30ce2184b27de3db1c98eebe3b19e21bd0f414e57eebe05898a4`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: sqlite
@@ -1038,14 +1038,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_sqlite_00f3bd64aadee7e5ce283478`；score=`0.016129032258`；judgment=`0`；component ranks BM25=`2` / dense=`None`；doc dialect/version=`sqlite`/`3.53.4`；title="How To Corrupt An SQLite Database File"；passage="Title: How To Corrupt An SQLite Database File Section: How To Corrupt An SQLite Database File > 8.5. I/O error while obtaining a lock leads to corruption Context carried from the preceding passage: mode then SQLite might fail to reset its cache, which could lead to database corr…"
 - metric impact：BM25=未在 top-30 命中显式 rel=2；dense=22；hybrid=未在 top-30 命中显式 rel=2。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：RRF 后首个 rel=2 相对最佳单路后移或消失于 top-30；目标方言 top-5 文档数（BM25/dense/hybrid）=2/5/5；case flag 要求版本推理，但 hybrid 未在 top-10 命中显式 rel=2；rel=2 passage 最大字符数=1036，需检查结构化 chunk 边界；当前不声称它造成排名。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0119
 
 - 类别：version-sensitive 查询中的失败
 - dialect/version：`sqlite` / `3.45.3`
 - serialized query SHA-256：`d3e58e60b37299f682814ba59b10e7d4e697b7ce51cbec3f992fa64b981f588e`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: sqlite
@@ -1084,14 +1084,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_postgresql_0cde2b3f6e779a7502e2969f`；score=`0.015873015873`；judgment=`0`；component ranks BM25=`3` / dense=`None`；doc dialect/version=`postgresql`/`17.11`；title="PL/pgSQL SQL Procedural Language"；passage="Title: PL/pgSQL SQL Procedural Language Section: PL/pgSQL SQL Procedural Language > Checking Assertions The ASSERT statement is a convenient shorthand for inserting debugging checks into PL/pgSQL functions. ASSERT condition , message ; The condition is a Boolean expression that…"
 - metric impact：BM25=未在 top-30 命中显式 rel=2；dense=未在 top-30 命中显式 rel=2；hybrid=未在 top-30 命中显式 rel=2。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：目标方言 top-5 文档数（BM25/dense/hybrid）=1/5/3；case flag 要求版本推理，但 hybrid 未在 top-10 命中显式 rel=2；top-5 passage 完全匹配 token：bm25=['IF']; dense=['IF']; hybrid=['IF']；rel=2 passage 最大字符数=1029，需检查结构化 chunk 边界；当前不声称它造成排名。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0013
 
 - 类别：精确 SQL token 或 error code 主导的可核查案例
 - dialect/version：`postgresql` / `14`
 - serialized query SHA-256：`c468d8d271380c0ea1284329792f48fa717bcef2f042b3b62633c3b357f85f60`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: postgresql
@@ -1126,14 +1126,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_postgresql_033418a66243213db2310aa7`；score=`0.015873015873`；judgment=`0`；component ranks BM25=`None` / dense=`3`；doc dialect/version=`postgresql`/`18.6`；title="Release 18.6"；passage="Title: Release 18.6 Section: Release 18.6 > Changes Context carried from the preceding passage: Harden PL/Perl against tied Perl arrays and hashes (Tom Lane) A tied object that doesn't behave like a regular one could lead to memory overwrite, or to constructing a corrupt result…"
 - metric impact：BM25=2；dense=1；hybrid=1。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：top-5 passage 完全匹配 token：bm25=['->', 'to_tsquery', 'pg_class']; dense=['->', 'to_tsquery', 'pg_class']; hybrid=['->', 'to_tsquery', 'pg_class']。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0072
 
 - 类别：精确 SQL token 或 error code 主导的可核查案例
 - dialect/version：`mysql` / `8.0.46`
 - serialized query SHA-256：`912f4e1944938897e975bf7de1050c7f5a245ebaf8f22103ee8652fe88c79137`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: mysql
@@ -1177,14 +1177,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mysql_04459e9e075c28c838db0cba`；score=`0.015625000000`；judgment=`0`；component ranks BM25=`None` / dense=`4`；doc dialect/version=`mysql`/`8.4.11`；title="MySQL Community 8.4.11 Error Catalog error messages"；passage="Title: MySQL Community 8.4.11 Error Catalog error messages Section: MySQL Community 8.4.11 Error Catalog error messages > ER_IB_MSG_694 Error symbol: ER_IB_MSG_694 Error number: 12519 Message: ############### CORRUPT LOG RECORD FOUND ###############"
 - metric impact：BM25=1；dense=1；hybrid=1。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：top-5 passage 完全匹配 token：bm25=['42000', '1055', 'MAX']; dense=['42000', '1055', 'MAX']; hybrid=['42000', '1055', 'MAX']。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0096
 
 - 类别：精确 SQL token 或 error code 主导的可核查案例
 - dialect/version：`mysql` / `8.4.11`
 - serialized query SHA-256：`80434a42aa0cbeba6fd0bd6c4f6f70a8a55d741200dd7764a45d495fdd255d1c`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: mysql
@@ -1225,14 +1225,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_postgresql_b5631e26b6dee842c0e83339`；score=`0.015873015873`；judgment=`0`；component ranks BM25=`3` / dense=`None`；doc dialect/version=`postgresql`/`17.11`；title="PostgreSQL Error Codes"；passage="Title: PostgreSQL Error Codes Context carried from the preceding passage: Condition names can be written in either upper or lower case. (Note that PL/pgSQL does not recognize warning, as opposed to error, condition names; those are classes 00, 01, and 02.) For some types of erro…"
 - metric impact：BM25=1；dense=1；hybrid=1。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：top-5 passage 完全匹配 token：bm25=['42S22', '1054', 'ER_BAD_FIELD_ERROR']; dense=['42S22', '1054', 'ER_BAD_FIELD_ERROR']; hybrid=['42S22', '1054', 'ER_BAD_FIELD_ERROR']。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0097
 
 - 类别：精确 SQL token 或 error code 主导的可核查案例
 - dialect/version：`mysql` / `8.4.11`
 - serialized query SHA-256：`781905be341e1e032ade20d974dbcc205ca7c90f79cf9590fc36ba05d7be6771`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: mysql
@@ -1273,14 +1273,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_mysql_d09aaae28d22748da541507a`；score=`0.016129032258`；judgment=`0`；component ranks BM25=`2` / dense=`None`；doc dialect/version=`mysql`/`8.4.11`；title="MySQL Community 8.4.11 Built-in HELP Catalog server-side help"；passage="Title: MySQL Community 8.4.11 Built-in HELP Catalog server-side help Section: MySQL Community 8.4.11 Built-in HELP Catalog server-side help > Compound Statements > DECLARE CONDITION Syntax: DECLARE condition_name CONDITION FOR condition_value condition_value: { mysql_error_code…"
 - metric impact：BM25=1；dense=5；hybrid=1。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：top-5 passage 完全匹配 token：bm25=['42Y07', '3503', 'ER_NO_SUCH_DB']; dense=['42Y07', '3503', 'ER_NO_SUCH_DB']; hybrid=['42Y07', '3503', 'ER_NO_SUCH_DB']。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0125
 
 - 类别：chunk 粒度风险案例
 - dialect/version：`sqlite` / `3.45.3`
 - serialized query SHA-256：`14c8a6ec70b200bae2a7f3f011d3dc6bf0b9909ca4b5dd2890a6f8736b799430`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: sqlite
@@ -1315,14 +1315,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_postgresql_0fa5fdd30cd8873f223a52e2`；score=`0.015873015873`；judgment=`0`；component ranks BM25=`3` / dense=`None`；doc dialect/version=`postgresql`/`17.11`；title="psql"；passage="Title: psql Section: psql > Examples The first example shows how to spread a command over several lines of input. Notice the changing prompt: testdb= CREATE TABLE my_table ( testdb( first integer not null default 0, testdb( second text) testdb- ; CREATE TABLE Now look at the tab…"
 - metric impact：BM25=未在 top-30 命中显式 rel=2；dense=未在 top-30 命中显式 rel=2；hybrid=未在 top-30 命中显式 rel=2。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：top-5 passage 完全匹配 token：bm25=['count']; dense=['count']; hybrid=['count']；rel=2 passage 最大字符数=2753，需检查结构化 chunk 边界；当前不声称它造成排名。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0131
 
 - 类别：chunk 粒度风险案例
 - dialect/version：`sqlite` / `3.45.3`
 - serialized query SHA-256：`8fd845d4a0b5f93adb30964777d299435cddb507009475accf6c089890747d0c`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: sqlite
@@ -1358,14 +1358,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_postgresql_21f27b3bdba0c781d0f6a3be`；score=`0.016129032258`；judgment=`0`；component ranks BM25=`2` / dense=`None`；doc dialect/version=`postgresql`/`17.11`；title="Routine Database Maintenance Tasks"；passage="Title: Routine Database Maintenance Tasks Section: Routine Database Maintenance Tasks > Preventing Transaction ID Wraparound Failures Context carried from the preceding passage: If you drop a slot for a server that still exists and might still try to connect to that slot, that r…"
 - metric impact：BM25=未在 top-30 命中显式 rel=2；dense=未在 top-30 命中显式 rel=2；hybrid=未在 top-30 命中显式 rel=2。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：rel=2 passage 最大字符数=2753，需检查结构化 chunk 边界；当前不声称它造成排名。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0134
 
 - 类别：chunk 粒度风险案例
 - dialect/version：`sqlite` / `3.45.3`
 - serialized query SHA-256：`b8fa65f68102b5cdf2c09ab51af669e9a0602021c52c20e418485088772c93ca`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: sqlite
@@ -1400,14 +1400,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_duckdb_952988941187570b367299e8`；score=`0.015873015873`；judgment=`0`；component ranks BM25=`None` / dense=`3`；doc dialect/version=`duckdb`/`1.5`；title="Result Verification"；passage="Title: Result Verification Section: Result Verification > NULL Values and Empty Strings > Error Verification In order to signify that an error is expected, the `statement error` indicator can be used. The `statement error` also takes an optional expected result – which is interp…"
 - metric impact：BM25=未在 top-30 命中显式 rel=2；dense=未在 top-30 命中显式 rel=2；hybrid=未在 top-30 命中显式 rel=2。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：top-5 passage 完全匹配 token：bm25=['sum']; dense=['sum']; hybrid=['sum']；rel=2 passage 最大字符数=2753，需检查结构化 chunk 边界；当前不声称它造成排名。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0135
 
 - 类别：chunk 粒度风险案例
 - dialect/version：`sqlite` / `3.45.3`
 - serialized query SHA-256：`de9720f23a24422b3ffd371e58d82a1fa00da7b70d8d2bb79adc2b42dd6b7fb8`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: sqlite
@@ -1443,14 +1443,14 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_sqlite_139df9ab4218c8e14635f4d7`；score=`0.016129032258`；judgment=`0`；component ranks BM25=`None` / dense=`2`；doc dialect/version=`sqlite`/`3.7.17`；title="SQLite Release 3.7.17 On 2013-05-20"；passage="Title: SQLite Release 3.7.17 On 2013-05-20 Context carried from the preceding passage: Ticket f69b96e3076e . - Bug fix: The command-line shell gives an exit code of 0 when terminated using the \".quit\" command. - Bug fix: Make sure PRAGMA statements appear in sqlite3_trace() outp…"
 - metric impact：BM25=未在 top-30 命中显式 rel=2；dense=未在 top-30 命中显式 rel=2；hybrid=未在 top-30 命中显式 rel=2。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：目标方言 top-5 文档数（BM25/dense/hybrid）=1/5/3；top-5 passage 完全匹配 token：bm25=['<>']; dense=无; hybrid=['<>']；rel=2 passage 最大字符数=2753，需检查结构化 chunk 边界；当前不声称它造成排名。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ### DEV0048
 
 - 类别：chunk 粒度风险案例
 - dialect/version：`postgresql` / `14.24`
 - serialized query SHA-256：`f2796df0388c82a6139589011135e597dadc7a9b3abc5dcc17347873a80407e0`
-- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 v1 和当前 qrels，不按案例反向改标签。
+- follow-up/后续：结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，保留固定 baseline 和当前 qrels，不按案例反向改标签。
 - serialized query（直接取自冻结 audit 文件）：
 
     Dialect: postgresql
@@ -1491,7 +1491,7 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
   - rank=5；chunk=`smr_postgresql_0402144937d35fb611a106f1`；score=`0.016393442623`；judgment=`0`；component ranks BM25=`None` / dense=`1`；doc dialect/version=`postgresql`/`18.6`；title="psql"；passage="Title: psql Section: psql > Meta-Commands Context carried from the preceding passage: If EOF is reached on the main input file or an \\include -ed file before all local \\if -blocks have been closed, then psql will raise an error. Here is an example: ```sql -- check for the existe…"
 - metric impact：BM25=未在 top-30 命中显式 rel=2；dense=13；hybrid=22。正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。
 - diagnosis：RRF 后首个 rel=2 相对最佳单路后移或消失于 top-30；top-5 passage 完全匹配 token：bm25=无; dense=['customer_id']; hybrid=['customer_id']；rel=2 passage 最大字符数=2717，需检查结构化 chunk 边界；当前不声称它造成排名。
-- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 v1 或当前 qrels。
+- future handling：使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels；人工检查 relevance-2 passage 的 section 与 chunk 边界；创新实验建立新系统版本，不覆盖 baseline 或当前 qrels。
 
 ## Pool expansion 交接
 

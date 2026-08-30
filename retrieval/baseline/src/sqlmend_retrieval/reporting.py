@@ -590,7 +590,7 @@ def generate_failure_analysis(
         )
         follow_up_statement = (
             "结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，"
-            "保留固定 v1 和当前 qrels，不按案例反向改标签。"
+            "保留固定 baseline 和当前 qrels，不按案例反向改标签。"
         )
 
     lines = [
@@ -754,7 +754,7 @@ def generate_failure_analysis(
         if query_id in chunk_risk_cases:
             future.append("人工检查 relevance-2 passage 的 section 与 chunk 边界")
         future.append(
-            "创新实验建立新系统版本，不覆盖 v1 或当前 qrels"
+            "创新实验建立新系统版本，不覆盖 baseline 或当前 qrels"
             if not evaluation_blocked
             else "补判前不据此调模型、RRF 或 qrels"
         )
@@ -952,11 +952,11 @@ def generate_manifest(paths: ProjectPaths, statuses: dict[str, Any]) -> dict[str
     source_snapshot = snapshot_release_source(paths)
     engineering_passed = statuses.get("engineering_status") == "PASS"
     if engineering_passed and statuses.get("evaluation_integrity_status") == "PASS":
-        release = "retrieval-baseline-v1"
+        release = "retrieval-baseline"
     elif engineering_passed and statuses.get("evaluation_integrity_status") == "BLOCKED":
-        release = "retrieval-baseline-v1-candidate"
+        release = "retrieval-baseline-candidate"
     else:
-        release = "retrieval-baseline-v1-invalid"
+        release = "retrieval-baseline-invalid"
     manifest = {
         "schema_version": "sqlmend-retrieval-manifest-v1",
         "module": "sqlmend-retrieval-baseline",

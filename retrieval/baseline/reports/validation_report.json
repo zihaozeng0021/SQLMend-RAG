@@ -24,12 +24,12 @@
       "check_id": "engineering.tests.current_source",
       "explanation": "The full automated test suite passed against the current source/config/test bytes.",
       "observed_value": {
-        "current_source_tree_sha256": "02bf56a20642d5563097c01f0232cba37b358b9929b5f0cb2a43f2da20d0c3c8",
+        "current_source_tree_sha256": "104d6f59404177e6d81c7d11c97069cc84004deae4fba982404613079fe6a029",
         "reported_status": "PASS",
         "returncode": 0,
         "source_stable_during_tests": true,
-        "tested_source_tree_sha256": "02bf56a20642d5563097c01f0232cba37b358b9929b5f0cb2a43f2da20d0c3c8",
-        "tested_source_tree_sha256_after": "02bf56a20642d5563097c01f0232cba37b358b9929b5f0cb2a43f2da20d0c3c8"
+        "tested_source_tree_sha256": "104d6f59404177e6d81c7d11c97069cc84004deae4fba982404613079fe6a029",
+        "tested_source_tree_sha256_after": "104d6f59404177e6d81c7d11c97069cc84004deae4fba982404613079fe6a029"
       },
       "recommended_remediation": "No remediation required.",
       "required_value": {
@@ -699,7 +699,7 @@
         "bound_hash_count": 40,
         "recorded_engineering_status": "PASS",
         "recorded_evaluation_status": "PASS",
-        "release": "retrieval-baseline-v1",
+        "release": "retrieval-baseline",
         "violations": []
       },
       "recommended_remediation": "No remediation required.",

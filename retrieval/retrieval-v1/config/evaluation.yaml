@@ -1,0 +1,30 @@
+evaluation_label: machine-proposed development evaluation
+recall_label: pooled Recall
+candidate_depth: 30
+final_depth: 30
+cutoffs: [5, 10, 20, 30]
+required_judged_at_30: 1.0
+direct_evidence_relevance: 2
+graded_ndcg_cutoff: 10
+baseline_system_id: hybrid_rrf_frozen_control_v1
+phase7:
+  wrong_dialect_relative_reduction_minimum: 0.30
+  dialect_sensitive_ndcg_delta_minimum: 0.0
+  overall_ndcg_delta_minimum: -0.01
+  maximum_unexplained_dialect_slice_ndcg_regression: 0.05
+phase8:
+  wrong_version_relative_reduction_minimum: 0.30
+  version_sensitive_ndcg_delta_minimum: 0.0
+  overall_ndcg_vs_phase7_delta_minimum: -0.01
+  overall_recall_vs_baseline_delta_minimum: -0.01
+phase9:
+  primary_metric_absolute_gain_minimum: 0.01
+  other_metric_maximum_regression: 0.005
+  overall_recall_delta_minimum: -0.01
+final:
+  overall_ndcg_delta_minimum: 0.02
+  overall_mrr_delta_minimum: 0.0
+  overall_recall_delta_minimum: -0.01
+  wrong_dialect_relative_reduction_minimum: 0.30
+  wrong_version_relative_reduction_minimum: 0.30
+

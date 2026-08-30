@@ -4,7 +4,7 @@
 >
 > Last verified: 2026-08-30 (UTC+8)
 >
-> 当前阶段：知识库已完成；Codex annotation 的当前主版本为 **v1**（dataset revision `1.1.0`），正式 Top-30 开发 pool 已完整判断；固定 retrieval v1 baseline 的工程、评估完整性和质量门禁均已通过，可以开始 dialect/version-aware retrieval 的后续开发。
+> 当前阶段：知识库、machine-proposed development annotation、冻结 retrieval baseline，以及正式 retrieval v1（dialect-aware、version-aware、field-aware lexical reranking）均已完成验证。Retrieval v1 的五系统 Top-30 pool 完整、质量门禁与独立 validation 均通过；generator、UI 和最终人工 held-out dataset 仍未实现。
 
 ## 1. 这份文件的用途
 
@@ -63,7 +63,7 @@
 |---|---|---|
 | Q1 | 语料来源、采集、清洗、分块、存储；应用与示例查询；文档/chunk/word/type 数量 | 知识库工程已完成，最终报告尚未写 |
 | Q2 | 简单友好的 UI；5 条查询、结果与查询速度 | `PLANNED` |
-| Q3 | sparse、dense、hybrid；检索创新；Precision@K、Recall@K、MRR、nDCG 等 rank-aware 指标与案例 | 固定 v1 baseline 已实现并通过工程、评估完整性和质量门禁；机器开发评估已发布，dialect/version-aware 创新阶段可开始 |
+| Q3 | sparse、dense、hybrid；检索创新；Precision@K、Recall@K、MRR、nDCG 等 rank-aware 指标与案例 | 固定 baseline 与正式 retrieval v1 已实现；五系统 ablation、切片、案例、latency、manifest 和 validation 均通过，结论仅适用于机器开发评估 |
 | Q4 | 生成/分类方法选择与预处理；自行建立至少 1,000 条无重复、尽量平衡的人工 held-out records；IAA 至少 80%（推荐 3 名 annotators，2 名也可）；任务指标、RAG 指标和性能指标 | `PLANNED` |
 | Q5 | 下游创新；若有多个创新必须做单项与组合 ablation；解释具体问题与案例 | `PLANNED` |
 
@@ -83,7 +83,7 @@
 | `retrieval/baseline/` 工程 | `VERIFIED_COMPLETE` | BM25、零样本 E5、两路 RRF、审计、测试、性能与发布门禁均已实现并与当前源码快照绑定 |
 | 正式检索评估完整性 | `PASS` | BM25、dense、hybrid 的 `Judged@5/10/20/30` 均为 1.0，完整评估工件已原子发布 |
 | 检索质量 | `PASS_FOR_MACHINE_DEVELOPMENT_EVAL` | hybrid 在四个主指标上均领先并通过既定门禁；结论只适用于当前机器开发集 |
-| 方言/版本感知检索创新 | `PLANNED_NEXT` | 可在保留固定 v1 对照的前提下开始 retrieval v2 |
+| `retrieval/retrieval-v1/` | `VERIFIED_COMPLETE_FOR_DEVELOPMENT_ONLY` | 五套独立系统、Dialect/Version awareness、lexical reranker、完整 pool、60 tests、manifest 与 12/12 validation checks 均通过；没有修改冻结 baseline |
 | Grounded generator / SQL repair | `PLANNED` | 尚未实现 |
 | 最终人工 held-out 数据 | `PLANNED` | 仍需至少 1,000 条人工记录和 IAA >= 80% |
 | UI 与 5 条演示查询 | `PLANNED` | 尚未实现 |
@@ -92,13 +92,28 @@
 当前已最终化 baseline 的发布状态对象：
 
 ```text
-release=retrieval-baseline-v1
+release=retrieval-baseline
 engineering_status=PASS
 evaluation_integrity_status=PASS
 retrieval_quality_status=PASS
 annotation_reproduction_status=PARTIAL
 overall_success=true
 ```
+
+当前 retrieval v1 的发布状态对象：
+
+```text
+release=retrieval-v1
+engineering_status=PASS
+evaluation_integrity_status=PASS
+retrieval_quality_status=PASS
+Judged@30=1.0 for all five formal systems
+overall_success=true
+source_tree_sha256=d55c547ee2c3972012e174a58ccf7bd0f33a57091deb0147cccb2aeeef0e76a9
+protected_before_after_current_identical=true
+```
+
+最终系统相对冻结 Hybrid 的 machine-proposed development 结果：graded nDCG@10 `+0.038587`、MRR@10_rel2 `+0.062806`、pooled Recall@10_rel2 `+0.059467`；dialect-sensitive Wrong-Dialect@5 相对下降 `63.68%`，version-sensitive Wrong-Version@5 相对下降 `66.67%`。全部 Phase 7/8/9 与最终门禁通过。权威数值见 `retrieval/retrieval-v1/evaluation/` 和 `reports/retrieval_v1_report.md`；不得称为人工 gold 或 held-out test 结果。
 
 当前 checkout 的证据绑定：
 
@@ -139,7 +154,7 @@ SQLMend-RAG/
 
 ### 6.1 受保护目录
 
-`construction/` 和当前主版 `annotation/codex/` 在 retrieval v1 中是只读、字节级保护输入。本轮用户明确授权的 v1 数据维护已经结束并重新锚定快照；除非用户再次明确启动版本化的数据维护，否则不得：
+`construction/` 和当前主版 `annotation/codex/` 在 retrieval baseline 中是只读、字节级保护输入。本轮用户明确授权的 annotation v1 数据维护已经结束并重新锚定快照；除非用户再次明确启动版本化的数据维护，否则不得：
 
 - 新增、删除、重命名或修改任何文件；
 - 运行可能生成 `__pycache__` 的 Python 命令；
@@ -285,7 +300,7 @@ python annotation/codex/validate_annotations.py --root .
 
 ## 9. 正式检索基线设计
 
-技术入口见 [retrieval README](retrieval/baseline/README.md)。`retrieval/baseline/` 是独立模块，当前只负责 fixed v1 baseline，不负责 UI、生成、SQL 修复、reranker、query rewriting、HyDE 或显式方言/版本调权。
+技术入口见 [retrieval README](retrieval/baseline/README.md)。`retrieval/baseline/` 是独立模块，当前只负责 fixed baseline，不负责 UI、生成、SQL 修复、reranker、query rewriting、HyDE 或显式方言/版本调权。
 
 ### 9.1 数据流与隔离
 
@@ -341,7 +356,7 @@ sha256=e9cc591b815e9afb584381ad60c6872b7c36d82e65e255e6dc7045e21ecbdb3c
 
 BM25 和 dense 必须共用同一序列化文本。
 
-### 9.3 三套 frozen v1 baseline
+### 9.3 三套 frozen baseline
 
 | 系统 | 固定设计 |
 |---|---|
@@ -359,7 +374,9 @@ Dense  eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd
 Hybrid 05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468
 ```
 
-三路重复正式运行均字节一致。不要原地修改 v1 YAML 进行调参；需要创新实验时创建明确的 v2 配置、system ID、artifact 名称和验证契约。
+三路重复正式运行均字节一致。不要原地修改 baseline YAML 进行调参；开发正式 retrieval v1 时应创建独立的 v1 配置、system ID、artifact 名称和验证契约。
+
+当前 baseline 的已冻结 run tag 仍为 `bm25_formal_v1`、`dense_formal_v1` 和 `hybrid_rrf_formal_v1`。这些字符串是旧产物的兼容性标识，并已被 annotation v1 provenance 按字节哈希绑定；其中的 `v1` 不再表示 retrieval release 版本。为避免破坏可审计性，本次命名更正不原地重写这些历史 tag；正式 retrieval v1 必须使用新的、明确包含 dialect/version-aware 身份的 system ID。
 
 ### 9.4 源码职责
 
@@ -423,7 +440,7 @@ A、B 和最终裁决版 qrels 在四个主指标上都选择 hybrid；主指标
 
 ## 11. 历史 annotation retriever provenance
 
-历史标注阶段使用的系统与正式 v1 不同：历史 BM25 为 `k1=1.2`，历史 dense 为 `BAAI/bge-small-en-v1.5`，然后做历史 RRF。正式系统则为 `k1=1.5` BM25 + pinned E5 + 两路 RRF。
+历史标注阶段使用的系统与当前 baseline 不同：历史 BM25 为 `k1=1.2`，历史 dense 为 `BAAI/bge-small-en-v1.5`，然后做历史 RRF。当前 baseline 则为 `k1=1.5` BM25 + pinned E5 + 两路 RRF。
 
 当前独立复现结果为：
 
@@ -543,7 +560,7 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 - `pairwise_differences.json`
 - `complementarity_report.json`
 
-固定 v1 的质量目标是：
+固定 baseline 的质量目标是：
 
 - hybrid graded nDCG@10 至少高于最佳单系统 0.01；
 - hybrid pooled Recall@10_rel2 不低于最佳单系统减 0.01；
@@ -556,19 +573,19 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 
 后续工作分为两个互不混淆的数据轨道：
 
-1. **机器开发回归集**：当前 annotation v1 revision 1.1.0 已完整覆盖固定 baseline Top-30，可用于 retrieval v2 的开发比较；新增系统带来的新候选必须先补判并版本化，不能把缺标当 0；
+1. **机器开发回归集**：当前 annotation v1 revision 1.1.0 已完整覆盖固定 baseline Top-30，可用于正式 retrieval v1 的开发比较；新增系统带来的新候选必须先补判并版本化，不能把缺标当 0；
 2. **最终人工 held-out 数据**：由小组另行采集并标注至少 1,000 条无重复、尽量平衡的记录；推荐三名 annotators，两名也可，IAA >= 80%；保存原始标注、annotator、分歧、adjudication 与 manifest；不得在其上反复调参。
 
 这些工作不是全部串行依赖。当前可推进三条线：
 
-1. `PLANNED_NEXT` **dialect/version-aware retrieval v2**：保留固定 v1 和当前 qrels 作为对照；新系统若扩大候选 pool，先完成相同口径的盲补判再比较；
-2. `PLANNED` **human evaluation protocol**：在任何相关调参前冻结 held-out split、schema、指南、抽样、平衡、annotator 和 adjudication 流程；
-3. `PLANNED` **product scaffolding**：generator 和 UI 可以基于当前冻结 v1 接口并行开发。
+1. `VERIFIED_COMPLETE_FOR_DEVELOPMENT_ONLY` **正式 retrieval v1**：保留冻结 baseline 对照，五系统结果已发布；任何未来新 retriever 若扩大候选 pool，仍须先完成相同口径的盲补判；
+2. `PLANNED_NEXT` **human evaluation protocol**：在任何相关调参前冻结 held-out split、schema、指南、抽样、平衡、annotator 和 adjudication 流程；
+3. `PLANNED` **product scaffolding**：generator 和 UI 可基于冻结 baseline/retrieval v1 接口开发，但不属于已完成阶段。
 
 随后按各自依赖推进：
 
-1. 新建 dialect/version-aware retrieval v2，并保留 retrieval v1 作为不可覆盖对照；不要与已放弃的 annotation v2 混淆；
-2. 评估 reranker、query rewriting、HyDE 或其他创新；多个创新必须提供独立与组合配置以支持 ablation；
+1. 保持 retrieval v1 与 annotation v1 两个版本轴独立，不要与已放弃的 annotation v2 混淆；未来检索创新必须使用新 system ID/config/artifact 并继续保留 baseline/v1 对照；
+2. 若继续评估 query rewriting、HyDE 或其他检索创新，多个创新必须提供独立与组合配置以支持 ablation，并先完成 pool coverage gate；
 3. 实现 grounded SQL diagnosis/repair generator，答案引用可检查证据，并加入 unsupported-claim/faithfulness 检查；
 4. 实现简单 UI。服务启动时加载并保持热的 BM25、DenseIndex 和模型，不要逐请求执行 CLI；
 5. 完成任务指标、faithfulness、answer relevance、context precision/relevance，以及 latency、吞吐量、成本、可扩展性评估；
@@ -591,8 +608,8 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 | corpus | 这是新数据版本；不能原地修改受保护文件。新建版本并重建全部索引、runs、qrels binding、评估和报告 |
 | annotation qrels、candidate pool、schema 或 provenance | 仅在明确的数据维护版本中修改；更新 `annotation/VERSION_HISTORY.md`，运行 annotation validator，重新锚定 protected audit，再从 `check-pool` 重跑评估与最终化链 |
 | supplemental qrels | 从 `check-pool` 开始重跑完整评估与最终化链 |
-| 新 retriever | 新 system ID/config/artifact；更新 pool/evaluation/reporting/validation/tests；保留 v1 对照 |
-| RRF 常量或 tie-break | 新 hybrid 版本；重建 hybrid、pool、evaluation、tests、reports；不得覆盖 v1 |
+| 新 retriever | 新 system ID/config/artifact；更新 pool/evaluation/reporting/validation/tests；保留 baseline 对照 |
+| RRF 常量或 tie-break | 新 hybrid 版本；重建 hybrid、pool、evaluation、tests、reports；不得覆盖 baseline |
 | 历史 reproduction 实现或输入 | 重新审计；可能触发数小时 BGE 重算 |
 | generator/UI | 新模块、独立依赖与测试；更新本文、最终 README 和课程报告 |
 
@@ -650,6 +667,21 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 - [Latency](retrieval/baseline/evaluation/latency.json)
 - [Test evidence](retrieval/baseline/reports/test_results.json)
 
+### Retrieval v1
+
+- [Retrieval v1 README](retrieval/retrieval-v1/README.md)
+- [Retrieval v1 manifest](retrieval/retrieval-v1/manifest.json)
+- [Retrieval v1 validation](retrieval/retrieval-v1/reports/validation_report.json)
+- [Five-system report and cases](retrieval/retrieval-v1/reports/retrieval_v1_report.md)
+- [Acceptance gates](retrieval/retrieval-v1/evaluation/acceptance.json)
+- [Five-system comparison](retrieval/retrieval-v1/evaluation/comparison_results.json)
+- [Judged coverage](retrieval/retrieval-v1/evaluation/judged_coverage.json)
+- [Pool expansion summary](retrieval/retrieval-v1/pool_expansion/pool_expansion_summary.json)
+- [Pool expansion requests](retrieval/retrieval-v1/pool_expansion/pool_expansion_required.jsonl)
+- [Latency](retrieval/retrieval-v1/reports/latency.json)
+- [Test evidence](retrieval/retrieval-v1/reports/test_results.json)
+- [Protected before/after audits](retrieval/retrieval-v1/reports/protected_paths_after.json)
+
 ## 19. 本文件维护协议
 
 每次阶段状态、冻结输入、接口契约、主要 blocker 或课程解释发生变化时更新本文。普通内部重构如果不改变开发者需要知道的事实，可以不更新。
@@ -673,6 +705,8 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 | 2026-08-30 | 250 条 Codex 数据及其 Top-30 判断仅作 machine-proposed development data | 双盲机器标注与机器裁决降低单次判断波动，但不能抵扣 1,000+ 人工记录或称为 held-out test |
 | 2026-08-30 | annotation 当前主版本为 v1、dataset revision 1.1.0；v2 实验放弃 | 本轮明确授权的数据维护直接更新主 v1；历史集中记录于 `annotation/VERSION_HISTORY.md`，维护结束后重新冻结 |
 | 2026-08-30 | missing qrel 永远是 unjudged，不是 relevance 0 | 当前固定三路 Top-30 已完整；未来新增 retriever 若引入未判断候选，必须重新阻止指标发布 |
-| 2026-08-29 | 正式 v1 固定为 BM25 + pinned E5 + two-channel RRF | 历史 BGE/candidate ranks 只用于 provenance；创新建立新版本而不覆盖 v1 |
+| 2026-08-30 | 当前检索系统定名为 baseline；方言与版本感知的正式系统定名为 retrieval v1 | baseline 固定为 BM25 + pinned E5 + two-channel RRF；后续创新不得覆盖 baseline |
 | 2026-08-29 | 根 `README.md` 留作最终用户文档；根 `DEVELOPMENT_CONTEXT.md` 维护内部状态 | 避免把交接细节、临时 blocker 和用户安装文档混在一起 |
-| 2026-08-30 | 当前 retrieval v1 正式证据重新绑定并通过 | source tree SHA 为 `cc8961...`；95 tests、protected after audit、`finalize -> validate` 共同构成当前证据 |
+| 2026-08-30 | 当前 retrieval baseline 正式证据重新绑定并通过 | source tree SHA 为 `104d6f59...`；95 tests、protected after audit、`finalize -> validate` 共同构成当前证据 |
+| 2026-08-30 | Retrieval v1 采用 soft metadata bonuses 与 deterministic field-aware lexical reranker | 不硬删除跨方言或旧文档；版本冲突只依据 corpus metadata/明确文本边界；reranker 只读合法在线字段与 passage，不使用开发标签 |
+| 2026-08-30 | Retrieval v1 五系统 release 通过正式干净重建 | 五系统 `Judged@30=1.0`、pool expansion 为 0、60 tests、12/12 validation checks、protected bytes unchanged；当前结果只称 machine-proposed development evaluation |

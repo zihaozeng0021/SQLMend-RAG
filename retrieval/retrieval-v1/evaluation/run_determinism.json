@@ -1,0 +1,29 @@
+{
+  "schema_version": "sqlmend-retrieval-v1-determinism-v1",
+  "systems": {
+    "hybrid_rrf_dialect_aware_v1": {
+      "byte_identical": true,
+      "first_sha256": "2dfd62c9097f8e3b92fb97db9977a485724bda46571dee7c6c765727e70bcf4b",
+      "provenance_identical": true,
+      "second_sha256": "2dfd62c9097f8e3b92fb97db9977a485724bda46571dee7c6c765727e70bcf4b"
+    },
+    "hybrid_rrf_dialect_version_aware_v1": {
+      "byte_identical": true,
+      "first_sha256": "ac1947f9d46c018538fd70213d977f355f79f225e5f9d5703a92f44cc88e4ebe",
+      "provenance_identical": true,
+      "second_sha256": "ac1947f9d46c018538fd70213d977f355f79f225e5f9d5703a92f44cc88e4ebe"
+    },
+    "hybrid_rrf_dialect_version_lexical_rerank_v1": {
+      "byte_identical": true,
+      "first_sha256": "774d2d1c90e8e8d58479130a9e016e8a4699cd9ff4b8f72dbf95a3b6f49be566",
+      "provenance_identical": true,
+      "second_sha256": "774d2d1c90e8e8d58479130a9e016e8a4699cd9ff4b8f72dbf95a3b6f49be566"
+    },
+    "hybrid_rrf_version_aware_v1": {
+      "byte_identical": true,
+      "first_sha256": "4dd3ec3cbecb43714a4a68585e401d92518c919c7cf1d90714c500f7a7666eaa",
+      "provenance_identical": true,
+      "second_sha256": "4dd3ec3cbecb43714a4a68585e401d92518c919c7cf1d90714c500f7a7666eaa"
+    }
+  }
+}
