@@ -29,7 +29,7 @@
 
 ### 2.1 要求优先级
 
-1. 课程 `Assignment.pdf` 是最高准则。当前机器上的来源路径为 `C:\Users\zihao\Desktop\Documents\AI6127\Assignment.pdf`，它不在仓库中；当前文件 SHA-256 为 `B61A21DC5ED61B94EB584B7A50694C9304152246192BF4C40A753E17C6A1C2BB`。协作者必须从受控共享位置取得同一 PDF 并校验该哈希，不能用名称相同但内容不同的文件替代。
+1. 课程 `Assignment.pdf` 是最高准则。来源路径为 `.\requirements\Assignment.pdf`；当前文件 SHA-256 为 `B61A21DC5ED61B94EB584B7A50694C9304152246192BF4C40A753E17C6A1C2BB`。协作者必须从受控共享位置取得同一 PDF 并校验该哈希，不能用名称相同但内容不同的文件替代。
 2. 用户明确决定在不违反 PDF 时生效。
 3. 当前阶段的专项规格或 prompt 只约束该阶段。
 4. 仓库模块文档与工程惯例。
