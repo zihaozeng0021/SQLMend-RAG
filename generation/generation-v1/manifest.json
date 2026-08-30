@@ -1,0 +1,221 @@
+{
+  "artifact_file_count": 64,
+  "artifact_groups": {
+    "baseline_release": {
+      "file_count": 4,
+      "files": {
+        "generation/baseline/README.md": "b03d35339da2e87ff5ac8c796ad6bf2f8a7de69e60de830e32513ed8a48921c4",
+        "generation/baseline/manifest.json": "402b1659c1620b4b11cdb276277508a7cf793843c8b66af5b45917c988b7fdbc",
+        "generation/baseline/reports/warmup_baseline.json": "097806772cc8c774f446982d9cd9aa48f12e16b32388c982f990268fb530369e",
+        "generation/baseline/runs/baseline_closed_book_dev250.jsonl": "70e4372ee2414be316ebd084b95503d01d87ecfa6ec49b916da13c64370f0927"
+      },
+      "tree_sha256": "acf90128f20a1e22639594a5ba3d03e49701860bd3c42eecdfebbe7609943127"
+    },
+    "evaluation": {
+      "file_count": 5,
+      "files": {
+        "generation/generation-v1/evaluation/acceptance.json": "c4a0e87b16f454f05bd8a7808c611b4051e8e8a4edee70cfd0123d4f287b0874",
+        "generation/generation-v1/evaluation/generation_seal.json": "37b7656bfc40455d4715b4e196d4de3b86d1b4d21872cc645bc7d0dc76155031",
+        "generation/generation-v1/evaluation/judgments.jsonl": "26d401945269c9b80cc7ad227aa1b0db6f1675e15032e25719ece3e6ac51a107",
+        "generation/generation-v1/evaluation/overall_metrics.json": "387758242facce093b19f682eb7ef21f155e7715a0dacef8d6af23961171f767",
+        "generation/generation-v1/evaluation/per_query_comparison.jsonl": "cdc6a31e5b764d23ab21236271343de935c8aa44690ebdb05fd6f56736f0f6ec"
+      },
+      "tree_sha256": "517e57dd1306ffa919db70900b09fe15ee65e0a9218eb52930b902d2d73fd192"
+    },
+    "frozen_inputs": {
+      "file_count": 3,
+      "files": {
+        "construction/data/processed/corpus.jsonl": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
+        "retrieval/retrieval-v1/runs/hybrid_rrf_dialect_version_lexical_rerank_dev250.trec": "774d2d1c90e8e8d58479130a9e016e8a4699cd9ff4b8f72dbf95a3b6f49be566",
+        "retrieval/retrieval-v1/serialized_queries/dev_250_queries.jsonl": "e9cc591b815e9afb584381ad60c6872b7c36d82e65e255e6dc7045e21ecbdb3c"
+      },
+      "tree_sha256": "57e44e8104cb1532fc31cd7e0b0ee6fb2b5d99e99b88ed0f84838ea8cab173ca"
+    },
+    "historical_naming_provenance": {
+      "file_count": 7,
+      "files": {
+        "generation/generation-v1/provenance/legacy/g0_closed_book_dev250.jsonl": "8faaeec64fa6b5eb0ff9a831e0a4b819198ac58971b633366f8f1f0b32646997",
+        "generation/generation-v1/provenance/legacy/g1_evidence_top5.jsonl": "94f3607fe8d7660344c99eb6a41e123aa886e3e118d6261bd0e9291ad4006912",
+        "generation/generation-v1/provenance/legacy/g1_retrieval_v1_rag_dev250.jsonl": "05898850acbe662464fcbf2327bcfb326a666ea1e31524fa5b66f50540cffe75",
+        "generation/generation-v1/provenance/legacy/judgments_g0_g1.jsonl": "3b8f59cec61e0a0ae9150cc74316bea0f90e1f0755e66408790c2efe6875a31c",
+        "generation/generation-v1/provenance/legacy/warmup_g0_closed_book.json": "0229ad7b48833662f62e7efe6effa96250d69e387f51aa9ccce3540dea80e19f",
+        "generation/generation-v1/provenance/legacy/warmup_g1_retrieval_v1_rag.json": "093fd37047e2ce473efbd2f57e3e1c5e68df4afef04aeb483c33a9b5cdc60bdc",
+        "generation/generation-v1/provenance/system_naming_migration.json": "64e485796ac768f431bb8abf9ea013e9a1fad44ae57a4c222979b1b5f51aba9c"
+      },
+      "tree_sha256": "7e385952934a8fb4408fd87dc977ea476f5d4cfaa4b4525a2a56bc907f63af8f"
+    },
+    "prepared_inputs": {
+      "file_count": 2,
+      "files": {
+        "generation/generation-v1/prepared_inputs/generation_v1_evidence_top5.jsonl": "94f3607fe8d7660344c99eb6a41e123aa886e3e118d6261bd0e9291ad4006912",
+        "generation/generation-v1/prepared_inputs/online_queries.jsonl": "699bdb4256895d210c36b75ceb69a8a49f8a0e6c20f76ccb9735ccd4de1de579"
+      },
+      "tree_sha256": "c3bcf66248b8b3dd427b69e93b62dd9e1fd68c5d7b923981687b0b0a64f519b1"
+    },
+    "reports": {
+      "file_count": 7,
+      "files": {
+        "generation/generation-v1/reports/generation_v1_report.md": "26dea4e42726b1ecfb2c54bb9f709e0e0684d0ac4db4221f22d3c1893b25f224",
+        "generation/generation-v1/reports/model_identity.json": "e83ebcc1be926e9f4be82b2f2e1c90910495aefbba264009812de569e3b8cd79",
+        "generation/generation-v1/reports/protected_paths_after.json": "e13bc727cc34e43a15cea9108500cd2b6b525c3420501bd7652ad48681874eec",
+        "generation/generation-v1/reports/protected_paths_before.json": "3051c1b87c8fa39bdc61824f160472dd9313373711f8f209536eb2585051f0cf",
+        "generation/generation-v1/reports/protected_paths_current.json": "64f28794aa311154b1434350d7b51fd2b5b749b029e0c15e8f781229bdabd965",
+        "generation/generation-v1/reports/test_results.json": "5dd714d8c7235bda233fa4fb797c6d097b32e8ddb583d4de07092d57c88f4e15",
+        "generation/generation-v1/reports/warmup_generation_v1.json": "25dcb1dadea9a838e7977561662dac038d4edf9c517b180860ccb13579d58ec4"
+      },
+      "tree_sha256": "0235bcede5983e2ad8cf8ece8a46e3f792b5046d7d1ed727c1e94fed731e3726"
+    },
+    "runs": {
+      "file_count": 2,
+      "files": {
+        "generation/baseline/runs/baseline_closed_book_dev250.jsonl": "70e4372ee2414be316ebd084b95503d01d87ecfa6ec49b916da13c64370f0927",
+        "generation/generation-v1/runs/generation_v1_rag_dev250.jsonl": "0af9cc7c8dbbcecdeaa87cf73ff51c22cb13c0016e07614060787e3a1434c66c"
+      },
+      "tree_sha256": "93d140c763d795fb58b87b5cd4fd52b2c3c899f8c56e36d29c3d15ac1061e661"
+    },
+    "source_and_tests": {
+      "file_count": 36,
+      "files": {
+        "generation/README.md": "601dc317f1b4cc6d3f56964b6da486e480ebb63813005a8602ec7881347c66e6",
+        "generation/baseline/README.md": "b03d35339da2e87ff5ac8c796ad6bf2f8a7de69e60de830e32513ed8a48921c4",
+        "generation/generation-v1/README.md": "56b9e8b57748b89132bdef2d89f090d18ba3c4cc5651ad9a2a4a3b05ad1f97ac",
+        "generation/generation-v1/config/generation.yaml": "5de0661dcbde09b491a5f0a0b5e3214c55b1de62cb5a63e033b968bb17810410",
+        "generation/generation-v1/pyproject.toml": "e9e8eec395f07d1a6a905079c57b4bf86f98dbf56e83d942e20dad18adb686f6",
+        "generation/generation-v1/requirements.txt": "3abf89209a2ab2c8b101044acfd7e6f28e9bf3f83141d796e9f1ff3769f0cad8",
+        "generation/generation-v1/schema/answer.schema.json": "638e2e066848e806449021608ea3981d94d57e54d9707055b8efea9210dcc23c",
+        "generation/generation-v1/schema/evidence.schema.json": "c14dc71d95d682ae8a53e3af47ada5d9aa75a5bce68810bf08bc38bcfd779843",
+        "generation/generation-v1/schema/prepared_query.schema.json": "9e2452776d6d01eadf9a18ddf588238aaefd7c99fb91f2aa8f7832f192bdc2a4",
+        "generation/generation-v1/src/sqlmend_generation_v1/__init__.py": "a4f034be5d3b5401423c8732b86817e9c6327b11494edb7b1d3e48c85d4f3976",
+        "generation/generation-v1/src/sqlmend_generation_v1/audit.py": "12fbb76503ca5e6035eb0d960324512795a8636e1d6ede7dc407aca5e7287b3f",
+        "generation/generation-v1/src/sqlmend_generation_v1/cli.py": "8d4a020f4a9a32a1581f4382b860760faa7082522e9f8e40b1664d8992493a4e",
+        "generation/generation-v1/src/sqlmend_generation_v1/contracts.py": "c1fda78255ea2640c81d3863e95ea01769b6c3978dffe98f2f2f1947b6d11879",
+        "generation/generation-v1/src/sqlmend_generation_v1/evaluation.py": "439e8cfa713e44a9ad74cb15de2f80fc8a83181f475b6f59f2828cfebe949bb8",
+        "generation/generation-v1/src/sqlmend_generation_v1/inputs.py": "43f675b592f9684b51631141fdf54dd0f28b0766cae1749ad7737760ca36f778",
+        "generation/generation-v1/src/sqlmend_generation_v1/io.py": "5d103b9a44057311e42fcdc51577206b8dec64566e4bcdf092bac25d7c0d30f0",
+        "generation/generation-v1/src/sqlmend_generation_v1/manifest.py": "f5c96dc84f8d706336c352d839d8d78f27206bfa165b2aceba56e6bc62fde29d",
+        "generation/generation-v1/src/sqlmend_generation_v1/metrics.py": "6df8f794f5d61e5553bf68e6ca2d8d17eba0881f84fa6f6234a9e769e3a12c5e",
+        "generation/generation-v1/src/sqlmend_generation_v1/migration.py": "89b48d3790de22d2cc9f283f90911943da2b45a1c78b84b8a2cdb0a3f848214e",
+        "generation/generation-v1/src/sqlmend_generation_v1/ollama.py": "e21ebedcc052810532f0ca878734b161398b9a3358e8be9c82c447f12da0fcf2",
+        "generation/generation-v1/src/sqlmend_generation_v1/paths.py": "27b4e297cb3a52910023e01f480637e8d05f6771e3025570995117f68e3b4dc5",
+        "generation/generation-v1/src/sqlmend_generation_v1/prompting.py": "dc4076e7d204e4f2c1fc20e77414cfba0cd9e382c846c2b1e5f0e3491246b5df",
+        "generation/generation-v1/src/sqlmend_generation_v1/reporting.py": "36628783294fe4687a007a0311e2041e1ef25ebaa07c3d4f9bf1eba534c97f5e",
+        "generation/generation-v1/src/sqlmend_generation_v1/runner.py": "3a6b128d0abbc8e41c0bbea938faa5471aceb185025bfbf7365f377c4236b6e5",
+        "generation/generation-v1/src/sqlmend_generation_v1/validation.py": "d807119c1e4ae75da71573da59962234dec4271e513a44eadf75a3e810d7282a",
+        "generation/generation-v1/tests/test_audit.py": "1af1f50512ce9e8ca95580acb4c1bf36747e2d42b09a81749cdaa01794666e7d",
+        "generation/generation-v1/tests/test_cli.py": "aa88045fc0c3bc68f4d47a4f3b7401cb063cc67efd0a8d9753ff653288f1cbc2",
+        "generation/generation-v1/tests/test_evaluation.py": "d0fe82cbcfbc27a9d98ed8a4c1bcbb5a2041f09232a118a0bf6316ec89c303a9",
+        "generation/generation-v1/tests/test_inputs.py": "5e56b103db220dafa1497b6579b6439f2657b60fa0a0f63d6fcd9f85ab69616f",
+        "generation/generation-v1/tests/test_manifest.py": "9bfe81313be3fcbf7c8da73b523f9b97e7621a60e784d19d720a0506fd03846d",
+        "generation/generation-v1/tests/test_metrics.py": "55f12fddf4235d7885e6f65a81fda0d85e0a9109ac4fd7b4c3b83d4ed94f6cbf",
+        "generation/generation-v1/tests/test_migration.py": "699fa4749222d84fd3c939ac48973ef42a53461c702536a06195ef0d2f5ac6b6",
+        "generation/generation-v1/tests/test_prompting.py": "3ca82700e39522e337dd7bd157d17b0c81dc9eb600e084572383036bc0132a8c",
+        "generation/generation-v1/tests/test_reporting.py": "051efafe703677c478c70e387c9ca731d0cb55cabcdcaca9c83fbee77dccb538",
+        "generation/generation-v1/tests/test_runner.py": "6d5a62a8ccd00faf28098e5181a3b738af5083ab8554b8bb076eb021e0a5832c",
+        "generation/generation-v1/tests/test_validation.py": "23fd47e2c594ed1f062654b3190f9a6f3a557503fcf14d80fc1388c5f0c9b6be"
+      },
+      "schema_version": "sqlmend-generation-v1-source-snapshot-v1",
+      "tree_sha256": "068cb8637e68a091f3413001f55b4f6506294c4e8cbbb305539d90ef915c3df8"
+    }
+  },
+  "artifact_tree_sha256": "94153ea167f634ff1997367d51472839082a62e31714df962426ef1f2227488d",
+  "evaluation_label": "machine-proposed development evaluation",
+  "excluded_from_manifest": {
+    "atomic_temporary_name_fragments": [
+      ".temp-",
+      ".tmp-"
+    ],
+    "cache_and_temporary_directory_names": [
+      ".mypy_cache",
+      ".nox",
+      ".pytest_cache",
+      ".ruff_cache",
+      ".tox",
+      "__pycache__",
+      "cache",
+      "model_cache",
+      "temp",
+      "tmp"
+    ],
+    "self_reference_names": [
+      "manifest.json",
+      "manifest.sha256",
+      "manifest_hash.json"
+    ],
+    "temporary_suffixes": [
+      ".tmp",
+      ".temp",
+      ".pyc",
+      ".pyo",
+      ".swp",
+      "~"
+    ],
+    "validation_result_names": [
+      "validation_report.json",
+      "validation_result.json",
+      "validation_results.json"
+    ]
+  },
+  "formal_answer_count": 500,
+  "formal_answer_count_semantics": "formal_result_wrappers_including_explicit_failure_records",
+  "formal_result_wrapper_count": 500,
+  "human_verified": false,
+  "machine_proposed_development_only": true,
+  "manifest_payload_sha256": "1e78f60b4f967d45a1d1b49e2b36d5ab8f18b4b013b9c41d46715de4b12be95f",
+  "module": "sqlmend-generation-v1",
+  "query_count_per_system": 250,
+  "release": "generation-v1",
+  "retrieval_top_k": 5,
+  "schema_version": "sqlmend-generation-v1-release-manifest-v1",
+  "systems": [
+    "baseline",
+    "generation_v1"
+  ],
+  "test_evidence": {
+    "path": "generation/generation-v1/reports/test_results.json",
+    "sha256": "5dd714d8c7235bda233fa4fb797c6d097b32e8ddb583d4de07092d57c88f4e15",
+    "size_bytes": 1082,
+    "source_snapshot": {
+      "file_count": 36,
+      "files": {
+        "generation/README.md": "601dc317f1b4cc6d3f56964b6da486e480ebb63813005a8602ec7881347c66e6",
+        "generation/baseline/README.md": "b03d35339da2e87ff5ac8c796ad6bf2f8a7de69e60de830e32513ed8a48921c4",
+        "generation/generation-v1/README.md": "56b9e8b57748b89132bdef2d89f090d18ba3c4cc5651ad9a2a4a3b05ad1f97ac",
+        "generation/generation-v1/config/generation.yaml": "5de0661dcbde09b491a5f0a0b5e3214c55b1de62cb5a63e033b968bb17810410",
+        "generation/generation-v1/pyproject.toml": "e9e8eec395f07d1a6a905079c57b4bf86f98dbf56e83d942e20dad18adb686f6",
+        "generation/generation-v1/requirements.txt": "3abf89209a2ab2c8b101044acfd7e6f28e9bf3f83141d796e9f1ff3769f0cad8",
+        "generation/generation-v1/schema/answer.schema.json": "638e2e066848e806449021608ea3981d94d57e54d9707055b8efea9210dcc23c",
+        "generation/generation-v1/schema/evidence.schema.json": "c14dc71d95d682ae8a53e3af47ada5d9aa75a5bce68810bf08bc38bcfd779843",
+        "generation/generation-v1/schema/prepared_query.schema.json": "9e2452776d6d01eadf9a18ddf588238aaefd7c99fb91f2aa8f7832f192bdc2a4",
+        "generation/generation-v1/src/sqlmend_generation_v1/__init__.py": "a4f034be5d3b5401423c8732b86817e9c6327b11494edb7b1d3e48c85d4f3976",
+        "generation/generation-v1/src/sqlmend_generation_v1/audit.py": "12fbb76503ca5e6035eb0d960324512795a8636e1d6ede7dc407aca5e7287b3f",
+        "generation/generation-v1/src/sqlmend_generation_v1/cli.py": "8d4a020f4a9a32a1581f4382b860760faa7082522e9f8e40b1664d8992493a4e",
+        "generation/generation-v1/src/sqlmend_generation_v1/contracts.py": "c1fda78255ea2640c81d3863e95ea01769b6c3978dffe98f2f2f1947b6d11879",
+        "generation/generation-v1/src/sqlmend_generation_v1/evaluation.py": "439e8cfa713e44a9ad74cb15de2f80fc8a83181f475b6f59f2828cfebe949bb8",
+        "generation/generation-v1/src/sqlmend_generation_v1/inputs.py": "43f675b592f9684b51631141fdf54dd0f28b0766cae1749ad7737760ca36f778",
+        "generation/generation-v1/src/sqlmend_generation_v1/io.py": "5d103b9a44057311e42fcdc51577206b8dec64566e4bcdf092bac25d7c0d30f0",
+        "generation/generation-v1/src/sqlmend_generation_v1/manifest.py": "f5c96dc84f8d706336c352d839d8d78f27206bfa165b2aceba56e6bc62fde29d",
+        "generation/generation-v1/src/sqlmend_generation_v1/metrics.py": "6df8f794f5d61e5553bf68e6ca2d8d17eba0881f84fa6f6234a9e769e3a12c5e",
+        "generation/generation-v1/src/sqlmend_generation_v1/migration.py": "89b48d3790de22d2cc9f283f90911943da2b45a1c78b84b8a2cdb0a3f848214e",
+        "generation/generation-v1/src/sqlmend_generation_v1/ollama.py": "e21ebedcc052810532f0ca878734b161398b9a3358e8be9c82c447f12da0fcf2",
+        "generation/generation-v1/src/sqlmend_generation_v1/paths.py": "27b4e297cb3a52910023e01f480637e8d05f6771e3025570995117f68e3b4dc5",
+        "generation/generation-v1/src/sqlmend_generation_v1/prompting.py": "dc4076e7d204e4f2c1fc20e77414cfba0cd9e382c846c2b1e5f0e3491246b5df",
+        "generation/generation-v1/src/sqlmend_generation_v1/reporting.py": "36628783294fe4687a007a0311e2041e1ef25ebaa07c3d4f9bf1eba534c97f5e",
+        "generation/generation-v1/src/sqlmend_generation_v1/runner.py": "3a6b128d0abbc8e41c0bbea938faa5471aceb185025bfbf7365f377c4236b6e5",
+        "generation/generation-v1/src/sqlmend_generation_v1/validation.py": "d807119c1e4ae75da71573da59962234dec4271e513a44eadf75a3e810d7282a",
+        "generation/generation-v1/tests/test_audit.py": "1af1f50512ce9e8ca95580acb4c1bf36747e2d42b09a81749cdaa01794666e7d",
+        "generation/generation-v1/tests/test_cli.py": "aa88045fc0c3bc68f4d47a4f3b7401cb063cc67efd0a8d9753ff653288f1cbc2",
+        "generation/generation-v1/tests/test_evaluation.py": "d0fe82cbcfbc27a9d98ed8a4c1bcbb5a2041f09232a118a0bf6316ec89c303a9",
+        "generation/generation-v1/tests/test_inputs.py": "5e56b103db220dafa1497b6579b6439f2657b60fa0a0f63d6fcd9f85ab69616f",
+        "generation/generation-v1/tests/test_manifest.py": "9bfe81313be3fcbf7c8da73b523f9b97e7621a60e784d19d720a0506fd03846d",
+        "generation/generation-v1/tests/test_metrics.py": "55f12fddf4235d7885e6f65a81fda0d85e0a9109ac4fd7b4c3b83d4ed94f6cbf",
+        "generation/generation-v1/tests/test_migration.py": "699fa4749222d84fd3c939ac48973ef42a53461c702536a06195ef0d2f5ac6b6",
+        "generation/generation-v1/tests/test_prompting.py": "3ca82700e39522e337dd7bd157d17b0c81dc9eb600e084572383036bc0132a8c",
+        "generation/generation-v1/tests/test_reporting.py": "051efafe703677c478c70e387c9ca731d0cb55cabcdcaca9c83fbee77dccb538",
+        "generation/generation-v1/tests/test_runner.py": "6d5a62a8ccd00faf28098e5181a3b738af5083ab8554b8bb076eb021e0a5832c",
+        "generation/generation-v1/tests/test_validation.py": "23fd47e2c594ed1f062654b3190f9a6f3a557503fcf14d80fc1388c5f0c9b6be"
+      },
+      "schema_version": "sqlmend-generation-v1-source-snapshot-v1",
+      "tree_sha256": "068cb8637e68a091f3413001f55b4f6506294c4e8cbbb305539d90ef915c3df8"
+    }
+  }
+}

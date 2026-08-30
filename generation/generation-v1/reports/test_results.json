@@ -1,0 +1,25 @@
+{
+  "command": [
+    "E:\\MyProgramFiles\\anaconda\\python.exe",
+    "-m",
+    "pytest",
+    "generation/generation-v1/tests",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "python_executable": "E:\\MyProgramFiles\\anaconda\\python.exe",
+  "python_version": "3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 13:17:27) [MSC v.1929 64 bit (AMD64)]",
+  "returncode": 0,
+  "schema_version": "sqlmend-generation-test-results-v1",
+  "source_file_count": 36,
+  "source_file_count_current": 36,
+  "source_stable_during_tests": true,
+  "source_tree_sha256": "068cb8637e68a091f3413001f55b4f6506294c4e8cbbb305539d90ef915c3df8",
+  "source_tree_sha256_after": "068cb8637e68a091f3413001f55b4f6506294c4e8cbbb305539d90ef915c3df8",
+  "source_tree_sha256_before": "068cb8637e68a091f3413001f55b4f6506294c4e8cbbb305539d90ef915c3df8",
+  "source_tree_sha256_current": "068cb8637e68a091f3413001f55b4f6506294c4e8cbbb305539d90ef915c3df8",
+  "status": "PASS",
+  "stderr": "",
+  "stdout": "................................................................         [100%]\n64 passed in 10.69s\n"
+}

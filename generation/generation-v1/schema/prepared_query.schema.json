@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SQLMend Safe Online Query v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "query_id",
+    "source_fields_used",
+    "serialized_text",
+    "serialized_text_sha256",
+    "serializer_version"
+  ],
+  "properties": {
+    "schema_version": {"const": "sqlmend-online-query-v1"},
+    "query_id": {"type": "string", "minLength": 1},
+    "source_fields_used": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "serialized_text": {"type": "string", "minLength": 1},
+    "serialized_text_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "serializer_version": {"const": "sqlmend-query-v1"}
+  }
+}

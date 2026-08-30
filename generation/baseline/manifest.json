@@ -1,0 +1,64 @@
+{
+  "artifact_file_count": 8,
+  "artifact_tree_sha256": "ddcf7c2109a1079f2e120b47c677e65a7416ce6711accab1c48c999dbd5f3018",
+  "display_name": "Generation Baseline",
+  "evaluation_label": "machine-proposed development evaluation",
+  "files": {
+    "generation/baseline/README.md": "b03d35339da2e87ff5ac8c796ad6bf2f8a7de69e60de830e32513ed8a48921c4",
+    "generation/baseline/reports/warmup_baseline.json": "097806772cc8c774f446982d9cd9aa48f12e16b32388c982f990268fb530369e",
+    "generation/baseline/runs/baseline_closed_book_dev250.jsonl": "70e4372ee2414be316ebd084b95503d01d87ecfa6ec49b916da13c64370f0927",
+    "generation/generation-v1/config/generation.yaml": "5de0661dcbde09b491a5f0a0b5e3214c55b1de62cb5a63e033b968bb17810410",
+    "generation/generation-v1/prepared_inputs/online_queries.jsonl": "699bdb4256895d210c36b75ceb69a8a49f8a0e6c20f76ccb9735ccd4de1de579",
+    "generation/generation-v1/provenance/system_naming_migration.json": "64e485796ac768f431bb8abf9ea013e9a1fad44ae57a4c222979b1b5f51aba9c",
+    "generation/generation-v1/reports/model_identity.json": "e83ebcc1be926e9f4be82b2f2e1c90910495aefbba264009812de569e3b8cd79",
+    "generation/generation-v1/schema/answer.schema.json": "638e2e066848e806449021608ea3981d94d57e54d9707055b8efea9210dcc23c"
+  },
+  "formal_run": {
+    "path": "generation/baseline/runs/baseline_closed_book_dev250.jsonl",
+    "sha256": "70e4372ee2414be316ebd084b95503d01d87ecfa6ec49b916da13c64370f0927",
+    "size_bytes": 1222376
+  },
+  "generation_contract_failure_count": 0,
+  "generation_contract_success_count": 250,
+  "generation_retry_count": 2,
+  "machine_proposed_development_only": true,
+  "manifest_payload_sha256": "6b526bcb6846e2a71a5ef36863ac7bbf7d8caf6422639280d93753db3af7f160",
+  "method": "closed_book",
+  "query_count": 250,
+  "release": "generation-baseline",
+  "schema_version": "sqlmend-generation-baseline-release-manifest-v1",
+  "shared_generation_contract": {
+    "answer_schema": {
+      "path": "generation/generation-v1/schema/answer.schema.json",
+      "sha256": "638e2e066848e806449021608ea3981d94d57e54d9707055b8efea9210dcc23c",
+      "size_bytes": 1394
+    },
+    "config": {
+      "path": "generation/generation-v1/config/generation.yaml",
+      "sha256": "5de0661dcbde09b491a5f0a0b5e3214c55b1de62cb5a63e033b968bb17810410",
+      "size_bytes": 1387
+    },
+    "model_identity": {
+      "path": "generation/generation-v1/reports/model_identity.json",
+      "sha256": "e83ebcc1be926e9f4be82b2f2e1c90910495aefbba264009812de569e3b8cd79",
+      "size_bytes": 539
+    },
+    "owner": "generation/generation-v1",
+    "prepared_queries": {
+      "path": "generation/generation-v1/prepared_inputs/online_queries.jsonl",
+      "sha256": "699bdb4256895d210c36b75ceb69a8a49f8a0e6c20f76ccb9735ccd4de1de579",
+      "size_bytes": 144465
+    }
+  },
+  "system_id": "baseline",
+  "system_naming_migration": {
+    "path": "generation/generation-v1/provenance/system_naming_migration.json",
+    "sha256": "64e485796ac768f431bb8abf9ea013e9a1fad44ae57a4c222979b1b5f51aba9c",
+    "size_bytes": 4143
+  },
+  "warmup": {
+    "path": "generation/baseline/reports/warmup_baseline.json",
+    "sha256": "097806772cc8c774f446982d9cd9aa48f12e16b32388c982f990268fb530369e",
+    "size_bytes": 517
+  }
+}

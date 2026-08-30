@@ -1,0 +1,86 @@
+{
+  "artifacts": {
+    "baseline": {
+      "canonical_path": "generation/baseline/runs/baseline_closed_book_dev250.jsonl",
+      "canonical_record_count": 250,
+      "canonical_sha256": "70e4372ee2414be316ebd084b95503d01d87ecfa6ec49b916da13c64370f0927",
+      "immutable_projection_equal": true,
+      "immutable_projection_sha256_canonical": "012e95658508a997c0ffddadc44a89f2f5bfcea2a9ef02dd0595f77a66790df8",
+      "immutable_projection_sha256_legacy": "012e95658508a997c0ffddadc44a89f2f5bfcea2a9ef02dd0595f77a66790df8",
+      "label": "baseline",
+      "legacy_path": "generation/generation-v1/provenance/legacy/g0_closed_book_dev250.jsonl",
+      "legacy_record_count": 250,
+      "legacy_sha256": "8faaeec64fa6b5eb0ff9a831e0a4b819198ac58971b633366f8f1f0b32646997"
+    },
+    "generation_v1": {
+      "canonical_path": "generation/generation-v1/runs/generation_v1_rag_dev250.jsonl",
+      "canonical_record_count": 250,
+      "canonical_sha256": "0af9cc7c8dbbcecdeaa87cf73ff51c22cb13c0016e07614060787e3a1434c66c",
+      "immutable_projection_equal": true,
+      "immutable_projection_sha256_canonical": "d38620c7d61ffc73db4d4f18035d44f5a41bb1c70a8a44c3d9cedcb02f35b3e7",
+      "immutable_projection_sha256_legacy": "d38620c7d61ffc73db4d4f18035d44f5a41bb1c70a8a44c3d9cedcb02f35b3e7",
+      "label": "generation_v1",
+      "legacy_path": "generation/generation-v1/provenance/legacy/g1_retrieval_v1_rag_dev250.jsonl",
+      "legacy_record_count": 250,
+      "legacy_sha256": "05898850acbe662464fcbf2327bcfb326a666ea1e31524fa5b66f50540cffe75"
+    },
+    "judgments": {
+      "canonical_path": "generation/generation-v1/evaluation/judgments.jsonl",
+      "canonical_record_count": 250,
+      "canonical_sha256": "26d401945269c9b80cc7ad227aa1b0db6f1675e15032e25719ece3e6ac51a107",
+      "immutable_projection_equal": true,
+      "immutable_projection_sha256_canonical": "eb256eea4cc56880141f8cbd91df0c6e5558b7cdb3a2d6b187da24aba213400e",
+      "immutable_projection_sha256_legacy": "eb256eea4cc56880141f8cbd91df0c6e5558b7cdb3a2d6b187da24aba213400e",
+      "label": "judgments",
+      "legacy_path": "generation/generation-v1/provenance/legacy/judgments_g0_g1.jsonl",
+      "legacy_record_count": 250,
+      "legacy_sha256": "3b8f59cec61e0a0ae9150cc74316bea0f90e1f0755e66408790c2efe6875a31c"
+    }
+  },
+  "changed_field_whitelist": {
+    "judgment": [
+      "assignment.A",
+      "assignment.B",
+      "counterbalance",
+      "decision.<system_id-key>",
+      "run_sha256.<system_id-key>",
+      "policy_source_config_sha256",
+      "evaluation_input_sha256",
+      "evaluation_context_sha256"
+    ],
+    "run": [
+      "experiment_id",
+      "system_id",
+      "generation_provenance.run_id"
+    ]
+  },
+  "config_source_sha256": "5de0661dcbde09b491a5f0a0b5e3214c55b1de62cb5a63e033b968bb17810410",
+  "evaluation_context_sha256": "b21a6a98e526f9dcedaafda297d61ea35b49c446e83d3d79be8e589eabf74731",
+  "evaluation_input_sha256": {
+    "development_references_file": "2ce81dd27690795266fc5cc813dc1999f8c55d86ed1605fd6e1013213a416fae",
+    "effective_qrels_file": "eae4aefdf6c152df36330a00adf29d8a40d2ea42a476ed7df8c0f675d7446e5d",
+    "generation_v1_evidence_file": "94f3607fe8d7660344c99eb6a41e123aa886e3e118d6261bd0e9291ad4006912",
+    "prepared_queries_file": "699bdb4256895d210c36b75ceb69a8a49f8a0e6c20f76ccb9735ccd4de1de579"
+  },
+  "experiment_id": {
+    "canonical": "phase10_baseline_generation_v1_dev250",
+    "legacy": "phase10_g0_g1_dev250"
+  },
+  "legacy_to_canonical_system_ids": {
+    "g0_closed_book": "baseline",
+    "g1_retrieval_v1_rag": "generation_v1"
+  },
+  "migration": "phase10_g0_g1_to_baseline_generation_v1",
+  "ollama_called": false,
+  "run_sha256_binding": {
+    "baseline": {
+      "canonical": "70e4372ee2414be316ebd084b95503d01d87ecfa6ec49b916da13c64370f0927",
+      "legacy": "8faaeec64fa6b5eb0ff9a831e0a4b819198ac58971b633366f8f1f0b32646997"
+    },
+    "generation_v1": {
+      "canonical": "0af9cc7c8dbbcecdeaa87cf73ff51c22cb13c0016e07614060787e3a1434c66c",
+      "legacy": "05898850acbe662464fcbf2327bcfb326a666ea1e31524fa5b66f50540cffe75"
+    }
+  },
+  "schema_version": "sqlmend-generation-metadata-migration-v1"
+}

@@ -4,7 +4,7 @@
 >
 > Last verified: 2026-08-30 (UTC+8)
 >
-> 当前阶段：知识库、machine-proposed development annotation、冻结 retrieval baseline，以及正式 retrieval v1（dialect-aware、version-aware、field-aware lexical reranking）均已完成验证。Retrieval v1 的五系统 Top-30 pool 完整、质量门禁与独立 validation 均通过；generator、UI 和最终人工 held-out dataset 仍未实现。
+> 当前阶段：知识库、machine-proposed development annotation、冻结 retrieval baseline 和正式 retrieval v1 均已完成验证；Phase 10 Generation Baseline / Generation v1 的 500 个正式 wrapper、离线评估、测试、manifest 与 validation 也已完成。Generation 的主要质量目标通过，但总验收真实标记为 `FAIL`（Generation v1 structured validity 96.4%，judge calls 249/250）；UI 和最终人工 held-out dataset 仍未实现。
 
 ## 1. 这份文件的用途
 
@@ -19,7 +19,7 @@
 
 它不替代以下文件：
 
-- 根目录 `README.md`：最终面向用户的安装、运行与产品说明；当前版本状态滞后，计划在项目完成时重写。
+- 根目录 `README.md`：面向用户的当前模块、运行入口与已知验收状态；最终课程交付时仍需随 UI 和人工评估继续更新。
 - 自动生成的 manifest、validation report 和测试报告：它们才是可机器核验的事实证据。
 - 最终课程报告：课程问题、实验分析、截图和提交材料应另行整理。
 
@@ -64,7 +64,7 @@
 | Q1 | 语料来源、采集、清洗、分块、存储；应用与示例查询；文档/chunk/word/type 数量 | 知识库工程已完成，最终报告尚未写 |
 | Q2 | 简单友好的 UI；5 条查询、结果与查询速度 | `PLANNED` |
 | Q3 | sparse、dense、hybrid；检索创新；Precision@K、Recall@K、MRR、nDCG 等 rank-aware 指标与案例 | 固定 baseline 与正式 retrieval v1 已实现；五系统 ablation、切片、案例、latency、manifest 和 validation 均通过，结论仅适用于机器开发评估 |
-| Q4 | 生成/分类方法选择与预处理；自行建立至少 1,000 条无重复、尽量平衡的人工 held-out records；IAA 至少 80%（推荐 3 名 annotators，2 名也可）；任务指标、RAG 指标和性能指标 | `PLANNED` |
+| Q4 | 生成/分类方法选择与预处理；自行建立至少 1,000 条无重复、尽量平衡的人工 held-out records；IAA 至少 80%（推荐 3 名 annotators，2 名也可）；任务指标、RAG 指标和性能指标 | Generation v1 的 250 条机器开发对照、任务/RAG/latency 指标已完成；1,000+ 人工 held-out、IAA 和最终测试仍为 `PLANNED` |
 | Q5 | 下游创新；若有多个创新必须做单项与组合 ablation；解释具体问题与案例 | `PLANNED` |
 
 最终提交是一个以组号命名的 PDF，例如 `10.pdf`。第一页需列全部组员姓名和学号；正文回答 Q1-Q5；还需提供两个可访问的压缩包链接：
@@ -84,10 +84,11 @@
 | 正式检索评估完整性 | `PASS` | BM25、dense、hybrid 的 `Judged@5/10/20/30` 均为 1.0，完整评估工件已原子发布 |
 | 检索质量 | `PASS_FOR_MACHINE_DEVELOPMENT_EVAL` | hybrid 在四个主指标上均领先并通过既定门禁；结论只适用于当前机器开发集 |
 | `retrieval/retrieval-v1/` | `VERIFIED_COMPLETE_FOR_DEVELOPMENT_ONLY` | 五套独立系统、Dialect/Version awareness、lexical reranker、完整 pool、60 tests、manifest 与 12/12 validation checks 均通过；没有修改冻结 baseline |
-| Grounded generator / SQL repair | `PLANNED` | 尚未实现 |
+| `generation/baseline/` | `FORMAL_BASELINE_COMPLETE_FOR_DEVELOPMENT_ONLY` | Closed-Book Baseline 250 个正式 wrapper；Generation Contract Success 250/250，Task Success 50.8% |
+| `generation/generation-v1/` | `COMPLETE_WITH_FAILED_ENGINEERING_GATES_FOR_DEVELOPMENT_ONLY` | Retrieval-v1 RAG 250 个正式 wrapper及配对评估；Task Success 68.0%，相对 Baseline +17.2pp；structured validity 96.4% 与 judge calls 249/250 导致 Phase success=false |
 | 最终人工 held-out 数据 | `PLANNED` | 仍需至少 1,000 条人工记录和 IAA >= 80% |
 | UI 与 5 条演示查询 | `PLANNED` | 尚未实现 |
-| 最终课程报告与用户 README | `PLANNED` | 根 README 暂不作为当前开发状态来源 |
+| 最终课程报告与用户 README | `PARTIAL` | 根 README 已同步当前工程状态；最终课程报告及 UI/人工评估说明仍待完成 |
 
 当前已最终化 baseline 的发布状态对象：
 
@@ -126,16 +127,34 @@ required_validation=test -> finalize -> validate
 
 [retrieval manifest](retrieval/baseline/manifest.json) 和 [retrieval validation](retrieval/baseline/reports/validation_report.json) 是当前状态的权威来源。本文只保留摘要；状态或数字冲突时以重新运行的 validator 为准。
 
+当前 Generation v1 的发布状态对象：
+
+```text
+release=generation-v1
+generation_wrappers=500
+generation_contract_success=Baseline 250/250; Generation v1 241/250
+task_success=Baseline 50.8%; Generation v1 68.0%; delta +17.2pp
+engineering_status=FAIL
+evaluation_integrity_status=PASS
+quality_status=PASS
+phase_success=false
+tests=64 passed
+independent_artifact_checks=7/7 PASS
+protected_before_after_current_identical=true
+```
+
+`Generation Contract Success` 只表示 transport、JSON、schema 与 citation contract 成功，不表示 SQL 修复正确。`Task Success` 才是 root cause、SQL repair、dialect compatibility 和 version compatibility 四项同时为真。权威来源是 [Generation report](generation/generation-v1/reports/generation_v1_report.md)、[overall metrics](generation/generation-v1/evaluation/overall_metrics.json)、[validation](generation/generation-v1/reports/validation_report.json) 和 [manifest](generation/generation-v1/manifest.json)。
+
 ## 5. Git 时点说明
 
 当前观察到：
 
-- branch：`refactor1`
-- HEAD：`89a9da271172a43bc228a68d04048f47cd6652af`
+- branch：`generation-v1`
+- HEAD：`b21690aef1a66f88aab3c26e9f1537177e97479c`
 - retrieval 首次提交：`0cca1db2c667e56bfa2693cf642efac287ada4b3`
 - 机器开发标注提交：`f6afc4023e44218e89d4ad9ce6ad37b4350d391e`
 
-当前 annotation v1 revision 1.1.0 与 retrieval 评估刷新尚在工作树中，未由本文替代为 Git 提交。`retrieval/baseline/manifest.json` 记录的是生成时 provenance；不要手工修改其 commit 或 worktree 字段，只能通过正式流程重新绑定。
+当前 Generation v1 模块及根文档更新仍在工作树中，未由本文替代为 Git 提交。各模块 manifest 记录的是生成时 provenance；不要手工修改其 commit 或 worktree 字段，只能通过正式流程重新绑定。
 
 `DEVELOPMENT_CONTEXT.md` 位于 retrieval source snapshot 之外，单独更新本文不会再次改变该 snapshot。
 
@@ -146,15 +165,19 @@ SQLMend-RAG/
 ├─ construction/           # 知识库采集、清洗、去重、分块、统计、验证；冻结输入
 ├─ annotation/             # Codex 机器开发集、provenance 与 VERSION_HISTORY；当前主版本 v1
 ├─ retrieval/              # 检索方法总目录
-│  └─ baseline/            # 当前正式检索基线、runs、评估门禁和报告
+│  ├─ baseline/            # 冻结检索基线、runs、评估门禁和报告
+│  └─ retrieval-v1/        # 冻结正式 Retrieval v1、五系统对照和 Final 接口
+├─ generation/
+│  ├─ baseline/            # Phase 10 Closed-Book Baseline：250 wrappers 与独立 manifest
+│  └─ generation-v1/       # Retrieval-v1 RAG：250 wrappers、配对离线评估和验收证据
 ├─ tmp/                    # 本地临时目录；不是事实来源或交付契约
 ├─ DEVELOPMENT_CONTEXT.md  # 本文件：内部开发交接入口
-└─ README.md               # 最终用户入口；计划在项目后期重写
+└─ README.md               # 用户入口；已同步当前模块和 Phase 10 状态
 ```
 
 ### 6.1 受保护目录
 
-`construction/` 和当前主版 `annotation/codex/` 在 retrieval baseline 中是只读、字节级保护输入。本轮用户明确授权的 annotation v1 数据维护已经结束并重新锚定快照；除非用户再次明确启动版本化的数据维护，否则不得：
+`construction/`、当前主版 `annotation/codex/`、`retrieval/baseline/` 与 `retrieval/retrieval-v1/` 是 Generation v1 的只读、字节级保护输入。本轮数据与 Retrieval v1 维护已经结束并重新锚定快照；除非用户再次明确启动版本化维护，否则不得：
 
 - 新增、删除、重命名或修改任何文件；
 - 运行可能生成 `__pycache__` 的 Python 命令；
@@ -164,8 +187,8 @@ SQLMend-RAG/
 正式 before/after 审计均为：
 
 ```text
-protected_file_count=8481
-protected_tree_sha256=9b1b97126cc678effded5ef866ddcff02fe47639ed6db16f39b08c94f630cb7b
+protected_file_count=8709
+protected_tree_sha256=59884bd7f68d02e0bc98594e940c5e89bc6d19a8f9fc3b4c7307bed011ccb4e6
 protected_paths_unchanged=true
 ```
 
@@ -576,21 +599,22 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 1. **机器开发回归集**：当前 annotation v1 revision 1.1.0 已完整覆盖固定 baseline Top-30，可用于正式 retrieval v1 的开发比较；新增系统带来的新候选必须先补判并版本化，不能把缺标当 0；
 2. **最终人工 held-out 数据**：由小组另行采集并标注至少 1,000 条无重复、尽量平衡的记录；推荐三名 annotators，两名也可，IAA >= 80%；保存原始标注、annotator、分歧、adjudication 与 manifest；不得在其上反复调参。
 
-这些工作不是全部串行依赖。当前可推进三条线：
+这些工作不是全部串行依赖。当前状态与可推进方向为：
 
 1. `VERIFIED_COMPLETE_FOR_DEVELOPMENT_ONLY` **正式 retrieval v1**：保留冻结 baseline 对照，五系统结果已发布；任何未来新 retriever 若扩大候选 pool，仍须先完成相同口径的盲补判；
-2. `PLANNED_NEXT` **human evaluation protocol**：在任何相关调参前冻结 held-out split、schema、指南、抽样、平衡、annotator 和 adjudication 流程；
-3. `PLANNED` **product scaffolding**：generator 和 UI 可基于冻结 baseline/retrieval v1 接口开发，但不属于已完成阶段。
+2. `COMPLETE_WITH_FAILED_ENGINEERING_GATES_FOR_DEVELOPMENT_ONLY` **Generation Baseline / Generation v1**：两系统的 500 个正式 wrapper、离线对照和全部真实失败均已封存；质量目标通过，但 Phase success=false，不得把它改写为整体通过；
+3. `PLANNED_NEXT` **human evaluation protocol**：在任何相关调参前冻结 held-out split、schema、指南、抽样、平衡、annotator 和 adjudication 流程；
+4. `PLANNED` **UI/product scaffolding**：基于冻结 Retrieval v1 接口和 Generation v1 output schema 建立简单 UI。
 
 随后按各自依赖推进：
 
-1. 保持 retrieval v1 与 annotation v1 两个版本轴独立，不要与已放弃的 annotation v2 混淆；未来检索创新必须使用新 system ID/config/artifact 并继续保留 baseline/v1 对照；
-2. 若继续评估 query rewriting、HyDE 或其他检索创新，多个创新必须提供独立与组合配置以支持 ablation，并先完成 pool coverage gate；
-3. 实现 grounded SQL diagnosis/repair generator，答案引用可检查证据，并加入 unsupported-claim/faithfulness 检查；
-4. 实现简单 UI。服务启动时加载并保持热的 BM25、DenseIndex 和模型，不要逐请求执行 CLI；
-5. 完成任务指标、faithfulness、answer relevance、context precision/relevance，以及 latency、吞吐量、成本、可扩展性评估；
-6. 准备 5 条代表性查询、结果、来源和查询速度；
-7. 重写最终用户 README，准备 Q1-Q5 报告、截图、两份压缩包链接和 Week 13 演示。
+1. 保持 retrieval v1、generation v1 与 annotation v1 三个版本轴独立，不要与已放弃的 annotation v2 混淆；未来创新必须使用新 system ID/config/artifact 并继续保留 baseline/v1 对照；
+2. 冻结并执行最终人工 held-out protocol；当前 250 条机器数据及同模型离线 judge 不能替代人工 gold、IAA 或最终测试；
+3. 实现简单 UI。服务启动时加载并保持热的检索索引与模型，不要逐请求执行 CLI；
+4. 在最终人工集上一次性完成任务指标、faithfulness、answer relevance、context precision/relevance，以及 latency、吞吐量、成本、可扩展性评估；
+5. 准备 5 条代表性查询、结果、来源和查询速度；
+6. 更新最终用户 README，准备 Q1-Q5 报告、截图、两份压缩包链接和 Week 13 演示；
+7. 若未来专门修复 Generation v1 的 9 个 invalid-JSON failures 或 judge failure，必须发布新 generation release 并保留本次真实 Baseline，不得覆盖现有 500 wrappers。
 
 现有 250 条 Codex 机器数据可以作为开发数据用于 prompt 设计、回归检查和明确记录 provenance 的离线训练；它绝不能充当最终测试数据，也不得污染最终 held-out split。
 
@@ -611,7 +635,9 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 | 新 retriever | 新 system ID/config/artifact；更新 pool/evaluation/reporting/validation/tests；保留 baseline 对照 |
 | RRF 常量或 tie-break | 新 hybrid 版本；重建 hybrid、pool、evaluation、tests、reports；不得覆盖 baseline |
 | 历史 reproduction 实现或输入 | 重新审计；可能触发数小时 BGE 重算 |
-| generator/UI | 新模块、独立依赖与测试；更新本文、最终 README 和课程报告 |
+| Generation v1 README、config、schema、源码、测试或 prompt | 现有 manifest 与正式证据失效；使用新 release 或按 `all --clean` 完整重建 500 wrappers、judge、test、finalize、validate，不得只手改报告 |
+| Generation v1 正式 runs、judgments、metrics、report 或 manifest | 不得手工修改；通过 Generation v1 CLI 的对应完整链重建，并保留真实失败记录 |
+| UI | 新模块、独立依赖与测试；更新本文、最终 README 和课程报告 |
 
 ## 17. 禁止事项与常见陷阱
 
@@ -682,6 +708,24 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 - [Test evidence](retrieval/retrieval-v1/reports/test_results.json)
 - [Protected before/after audits](retrieval/retrieval-v1/reports/protected_paths_after.json)
 
+### Generation v1
+
+- [Generation v1 README](generation/generation-v1/README.md)
+- [Generation v1 report](generation/generation-v1/reports/generation_v1_report.md)
+- [Generation v1 manifest](generation/generation-v1/manifest.json)
+- [Generation v1 validation](generation/generation-v1/reports/validation_report.json)
+- [Acceptance gates](generation/generation-v1/evaluation/acceptance.json)
+- [Overall metrics](generation/generation-v1/evaluation/overall_metrics.json)
+- [Paired per-query comparison](generation/generation-v1/evaluation/per_query_comparison.jsonl)
+- [Generation Baseline README](generation/baseline/README.md)
+- [Baseline formal run](generation/baseline/runs/baseline_closed_book_dev250.jsonl)
+- [Baseline manifest](generation/baseline/manifest.json)
+- [Generation v1 formal run](generation/generation-v1/runs/generation_v1_rag_dev250.jsonl)
+- [Offline judge journal](generation/generation-v1/evaluation/judgments.jsonl)
+- [Naming migration provenance](generation/generation-v1/provenance/system_naming_migration.json)
+- [Test evidence](generation/generation-v1/reports/test_results.json)
+- [Protected before/after/current audit](generation/generation-v1/reports/protected_paths_current.json)
+
 ## 19. 本文件维护协议
 
 每次阶段状态、冻结输入、接口契约、主要 blocker 或课程解释发生变化时更新本文。普通内部重构如果不改变开发者需要知道的事实，可以不更新。
@@ -710,3 +754,6 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 | 2026-08-30 | 当前 retrieval baseline 正式证据重新绑定并通过 | source tree SHA 为 `104d6f59...`；95 tests、protected after audit、`finalize -> validate` 共同构成当前证据 |
 | 2026-08-30 | Retrieval v1 采用 soft metadata bonuses 与 deterministic field-aware lexical reranker | 不硬删除跨方言或旧文档；版本冲突只依据 corpus metadata/明确文本边界；reranker 只读合法在线字段与 passage，不使用开发标签 |
 | 2026-08-30 | Retrieval v1 五系统 release 通过正式干净重建 | 五系统 `Judged@30=1.0`、pool expansion 为 0、60 tests、12/12 validation checks、protected bytes unchanged；当前结果只称 machine-proposed development evaluation |
+| 2026-08-30 | Phase 10 改用本地 `qwen3.5:4b`，精确 digest `2a654d98...e4eefd`，两系统均 `think=false`；Generation v1 固定 Retrieval v1 Final Top-5 | `gpt-oss-20b` 不提供完全关闭 reasoning 的正式选项，用户以效率为目标选择可关闭 thinking 的 Qwen；Baseline / Generation v1 除是否接收 evidence 外保持同模型、prompt、schema、decoding 与 retry policy |
+| 2026-08-30 | Generation v1 保留真实 `quality=PASS`、`engineering=FAIL`、`phase_success=false` | Generation v1 Task Success 68.0% 相对 Baseline 50.8% 提高 17.2pp，但 structured validity 96.4% 未达 98%，offline judge calls 249/250；不修改 reference labels、不隐藏失败、不覆盖 500 个正式 wrapper |
+| 2026-08-30 | 生成系统正式定名为 Generation Baseline 与 Generation v1，并分别归档到 `generation/baseline/`、`generation/generation-v1/` | 仅迁移命名元数据；500 个答案、失败、attempt、latency、模型 provenance 与 judge 决策保持不变。历史臂名只保留在 `provenance/legacy/` 与迁移 ledger 中 |

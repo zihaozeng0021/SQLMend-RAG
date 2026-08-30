@@ -1,0 +1,75 @@
+{
+  "evaluation_label": "machine-proposed development evaluation",
+  "event_sequence": [
+    {
+      "at_utc": "2026-08-30T14:04:10.849927Z",
+      "event": "formal_runs_validated"
+    },
+    {
+      "at_utc": "2026-08-30T14:04:10.849927Z",
+      "event": "generation_runs_sealed"
+    },
+    {
+      "at_utc": "2026-08-30T14:04:10.861903Z",
+      "event": "offline_references_opened"
+    },
+    {
+      "at_utc": "2026-08-30T14:04:10.869167Z",
+      "event": "offline_qrels_opened"
+    }
+  ],
+  "offline_evaluation_inputs": {
+    "context_sha256": "b21a6a98e526f9dcedaafda297d61ea35b49c446e83d3d79be8e589eabf74731",
+    "sha256": {
+      "development_references_file": "2ce81dd27690795266fc5cc813dc1999f8c55d86ed1605fd6e1013213a416fae",
+      "effective_qrels_file": "eae4aefdf6c152df36330a00adf29d8a40d2ea42a476ed7df8c0f675d7446e5d",
+      "generation_v1_evidence_file": "94f3607fe8d7660344c99eb6a41e123aa886e3e118d6261bd0e9291ad4006912",
+      "prepared_queries_file": "699bdb4256895d210c36b75ceb69a8a49f8a0e6c20f76ccb9735ccd4de1de579"
+    }
+  },
+  "reference_access": {
+    "qrels_opened_at_utc": "2026-08-30T14:04:10.869167Z",
+    "qrels_path": "retrieval/baseline/qrels/qrels_effective_dev250.trec",
+    "qrels_sha256": "eae4aefdf6c152df36330a00adf29d8a40d2ea42a476ed7df8c0f675d7446e5d",
+    "references_opened_at_utc": "2026-08-30T14:04:10.861903Z",
+    "references_path": "annotation/codex/dev_250.jsonl",
+    "references_sha256": "2ce81dd27690795266fc5cc813dc1999f8c55d86ed1605fd6e1013213a416fae",
+    "seal_written_before_reference_access": true
+  },
+  "runs": {
+    "baseline": {
+      "byte_size": 1222376,
+      "failed_count": 0,
+      "generation_contract_failure_count": 0,
+      "generation_contract_success_count": 250,
+      "path": "generation/baseline/runs/baseline_closed_book_dev250.jsonl",
+      "query_ids_sha256": "5eb54d59e0c7a765979fc4a5794bffc7cf2b98ac04ad14c5284d771bbf315b77",
+      "record_count": 250,
+      "sha256": "70e4372ee2414be316ebd084b95503d01d87ecfa6ec49b916da13c64370f0927",
+      "success_count": 250,
+      "success_count_semantics": "generation_contract_success"
+    },
+    "generation_v1": {
+      "byte_size": 1466380,
+      "failed_count": 9,
+      "generation_contract_failure_count": 9,
+      "generation_contract_success_count": 241,
+      "path": "generation/generation-v1/runs/generation_v1_rag_dev250.jsonl",
+      "query_ids_sha256": "5eb54d59e0c7a765979fc4a5794bffc7cf2b98ac04ad14c5284d771bbf315b77",
+      "record_count": 250,
+      "sha256": "0af9cc7c8dbbcecdeaa87cf73ff51c22cb13c0016e07614060787e3a1434c66c",
+      "success_count": 241,
+      "success_count_semantics": "generation_contract_success"
+    }
+  },
+  "schema_version": "sqlmend-generation-seal-v1",
+  "sealed_at_utc": "2026-08-30T14:04:10.849927Z",
+  "validation": {
+    "baseline_has_no_evidence": true,
+    "baseline_valid_formal_wrappers": true,
+    "expected_records_per_run": 250,
+    "generation_v1_evidence_matches_prepared_input": true,
+    "generation_v1_valid_formal_wrappers": true,
+    "paired_query_ids_identical": true
+  }
+}
