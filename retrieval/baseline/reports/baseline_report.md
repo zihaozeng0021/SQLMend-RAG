@@ -4,7 +4,7 @@
 
 ## 最终状态
 
-- release：`retrieval-baseline-v1`
+- release：`retrieval-baseline`
 - engineering：`PASS`
 - evaluation integrity：`PASS`
 - retrieval quality：`PASS`

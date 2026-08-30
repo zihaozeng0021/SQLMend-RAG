@@ -634,7 +634,7 @@ def _build_release(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, *, blocked: 
         "schema_version": "sqlmend-retrieval-manifest-v1",
         "module": "sqlmend-retrieval-baseline",
         "release": (
-            "retrieval-baseline-v1-candidate" if blocked else "retrieval-baseline-v1"
+            "retrieval-baseline-candidate" if blocked else "retrieval-baseline"
         ),
         "machine_proposed_development_only": True,
         "engineering_status": "PASS",
@@ -829,7 +829,7 @@ def test_finalize_does_not_turn_evaluation_failure_into_engineering_failure(
     assert result["validation"]["evaluation_integrity_status"] == "FAIL"
     assert result["manifest"]["engineering_status"] == "PASS"
     assert result["manifest"]["evaluation_integrity_status"] == "FAIL"
-    assert result["manifest"]["release"] == "retrieval-baseline-v1-invalid"
+    assert result["manifest"]["release"] == "retrieval-baseline-invalid"
 
 
 def test_any_unjudged_top30_result_blocks_evaluation_but_not_engineering(tmp_path, monkeypatch):

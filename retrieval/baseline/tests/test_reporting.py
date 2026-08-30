@@ -149,7 +149,7 @@ def test_manifest_never_names_engineering_failure_as_candidate(tmp_path: Path) -
         },
     )
 
-    assert manifest["release"] == "retrieval-baseline-v1-invalid"
+    assert manifest["release"] == "retrieval-baseline-invalid"
 
 
 def test_blocked_reports_use_candidate_not_completion_language(tmp_path: Path) -> None:
@@ -179,7 +179,7 @@ def test_blocked_reports_use_candidate_not_completion_language(tmp_path: Path) -
         "annotation_reproduction_status": "PARTIAL",
     }
     manifest = {
-        "release": "retrieval-baseline-v1-candidate",
+        "release": "retrieval-baseline-candidate",
         "corpus_path": "construction/data/processed/corpus.jsonl",
         "query_path": "annotation/codex/dev_250.jsonl",
     }
@@ -228,7 +228,7 @@ def test_pool_incompleteness_suppresses_metrics_even_when_integrity_is_fail(
         "annotation_reproduction_status": "PARTIAL",
     }
 
-    generate_reports(paths, statuses, {"release": "retrieval-baseline-v1-invalid"})
+    generate_reports(paths, statuses, {"release": "retrieval-baseline-invalid"})
 
     baseline = (paths.reports / "baseline_report.md").read_text(encoding="utf-8")
     assert "NOT_PUBLISHED (BLOCKED)" in baseline

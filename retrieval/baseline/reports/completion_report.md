@@ -2,7 +2,7 @@
 
 数据性质：**machine-proposed development evaluation**。
 
-本报告只覆盖正式检索基线，不代表 AI6127 整体课程作业已经完成。当前 release 是 `retrieval-baseline-v1`；只要 engineering 失败或 evaluation integrity 未 PASS，标题与状态都必须明确写作“尚未完成”。
+本报告只覆盖正式检索基线，不代表 AI6127 整体课程作业已经完成。当前 release 是 `retrieval-baseline`；只要 engineering 失败或 evaluation integrity 未 PASS，标题与状态都必须明确写作“尚未完成”。
 
 ## 创建的精确文件
 
@@ -1308,8 +1308,8 @@
   ],
   "returncode": 0,
   "source_stable_during_tests": true,
-  "source_tree_sha256": "02bf56a20642d5563097c01f0232cba37b358b9929b5f0cb2a43f2da20d0c3c8",
-  "source_tree_sha256_after": "02bf56a20642d5563097c01f0232cba37b358b9929b5f0cb2a43f2da20d0c3c8",
+  "source_tree_sha256": "104d6f59404177e6d81c7d11c97069cc84004deae4fba982404613079fe6a029",
+  "source_tree_sha256_after": "104d6f59404177e6d81c7d11c97069cc84004deae4fba982404613079fe6a029",
   "status": "PASS"
 }
 ```
@@ -1347,7 +1347,7 @@
   "machine_proposed_development_only": true,
   "pool_expansion_required": false,
   "ready_for_stage_7_dialect_aware_retrieval": true,
-  "release": "retrieval-baseline-v1",
+  "release": "retrieval-baseline",
   "retrieval_quality_status": "PASS"
 }
 ```

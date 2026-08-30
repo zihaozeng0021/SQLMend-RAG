@@ -2041,11 +2041,11 @@ def validate_release(paths: ProjectPaths) -> dict[str, Any]:
         recorded_engineering = release_manifest.get("engineering_status")
         recorded_evaluation = release_manifest.get("evaluation_integrity_status")
         expected_release = (
-            "retrieval-baseline-v1"
+            "retrieval-baseline"
             if recorded_engineering == PASS and recorded_evaluation == PASS
-            else "retrieval-baseline-v1-candidate"
+            else "retrieval-baseline-candidate"
             if recorded_engineering == PASS and recorded_evaluation == BLOCKED
-            else "retrieval-baseline-v1-invalid"
+            else "retrieval-baseline-invalid"
         )
         if release_manifest.get("release") != expected_release:
             manifest_violations.append("release name is inconsistent with recorded statuses")
