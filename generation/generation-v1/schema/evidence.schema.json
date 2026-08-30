@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SQLMend G1 Retrieval Evidence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "query_id",
+    "retrieval_system_id",
+    "top_k",
+    "run_sha256",
+    "passages",
+    "evidence_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "sqlmend-g1-evidence-v1"},
+    "query_id": {"type": "string", "minLength": 1},
+    "retrieval_system_id": {"const": "hybrid_rrf_dialect_version_lexical_rerank_v1"},
+    "top_k": {"const": 5},
+    "run_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "passages": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/passage"}
+    },
+    "evidence_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "nullableString": {"type": ["string", "null"]},
+    "passage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "passage_id", "rank", "score", "dialect", "version", "version_min",
+        "version_max", "version_status", "source_type", "source_name", "source_url",
+        "title", "section", "text", "content_hash"
+      ],
+      "properties": {
+        "passage_id": {"type": "string", "minLength": 1},
+        "rank": {"type": "integer", "minimum": 1, "maximum": 5},
+        "score": {"type": "number"},
+        "dialect": {"$ref": "#/$defs/nullableString"},
+        "version": {"$ref": "#/$defs/nullableString"},
+        "version_min": {"$ref": "#/$defs/nullableString"},
+        "version_max": {"$ref": "#/$defs/nullableString"},
+        "version_status": {"$ref": "#/$defs/nullableString"},
+        "source_type": {"$ref": "#/$defs/nullableString"},
+        "source_name": {"$ref": "#/$defs/nullableString"},
+        "source_url": {"$ref": "#/$defs/nullableString"},
+        "title": {"$ref": "#/$defs/nullableString"},
+        "section": {"$ref": "#/$defs/nullableString"},
+        "text": {"type": "string", "minLength": 1},
+        "content_hash": {"$ref": "#/$defs/nullableString"}
+      }
+    }
+  }
+}

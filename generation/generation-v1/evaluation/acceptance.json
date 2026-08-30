@@ -1,0 +1,40 @@
+{
+  "artifact_validation_status": "FAIL",
+  "engineering": {
+    "checks": {
+      "all_250_judge_calls_succeeded": false,
+      "all_250_judgments_succeeded": false,
+      "all_queries_have_judgment_records": true,
+      "g0_has_250_formal_results": true,
+      "g0_structured_output_validity_at_least_98pct": true,
+      "g1_has_250_formal_results": true,
+      "g1_structured_output_validity_at_least_98pct": false
+    },
+    "status": "FAIL"
+  },
+  "evaluation_label": "machine-proposed development evaluation",
+  "integrity": {
+    "checks": {
+      "g0_citations_are_empty": true,
+      "g0_received_no_evidence": true,
+      "g1_citation_validity_is_100pct": true,
+      "g1_context_is_fully_qrels_judged": true,
+      "paired_query_ids_identical": true,
+      "sealed_before_reference_access": true
+    },
+    "status": "PASS"
+  },
+  "phase_success": false,
+  "quality": {
+    "checks": {
+      "g1_dialect_compatibility_not_below_g0": true,
+      "g1_root_cause_accuracy_not_below_g0": true,
+      "g1_sql_repair_correctness_not_below_g0": true,
+      "g1_task_success_improves_by_at_least_10pp": true,
+      "g1_version_compatibility_not_below_g0": true
+    },
+    "status": "PASS"
+  },
+  "quality_failure_does_not_suppress_artifacts": true,
+  "schema_version": "sqlmend-generation-acceptance-v1"
+}

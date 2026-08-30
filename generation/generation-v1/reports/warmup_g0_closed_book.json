@@ -1,0 +1,15 @@
+{
+  "completion_tokens": 6,
+  "excluded_from_formal_latency": true,
+  "load_ms": 219.3691,
+  "model_digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+  "model_tag": "qwen3.5:4b",
+  "ollama_total_ms": 1051.9833,
+  "ollama_version": "0.24.0",
+  "prompt_tokens": 43,
+  "raw_response_sha256": "ef12cb143fd4683a754fdfe45cf5085f3187b53b2f4ba518e14a1dca0156f0f6",
+  "schema_version": "sqlmend-generation-warmup-v1",
+  "status": "PASS",
+  "system_id": "g0_closed_book",
+  "wall_ms": 1053.3069000084652
+}

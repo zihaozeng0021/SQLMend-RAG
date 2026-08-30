@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sqlmend-generation-v1"
+version = "1.0.0"
+description = "Leakage-safe closed-book and Retrieval-v1 RAG generation comparison for SQLMend-RAG"
+requires-python = ">=3.11"
+dependencies = [
+  "PyYAML==6.0.1",
+]
+
+[project.optional-dependencies]
+test = ["pytest==8.4.2"]
+
+[project.scripts]
+sqlmend-generation-v1 = "sqlmend_generation_v1.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"

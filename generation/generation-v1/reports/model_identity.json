@@ -1,0 +1,19 @@
+{
+  "config_sha256": "776604cecc3392656a4cced872cfd9f59ce5355f2bba0dfec3d18298b6833b96",
+  "model_digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+  "model_tag": "qwen3.5:4b",
+  "ollama_version": "0.24.0",
+  "options": {
+    "num_ctx": 16384,
+    "num_predict": 1024,
+    "repeat_penalty": 1.0,
+    "seed": 20260830,
+    "temperature": 0.0,
+    "top_k": 40,
+    "top_p": 0.9
+  },
+  "schema_version": "sqlmend-generation-model-identity-v1",
+  "status": "PASS",
+  "thinking": false,
+  "thinking_disabled": true
+}

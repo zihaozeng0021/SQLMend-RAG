@@ -1,0 +1,49 @@
+schema_version: sqlmend-generation-config-v1
+experiment_id: phase10_g0_g1_dev250
+expected_query_count: 250
+systems:
+  g0_closed_book:
+    evidence_mode: none
+    output_file: g0_closed_book_dev250.jsonl
+  g1_retrieval_v1_rag:
+    evidence_mode: retrieval_v1_final_top5
+    output_file: g1_retrieval_v1_rag_dev250.jsonl
+retrieval:
+  system_id: hybrid_rrf_dialect_version_lexical_rerank_v1
+  top_k: 5
+  rationale: >-
+    Top-5 is fixed before generation because it matches the primary retrieval
+    operating depth, preserves high-ranked dialect/version-aware evidence, and
+    limits prompt dilution and latency while keeping G0 and G1 otherwise identical.
+ollama:
+  base_url: http://127.0.0.1:11434
+  model_tag: qwen3.5:4b
+  model_digest: 2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd
+  think: false
+  timeout_seconds: 300
+  options:
+    temperature: 0.0
+    seed: 20260830
+    num_ctx: 16384
+    num_predict: 1024
+    top_k: 40
+    top_p: 0.9
+    repeat_penalty: 1.0
+retry_policy:
+  max_attempts: 3
+  retry_on:
+    - transport_or_protocol_error
+    - invalid_json
+    - output_schema_violation
+    - citation_contract_violation
+offline_judge:
+  inherit_generation_model: true
+  seed: 20260831
+  temperature: 0.0
+  top_p: 1.0
+  top_k: 40
+  num_ctx: 16384
+  num_predict: 1200
+  repeat_penalty: 1.0
+  max_attempts: 3
+  timeout_seconds: 300
