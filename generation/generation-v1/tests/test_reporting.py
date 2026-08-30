@@ -64,18 +64,18 @@ def _system(system_id: str, *, rag: bool) -> dict[str, Any]:
 
 
 def _row(number: int, delta: int) -> dict[str, Any]:
-    g0_success = delta <= 0 and number % 2 == 0
-    g1_success = g0_success or delta > 0
+    baseline_success = delta <= 0 and number % 2 == 0
+    generation_v1_success = baseline_success or delta > 0
     if delta < 0:
-        g0_success, g1_success = True, False
+        baseline_success, generation_v1_success = True, False
     return {
         "query_id": f"DEV{number:04d}",
-        "g0": {
-            "task_success": g0_success,
+        "baseline": {
+            "task_success": baseline_success,
             "judge_reason": f"closed-book reason {number}",
         },
-        "g1": {
-            "task_success": g1_success,
+        "generation_v1": {
+            "task_success": generation_v1_success,
             "judge_reason": f"RAG reason {number}",
             "context_precision": 0.8 if number != 6 else 0.0,
             "context_query_hit": number != 6,
@@ -88,7 +88,7 @@ def _row(number: int, delta: int) -> dict[str, Any]:
             "semantic_component_delta": delta * 2,
             "answer_relevance_delta": 0.2 if delta > 0 else -0.1,
             "outcome": (
-                "g1_improved" if delta > 0 else "g1_regressed" if delta < 0 else "tied"
+                "generation_v1_improved" if delta > 0 else "generation_v1_regressed" if delta < 0 else "tied"
             ),
         },
     }
@@ -101,8 +101,8 @@ def _overall() -> dict[str, Any]:
         "query_count": 6,
         "formal_answer_count": 12,
         "generation_seals": {
-            "g0": {"sha256": "0" * 64},
-            "g1": {"sha256": "1" * 64},
+            "baseline": {"sha256": "0" * 64},
+            "generation_v1": {"sha256": "1" * 64},
         },
         "seal_path": "generation/generation-v1/evaluation/generation_seal.json",
         "judge": {
@@ -118,23 +118,24 @@ def _overall() -> dict[str, Any]:
             "retry_count": 2,
         },
         "systems": {
-            "g0": _system("g0_closed_book", rag=False),
-            "g1": _system("g1_retrieval_v1_rag", rag=True),
+            "baseline": _system("baseline", rag=False),
+            "generation_v1": _system("generation_v1", rag=True),
         },
         "paired": {
-            "g1_improved_count": 2,
-            "g1_regressed_count": 1,
+            "generation_v1_improved_count": 2,
+            "generation_v1_regressed_count": 1,
             "both_succeeded_count": 1,
             "neither_succeeded_count": 2,
             "task_success_percentage_point_delta": 16.6667,
             "success_target": {"achieved": True},
         },
         "artifacts": {
-            "g0_answers": "generation/generation-v1/runs/g0_closed_book_dev250.jsonl",
-            "g1_answers": "generation/generation-v1/runs/g1_retrieval_v1_rag_dev250.jsonl",
-            "g1_evidence": "generation/generation-v1/prepared_inputs/g1_evidence_top5.jsonl",
+            "baseline_answers": "generation/baseline/runs/baseline_closed_book_dev250.jsonl",
+            "generation_v1_answers": "generation/generation-v1/runs/generation_v1_rag_dev250.jsonl",
+            "generation_v1_evidence": "generation/generation-v1/prepared_inputs/generation_v1_evidence_top5.jsonl",
             "judgments": "generation/generation-v1/evaluation/judgments.jsonl",
             "per_query_comparison": "generation/generation-v1/evaluation/per_query_comparison.jsonl",
+            "system_naming_migration": "generation/generation-v1/reports/system_naming_migration.json",
         },
         "acceptance": {
             "engineering": {"status": "PASS"},
@@ -162,8 +163,8 @@ def test_report_contains_all_required_comparisons_and_commands() -> None:
     assert "Context Precision" in report
     assert "+16.67 个百分点" in report
     assert "完整 6 行配对结果" in report
-    assert "G1 改善最明显的案例" in report
-    assert "G1 没有改善或表现更差的案例" in report
+    assert "Generation v1 改善最明显的案例" in report
+    assert "Generation v1 没有改善或表现更差的案例" in report
     assert "RAG 有效与无效的原因" in report
     assert "Generation latency" in report
     assert "500 个正式结果 wrapper 与 provenance" in report
@@ -192,7 +193,7 @@ def test_write_report_uses_requested_artifact_path(tmp_path: Path) -> None:
 
 def test_report_rejects_turning_closed_book_rag_metric_into_zero() -> None:
     overall = _overall()
-    overall["systems"]["g0"]["faithfulness"] = 0.0
+    overall["systems"]["baseline"]["faithfulness"] = 0.0
     with pytest.raises(ValueError, match="faithfulness must be N/A"):
         render_generation_report(overall, [_row(number, 0) for number in range(1, 7)])
 
@@ -207,12 +208,12 @@ def test_improvement_section_never_promotes_ties_or_regressions() -> None:
         _row(6, 0),
     ]
     report = render_generation_report(_overall(), rows)
-    improvement_section = report.split("## G1 没有改善或表现更差的案例", 1)[0].split(
-        "## G1 改善最明显的案例", 1
+    improvement_section = report.split("## Generation v1 没有改善或表现更差的案例", 1)[0].split(
+        "## Generation v1 改善最明显的案例", 1
     )[1]
     assert (
-        "实际符合 G0 Task fail → G1 Task Success 的案例共 0 条"
+        "实际符合 Baseline Task fail → Generation v1 Task Success 的案例共 0 条"
         in improvement_section
     )
     assert improvement_section.count("无更多真实改善案例") == 3
-    assert "g1_regressed" not in improvement_section
+    assert "generation_v1_regressed" not in improvement_section

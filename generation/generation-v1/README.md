@@ -3,9 +3,9 @@
 Generation v1 is the Phase 10, machine-proposed development comparison between
 two SQL debugging systems:
 
-- `g0_closed_book`: Ollama `qwen3.5:4b` receives only the frozen,
+- `baseline`: Ollama `qwen3.5:4b` receives only the frozen,
   user-observable serialized query.
-- `g1_retrieval_v1_rag`: the same model, prompt, output schema, reasoning
+- `generation_v1`: the same model, prompt, output schema, reasoning
   effort, decoding parameters, and retry policy additionally receive the
   frozen Retrieval-v1 Final system's actual Top-5 passages.
 
@@ -25,8 +25,8 @@ The online path consumes only these byte-bound inputs:
 
 The generator does not open `annotation/codex/dev_250.jsonl`, qrels,
 candidate-pool labels, annotation evidence, or Retrieval-v1 evaluation files.
-It first prepares a safe query artifact and a separate G1 evidence bundle.
-The G0 command never opens that evidence bundle. Reference and qrels files are
+It first prepares a safe query artifact and a separate Generation v1 evidence bundle.
+The Baseline command never opens that evidence bundle. Reference and qrels files are
 loaded only by the offline evaluator after both 250-row formal runs have been
 completed and sealed by SHA-256.
 
@@ -64,8 +64,8 @@ success is computed later by the sealed offline evaluation; `Task Success`
 requires a correct root cause, an acceptable SQL repair, and both dialect and
 version compatibility.
 
-Machine-readable count semantics are explicit and legacy names are retained
-only for compatibility:
+Machine-readable count semantics are explicit; compatibility aliases are
+retained only for historical count fields:
 
 | Field | Meaning |
 |---|---|
@@ -94,9 +94,9 @@ Both systems return the same strict object:
 - `insufficient_evidence`
 - `citations`
 
-G0 citations must be empty. G1 citations must be a subset of that query's five
+Baseline citations must be empty. Generation v1 citations must be a subset of that query's five
 actually supplied passage IDs. Passage text and safe source metadata are kept
-in `prepared_inputs/g1_evidence_top5.jsonl`; every formal answer records its
+in `prepared_inputs/generation_v1_evidence_top5.jsonl`; every formal answer records its
 input, prompt, schema, request, model, response, attempt, token, and latency
 provenance.
 
@@ -121,8 +121,8 @@ python -m sqlmend_generation_v1.cli --root . audit-protected-paths --phase befor
 python -m sqlmend_generation_v1.cli --root . verify-inputs
 python -m sqlmend_generation_v1.cli --root . inspect-model
 python -m sqlmend_generation_v1.cli --root . prepare
-python -m sqlmend_generation_v1.cli --root . generate --system g0_closed_book
-python -m sqlmend_generation_v1.cli --root . generate --system g1_retrieval_v1_rag
+python -m sqlmend_generation_v1.cli --root . generate --system baseline
+python -m sqlmend_generation_v1.cli --root . generate --system generation-v1
 python -m sqlmend_generation_v1.cli --root . evaluate
 python -m sqlmend_generation_v1.cli --root . report
 python -m sqlmend_generation_v1.cli --root . test
@@ -134,8 +134,9 @@ python -m sqlmend_generation_v1.cli --root . validate
 
 Generation and judging checkpoint one canonical JSONL record at a time and
 resume by query ID. `clean` is intentionally destructive only within the
-allowlisted generated directories under `generation/generation-v1/`; retain a
-copy of formal results before using it outside a rebuild.
+allowlisted generated directories under `generation/baseline/` and
+`generation/generation-v1/`; the README files and historical naming provenance
+are preserved. Retain a copy of formal results before using it outside a rebuild.
 
 ## Evaluation definitions
 
@@ -151,9 +152,9 @@ dialect compatibility, and version compatibility.
 
 Structured Output Validity and citation membership are deterministic.
 Context Precision@5 uses the frozen machine qrels only after generation.
-Faithfulness and Citation Coverage are judged only for G1 against the five
+Faithfulness and Citation Coverage are judged only for Generation v1 against the five
 passages actually provided. Those two measures and context precision are
-reported as `N/A` for G0. Mean, P50, and P95 use client monotonic wall latency
+reported as `N/A` for Baseline. Mean, P50, and P95 use client monotonic wall latency
 including all retries; Ollama server durations and token counts are retained
 separately.
 

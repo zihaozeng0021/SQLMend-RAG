@@ -6,8 +6,10 @@ from types import SimpleNamespace
 
 from sqlmend_generation_v1.audit import write_json
 from sqlmend_generation_v1.manifest import (
+    BASELINE_MANIFEST_SCHEMA_VERSION,
     MANIFEST_SCHEMA_VERSION,
     build_manifest,
+    build_baseline_manifest,
     release_source_snapshot,
     verify_manifest,
     write_manifest,
@@ -21,6 +23,10 @@ def _write(path: Path, text: str = "fixture\n") -> None:
 
 def _fixture(tmp_path: Path) -> SimpleNamespace:
     release = tmp_path / "generation" / "generation-v1"
+    baseline_release = tmp_path / "generation" / "baseline"
+    _write(tmp_path / "generation" / "README.md")
+    _write(baseline_release / "README.md")
+    _write(baseline_release / "reports/warmup_baseline.json")
     for relative in (
         "config/generation.yaml",
         "schema/answer.schema.json",
@@ -30,15 +36,29 @@ def _fixture(tmp_path: Path) -> SimpleNamespace:
         "requirements.txt",
         "README.md",
         "prepared_inputs/online_queries.jsonl",
-        "prepared_inputs/g1_evidence_top5.jsonl",
-        "runs/g0_closed_book_dev250.jsonl",
-        "runs/g1_retrieval_v1_rag_dev250.jsonl",
+        "prepared_inputs/generation_v1_evidence_top5.jsonl",
+        "runs/generation_v1_rag_dev250.jsonl",
         "evaluation/generation_seal.json",
         "evaluation/overall_metrics.json",
         "reports/generation_v1_report.md",
         "reports/test_results.json",
+        "reports/model_identity.json",
     ):
         _write(release / relative)
+    baseline_run = baseline_release / "runs/baseline_closed_book_dev250.jsonl"
+    baseline_rows = [
+        {
+            "query_id": f"DEV{index:04d}",
+            "system_id": "baseline",
+            "status": "success",
+            "generation_provenance": {"retry_count": 0},
+        }
+        for index in range(1, 251)
+    ]
+    _write(
+        baseline_run,
+        "".join(json.dumps(row, sort_keys=True) + "\n" for row in baseline_rows),
+    )
     safe = tmp_path / "retrieval/retrieval-v1/serialized_queries/dev_250_queries.jsonl"
     final_run = (
         tmp_path
@@ -52,6 +72,12 @@ def _fixture(tmp_path: Path) -> SimpleNamespace:
     return SimpleNamespace(
         root=tmp_path,
         release=release,
+        baseline_release=baseline_release,
+        baseline_run=baseline_run,
+        generation_v1_run=release / "runs/generation_v1_rag_dev250.jsonl",
+        prepared_queries=release / "prepared_inputs/online_queries.jsonl",
+        config_file=release / "config/generation.yaml",
+        answer_schema=release / "schema/answer.schema.json",
         prepared_inputs=release / "prepared_inputs",
         runs=release / "runs",
         evaluation=release / "evaluation",
@@ -73,7 +99,7 @@ def test_source_snapshot_is_deterministic_and_excludes_release_cache_tmp(tmp_pat
     second = release_source_snapshot(paths)
 
     assert second == first
-    assert first["file_count"] == 7
+    assert first["file_count"] == 9
     assert all("__pycache__" not in path for path in first["files"])
     assert all(not path.endswith(".tmp") for path in first["files"])
     assert all(".tmp-" not in path for path in first["files"])
@@ -81,17 +107,20 @@ def test_source_snapshot_is_deterministic_and_excludes_release_cache_tmp(tmp_pat
 
 def test_manifest_is_fixed_point_with_self_validation_and_cache_present(tmp_path: Path) -> None:
     paths = _fixture(tmp_path)
-    first = build_manifest(paths)
+    first = write_manifest(paths)
     assert first["schema_version"] == MANIFEST_SCHEMA_VERSION
+    assert first["systems"] == ["baseline", "generation_v1"]
+    baseline = build_baseline_manifest(paths)
+    assert baseline["schema_version"] == BASELINE_MANIFEST_SCHEMA_VERSION
     assert set(first["artifact_groups"]) == {
         "frozen_inputs",
         "source_and_tests",
         "prepared_inputs",
         "runs",
+        "baseline_release",
         "evaluation",
         "reports",
     }
-    write_json(paths.release / "manifest.json", first)
     write_json(paths.reports / "validation_report.json", {"status": "forged PASS"})
     _write(paths.reports / "scratch.tmp")
     _write(paths.reports / ".generation_v1_report.md.tmp-1234")

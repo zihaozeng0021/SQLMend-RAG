@@ -9,7 +9,7 @@ import pytest
 import yaml
 
 from sqlmend_generation_v1.audit import canonical_json_sha256, sha256_file, write_json
-from sqlmend_generation_v1.contracts import G0_SYSTEM_ID, G1_SYSTEM_ID
+from sqlmend_generation_v1.contracts import BASELINE_SYSTEM_ID, GENERATION_V1_SYSTEM_ID
 from sqlmend_generation_v1.io import sha256_json, write_jsonl
 from sqlmend_generation_v1.metrics import (
     NOT_APPLICABLE,
@@ -35,10 +35,10 @@ def _config() -> dict[str, object]:
         "experiment_id": "phase10-test",
         "expected_query_count": 250,
         "systems": {
-            G0_SYSTEM_ID: {"evidence_mode": "none", "output_file": "g0.jsonl"},
-            G1_SYSTEM_ID: {
+            BASELINE_SYSTEM_ID: {"evidence_mode": "none", "output_file": "baseline.jsonl"},
+            GENERATION_V1_SYSTEM_ID: {
                 "evidence_mode": "retrieval_v1_final_top5",
-                "output_file": "g1.jsonl",
+                "output_file": "generation_v1.jsonl",
             },
         },
         "retrieval": {
@@ -101,30 +101,32 @@ def _paths(tmp_path: Path) -> SimpleNamespace:
     config_file.write_text(yaml.safe_dump(_config(), sort_keys=False), encoding="utf-8")
     answer_schema = release / "schema/answer.schema.json"
     write_json(answer_schema, {"type": "object"})
-    g0 = release / "runs/g0_closed_book_dev250.jsonl"
-    g1 = release / "runs/g1_retrieval_v1_rag_dev250.jsonl"
+    baseline_release = tmp_path / "generation" / "baseline"
+    baseline = baseline_release / "runs/baseline_closed_book_dev250.jsonl"
+    generation_v1 = release / "runs/generation_v1_rag_dev250.jsonl"
     evaluation = release / "evaluation"
     reports = release / "reports"
     qrels = tmp_path / "retrieval/baseline/qrels/qrels_effective_dev250.trec"
     references = tmp_path / "annotation/codex/dev_250.jsonl"
     prepared_queries = release / "prepared_inputs/online_queries.jsonl"
-    g1_evidence = release / "prepared_inputs/g1_evidence_top5.jsonl"
+    generation_v1_evidence = release / "prepared_inputs/generation_v1_evidence_top5.jsonl"
 
     paths = SimpleNamespace(
         root=tmp_path,
         release=release,
+        baseline_release=baseline_release,
         config_file=config_file,
         answer_schema=answer_schema,
-        g0_run=g0,
-        g1_run=g1,
+        baseline_run=baseline,
+        generation_v1_run=generation_v1,
         evaluation=evaluation,
         reports=reports,
         qrels=qrels,
         references=references,
         prepared_queries=prepared_queries,
-        g1_evidence=g1_evidence,
+        generation_v1_evidence=generation_v1_evidence,
     )
-    paths.result_path = lambda system_id: g0 if system_id == G0_SYSTEM_ID else g1
+    paths.result_path = lambda system_id: baseline if system_id == BASELINE_SYSTEM_ID else generation_v1
     return paths
 
 
@@ -146,7 +148,7 @@ def _wrapper(
     schema_hash: str,
     evidence_ids: list[str],
 ) -> dict[str, object]:
-    citations = [] if system_id == G0_SYSTEM_ID else evidence_ids[:1]
+    citations = [] if system_id == BASELINE_SYSTEM_ID else evidence_ids[:1]
     attempt = {
         "attempt_number": 1,
         "status": "success",
@@ -205,21 +207,21 @@ def _formal_fixture(tmp_path: Path) -> tuple[SimpleNamespace, dict[str, object],
     paths = _paths(tmp_path)
     evidence = _evidence()
     schema_hash = sha256_file(paths.answer_schema)
-    g0_rows = [
-        _wrapper(query_id, G0_SYSTEM_ID, schema_hash, [])
+    baseline_rows = [
+        _wrapper(query_id, BASELINE_SYSTEM_ID, schema_hash, [])
         for query_id in EXPECTED_QUERY_IDS
     ]
-    g1_rows = [
+    generation_v1_rows = [
         _wrapper(
             query_id,
-            G1_SYSTEM_ID,
+            GENERATION_V1_SYSTEM_ID,
             schema_hash,
             [str(item["passage_id"]) for item in evidence[query_id]["passages"]],
         )
         for query_id in EXPECTED_QUERY_IDS
     ]
-    write_jsonl(paths.g0_run, g0_rows)
-    write_jsonl(paths.g1_run, g1_rows)
+    write_jsonl(paths.baseline_run, baseline_rows)
+    write_jsonl(paths.generation_v1_run, generation_v1_rows)
     prepared = {"evidence": evidence}
     details = _validate_formal_runs(paths, prepared)
     return paths, prepared, details
@@ -231,14 +233,14 @@ def test_formal_runs_recompute_shared_qwen_false_contract_and_citations(tmp_path
     assert details["shared_configuration"]["model_tag"] == EXPECTED_MODEL_TAG
     assert details["shared_configuration"]["model_digest"] == EXPECTED_MODEL_DIGEST
     assert details["shared_configuration"]["think"] is False
-    assert details["systems"][G0_SYSTEM_ID]["structured_output_validity"] == 1.0
-    assert details["systems"][G1_SYSTEM_ID]["citation_validity"] == 1.0
+    assert details["systems"][BASELINE_SYSTEM_ID]["structured_output_validity"] == 1.0
+    assert details["systems"][GENERATION_V1_SYSTEM_ID]["citation_validity"] == 1.0
 
 
 def test_structured_validity_is_distinct_from_citation_contract_failure(tmp_path: Path) -> None:
     paths, prepared, _ = _formal_fixture(tmp_path)
     rows = json.loads(
-        "[" + ",".join(paths.g1_run.read_text(encoding="utf-8").splitlines()) + "]"
+        "[" + ",".join(paths.generation_v1_run.read_text(encoding="utf-8").splitlines()) + "]"
     )
     failed = rows[0]
     failed["status"] = "failed"
@@ -258,13 +260,13 @@ def test_structured_validity_is_distinct_from_citation_contract_failure(tmp_path
     final_attempt["structured_output_valid"] = True
     final_attempt["contract_valid"] = False
     final_attempt["validation_errors"] = ["citation is outside supplied Top-5"]
-    write_jsonl(paths.g1_run, rows)
+    write_jsonl(paths.generation_v1_run, rows)
 
     details = _validate_formal_runs(paths, prepared)
-    g1 = details["systems"][G1_SYSTEM_ID]
-    assert g1["structured_output_validity"] == 1.0
-    assert g1["generation_contract_success_count"] == 249
-    assert g1["generation_contract_failure_count"] == 1
+    generation_v1 = details["systems"][GENERATION_V1_SYSTEM_ID]
+    assert generation_v1["structured_output_validity"] == 1.0
+    assert generation_v1["generation_contract_success_count"] == 249
+    assert generation_v1["generation_contract_failure_count"] == 1
 
 
 def test_validation_report_details_are_bounded_and_json_safe(tmp_path: Path) -> None:
@@ -276,8 +278,8 @@ def test_validation_report_details_are_bounded_and_json_safe(tmp_path: Path) -> 
         "formal_runs_and_shared_generation_contract",
         {
             "systems": {
-                G0_SYSTEM_ID: {
-                    "path": tmp_path / "g0.jsonl",
+                BASELINE_SYSTEM_ID: {
+                    "path": tmp_path / "baseline.jsonl",
                     "records": {"DEV0001": {"large": True}},
                     "record_count": 250,
                 }
@@ -287,17 +289,17 @@ def test_validation_report_details_are_bounded_and_json_safe(tmp_path: Path) -> 
 
     assert "evidence" not in prepared
     assert prepared["evidence_payload_embedded"] is False
-    assert "records" not in formal["systems"][G0_SYSTEM_ID]
-    assert formal["systems"][G0_SYSTEM_ID]["record_payloads_embedded"] is False
-    assert formal["systems"][G0_SYSTEM_ID]["path"].endswith("g0.jsonl")
+    assert "records" not in formal["systems"][BASELINE_SYSTEM_ID]
+    assert formal["systems"][BASELINE_SYSTEM_ID]["record_payloads_embedded"] is False
+    assert formal["systems"][BASELINE_SYSTEM_ID]["path"].endswith("baseline.jsonl")
     json.dumps({"prepared": prepared, "formal": formal}, allow_nan=False)
 
 
-def test_formal_runs_reject_g1_citation_outside_actual_top5(tmp_path: Path) -> None:
+def test_formal_runs_reject_generation_v1_citation_outside_actual_top5(tmp_path: Path) -> None:
     paths, prepared, _ = _formal_fixture(tmp_path)
-    rows = json.loads("[" + ",".join(paths.g1_run.read_text(encoding="utf-8").splitlines()) + "]")
+    rows = json.loads("[" + ",".join(paths.generation_v1_run.read_text(encoding="utf-8").splitlines()) + "]")
     rows[0]["answer"]["citations"] = ["invented-passage"]
-    write_jsonl(paths.g1_run, rows)
+    write_jsonl(paths.generation_v1_run, rows)
 
     with pytest.raises(ReleaseValidationError, match="Successful answer contract differs"):
         _validate_formal_runs(paths, prepared)
@@ -313,7 +315,7 @@ def _write_offline_fixture(
         [{"query_id": query_id, "fixture": "safe"} for query_id in EXPECTED_QUERY_IDS],
     )
     write_jsonl(
-        paths.g1_evidence,
+        paths.generation_v1_evidence,
         [prepared["evidence"][query_id] for query_id in EXPECTED_QUERY_IDS],
     )
     write_jsonl(
@@ -332,7 +334,7 @@ def _write_offline_fixture(
         "development_references_file": sha256_file(paths.references),
         "effective_qrels_file": sha256_file(paths.qrels),
         "prepared_queries_file": sha256_file(paths.prepared_queries),
-        "g1_evidence_file": sha256_file(paths.g1_evidence),
+        "generation_v1_evidence_file": sha256_file(paths.generation_v1_evidence),
     }
     evaluation_context_sha256 = sha256_json(evaluation_input_sha256)
 
@@ -340,7 +342,7 @@ def _write_offline_fixture(
         ("\n".join(EXPECTED_QUERY_IDS) + "\n").encode("utf-8")
     ).hexdigest()
     seal_runs: dict[str, object] = {}
-    for short, system_id in (("g0", G0_SYSTEM_ID), ("g1", G1_SYSTEM_ID)):
+    for short, system_id in (("baseline", BASELINE_SYSTEM_ID), ("generation_v1", GENERATION_V1_SYSTEM_ID)):
         system = formal["systems"][system_id]
         seal_runs[short] = {
             "path": str(system["path"]),
@@ -377,10 +379,10 @@ def _write_offline_fixture(
 
     judgments: list[dict[str, object]] = []
     paired: list[dict[str, object]] = []
-    g0_metric_rows: list[dict[str, object]] = []
-    g1_metric_rows: list[dict[str, object]] = []
+    baseline_metric_rows: list[dict[str, object]] = []
+    generation_v1_metric_rows: list[dict[str, object]] = []
     for ordinal, query_id in enumerate(EXPECTED_QUERY_IDS, start=1):
-        g0_decision = {
+        baseline_decision = {
             "root_cause_correct": False,
             "sql_repair_correct": False,
             "dialect_compatible": False,
@@ -388,9 +390,9 @@ def _write_offline_fixture(
             "answer_relevance": 0.5,
             "faithfulness": 0.0,
             "citation_coverage": 0.0,
-            "reason": "fixture g0",
+            "reason": "fixture baseline",
         }
-        g1_decision = {
+        generation_v1_decision = {
             "root_cause_correct": True,
             "sql_repair_correct": True,
             "dialect_compatible": True,
@@ -398,17 +400,17 @@ def _write_offline_fixture(
             "answer_relevance": 1.0,
             "faithfulness": 0.8,
             "citation_coverage": 0.8,
-            "reason": "fixture g1",
+            "reason": "fixture generation_v1",
         }
         assignment = (
-            {"A": G0_SYSTEM_ID, "B": G1_SYSTEM_ID}
+            {"A": BASELINE_SYSTEM_ID, "B": GENERATION_V1_SYSTEM_ID}
             if ordinal % 2 == 1
-            else {"A": G1_SYSTEM_ID, "B": G0_SYSTEM_ID}
+            else {"A": GENERATION_V1_SYSTEM_ID, "B": BASELINE_SYSTEM_ID}
         )
-        decision = {"g0": g0_decision, "g1": g1_decision}
+        decision = {"baseline": baseline_decision, "generation_v1": generation_v1_decision}
         anonymous_decision = {
             label: decision[
-                "g0" if assignment[label] == G0_SYSTEM_ID else "g1"
+                "baseline" if assignment[label] == BASELINE_SYSTEM_ID else "generation_v1"
             ]
             for label in ("A", "B")
         }
@@ -425,8 +427,8 @@ def _write_offline_fixture(
                 "think": False,
                 "policy_sha256": "8" * 64,
                 "run_sha256": {
-                    "g0": formal["systems"][G0_SYSTEM_ID]["sha256"],
-                    "g1": formal["systems"][G1_SYSTEM_ID]["sha256"],
+                    "baseline": formal["systems"][BASELINE_SYSTEM_ID]["sha256"],
+                    "generation_v1": formal["systems"][GENERATION_V1_SYSTEM_ID]["sha256"],
                 },
                 "evaluation_input_sha256": evaluation_input_sha256,
                 "evaluation_context_sha256": evaluation_context_sha256,
@@ -445,7 +447,7 @@ def _write_offline_fixture(
                 "decision": decision,
             }
         )
-        g0_view = {
+        baseline_view = {
             "status": "success",
             "structured_output_valid": True,
             "contract_valid": True,
@@ -458,7 +460,7 @@ def _write_offline_fixture(
             "answer_relevance": 0.5,
             "task_success": False,
             "latency_wall_ms": 10.5,
-            "judge_reason": "fixture g0",
+            "judge_reason": "fixture baseline",
             "citation_validity": NOT_APPLICABLE,
             "citation_coverage": NOT_APPLICABLE,
             "faithfulness": NOT_APPLICABLE,
@@ -468,7 +470,7 @@ def _write_offline_fixture(
             "citation_count": 0,
             "citations_empty": True,
         }
-        g1_view = {
+        generation_v1_view = {
             "status": "success",
             "structured_output_valid": True,
             "contract_valid": True,
@@ -481,7 +483,7 @@ def _write_offline_fixture(
             "answer_relevance": 1.0,
             "task_success": True,
             "latency_wall_ms": 10.5,
-            "judge_reason": "fixture g1",
+            "judge_reason": "fixture generation_v1",
             "citation_validity": 1.0,
             "citation_coverage": 0.8,
             "faithfulness": 0.8,
@@ -497,24 +499,24 @@ def _write_offline_fixture(
                 "judge_status": "success",
                 "judge_attempt_count": 1,
                 "judge_retry_count": 0,
-                "g0": g0_view,
-                "g1": g1_view,
+                "baseline": baseline_view,
+                "generation_v1": generation_v1_view,
                 "paired": {
                     "task_success_delta": 1,
                     "semantic_component_delta": 4,
                     "answer_relevance_delta": 0.5,
-                    "outcome": "g1_improved",
+                    "outcome": "generation_v1_improved",
                     "outcome_basis": "offline_task_success",
                 },
             }
         )
-        g0_metric_rows.append(dict(g0_view))
-        g1_metric_rows.append(dict(g1_view))
+        baseline_metric_rows.append(dict(baseline_view))
+        generation_v1_metric_rows.append(dict(generation_v1_view))
     write_jsonl(paths.evaluation / "judgments.jsonl", judgments)
     write_jsonl(paths.evaluation / "per_query_comparison.jsonl", paired)
 
-    g0_metrics = aggregate_system_metrics(g0_metric_rows, rag_system=False)
-    g1_metrics = aggregate_system_metrics(g1_metric_rows, rag_system=True)
+    baseline_metrics = aggregate_system_metrics(baseline_metric_rows, rag_system=False)
+    generation_v1_metrics = aggregate_system_metrics(generation_v1_metric_rows, rag_system=True)
     paired_metrics = paired_summary(paired)
     paired_metrics["success_target"] = {
         "required_absolute_delta": 0.10,
@@ -545,34 +547,34 @@ def _write_offline_fixture(
             "retry_count": 0,
         },
         "systems": {
-            "g0": {"system_id": G0_SYSTEM_ID, **g0_metrics},
-            "g1": {"system_id": G1_SYSTEM_ID, **g1_metrics},
+            "baseline": {"system_id": BASELINE_SYSTEM_ID, **baseline_metrics},
+            "generation_v1": {"system_id": GENERATION_V1_SYSTEM_ID, **generation_v1_metrics},
         },
         "paired": paired_metrics,
     }
     engineering = {
-        "g0_has_250_formal_results": True,
-        "g1_has_250_formal_results": True,
+        "baseline_has_250_formal_results": True,
+        "generation_v1_has_250_formal_results": True,
         "all_queries_have_judgment_records": True,
         "all_250_judgments_succeeded": True,
         "all_250_judge_calls_succeeded": True,
-        "g0_structured_output_validity_at_least_98pct": True,
-        "g1_structured_output_validity_at_least_98pct": True,
+        "baseline_structured_output_validity_at_least_98pct": True,
+        "generation_v1_structured_output_validity_at_least_98pct": True,
     }
     integrity = {
         "sealed_before_reference_access": True,
         "paired_query_ids_identical": True,
-        "g0_received_no_evidence": True,
-        "g1_citation_validity_is_100pct": True,
-        "g1_context_is_fully_qrels_judged": True,
-        "g0_citations_are_empty": True,
+        "baseline_received_no_evidence": True,
+        "generation_v1_citation_validity_is_100pct": True,
+        "generation_v1_context_is_fully_qrels_judged": True,
+        "baseline_citations_are_empty": True,
     }
     quality = {
-        "g1_task_success_improves_by_at_least_10pp": True,
-        "g1_dialect_compatibility_not_below_g0": True,
-        "g1_version_compatibility_not_below_g0": True,
-        "g1_root_cause_accuracy_not_below_g0": True,
-        "g1_sql_repair_correctness_not_below_g0": True,
+        "generation_v1_task_success_improves_by_at_least_10pp": True,
+        "generation_v1_dialect_compatibility_not_below_baseline": True,
+        "generation_v1_version_compatibility_not_below_baseline": True,
+        "generation_v1_root_cause_accuracy_not_below_baseline": True,
+        "generation_v1_sql_repair_correctness_not_below_baseline": True,
     }
     acceptance = {
         "schema_version": "sqlmend-generation-acceptance-v1",
@@ -595,9 +597,9 @@ def test_offline_evaluation_recomputes_conjunction_metrics_seal_and_na(tmp_path:
     details = _validate_offline_evaluation(paths, formal, prepared)
 
     assert details["offline_boundary_verified"] is True
-    assert details["systems"][G0_SYSTEM_ID]["faithfulness"] == NOT_APPLICABLE
-    assert details["systems"][G0_SYSTEM_ID]["context_precision"] == NOT_APPLICABLE
-    assert details["systems"][G1_SYSTEM_ID]["context_precision"] == 0.2
+    assert details["systems"][BASELINE_SYSTEM_ID]["faithfulness"] == NOT_APPLICABLE
+    assert details["systems"][BASELINE_SYSTEM_ID]["context_precision"] == NOT_APPLICABLE
+    assert details["systems"][GENERATION_V1_SYSTEM_ID]["context_precision"] == 0.2
     assert details["engineering_gates"]["all_250_judgments_succeeded"] is True
     assert details["engineering_gates"]["all_250_judge_calls_succeeded"] is True
     assert details["judge_success_count"] == 250
@@ -705,9 +707,9 @@ def test_offline_evaluation_cross_binds_paired_rows_to_journal_and_runs(
         elif case == "judge_attempt_count":
             row["judge_attempt_count"] = 2
         elif case == "generation_status":
-            row["g0"]["status"] = "failed"
+            row["baseline"]["status"] = "failed"
         elif case == "semantic":
-            row["g1"]["root_cause_correct"] = False
+            row["generation_v1"]["root_cause_correct"] = False
         elif case == "task_delta":
             row["paired"]["task_success_delta"] = 0
         else:
@@ -731,7 +733,7 @@ def test_offline_evaluation_rejects_nonconjunctive_task_success(tmp_path: Path) 
         )
         + "]"
     )
-    rows[0]["g0"]["task_success"] = True
+    rows[0]["baseline"]["task_success"] = True
     write_jsonl(paths.evaluation / "per_query_comparison.jsonl", rows)
 
     with pytest.raises(ReleaseValidationError, match="required conjunction"):
@@ -786,8 +788,8 @@ def test_offline_evaluation_records_judge_call_gate_failure(tmp_path: Path) -> N
         }
     ]
     judgments[0]["decision"] = {
-        "g0": dict(failed_side),
-        "g1": dict(failed_side),
+        "baseline": dict(failed_side),
+        "generation_v1": dict(failed_side),
     }
     write_jsonl(judgments_path, judgments)
 
@@ -797,7 +799,7 @@ def test_offline_evaluation_records_judge_call_gate_failure(tmp_path: Path) -> N
         for line in paired_path.read_text(encoding="utf-8").splitlines()
     ]
     paired[0]["judge_status"] = "failed"
-    for system in ("g0", "g1"):
+    for system in ("baseline", "generation_v1"):
         paired[0][system].update(
             {
                 **{
@@ -814,8 +816,8 @@ def test_offline_evaluation_records_judge_call_gate_failure(tmp_path: Path) -> N
                 "judge_reason": failed_side["reason"],
             }
         )
-    paired[0]["g1"]["faithfulness"] = 0.0
-    paired[0]["g1"]["citation_coverage"] = 0.0
+    paired[0]["generation_v1"]["faithfulness"] = 0.0
+    paired[0]["generation_v1"]["citation_coverage"] = 0.0
     paired[0]["paired"] = {
         "task_success_delta": 0,
         "semantic_component_delta": 0,
@@ -832,16 +834,16 @@ def test_offline_evaluation_records_judge_call_gate_failure(tmp_path: Path) -> N
     overall["judge"]["judge_call_success_count"] = 249
     overall["judge"]["judge_call_failure_count"] = 1
     overall["systems"] = {
-        "g0": {
-            "system_id": G0_SYSTEM_ID,
+        "baseline": {
+            "system_id": BASELINE_SYSTEM_ID,
             **aggregate_system_metrics(
-                [row["g0"] for row in paired], rag_system=False
+                [row["baseline"] for row in paired], rag_system=False
             ),
         },
-        "g1": {
-            "system_id": G1_SYSTEM_ID,
+        "generation_v1": {
+            "system_id": GENERATION_V1_SYSTEM_ID,
             **aggregate_system_metrics(
-                [row["g1"] for row in paired], rag_system=True
+                [row["generation_v1"] for row in paired], rag_system=True
             ),
         },
     }
@@ -871,6 +873,12 @@ def test_offline_evaluation_records_judge_call_gate_failure(tmp_path: Path) -> N
 
 def test_test_evidence_binds_source_before_after_and_current(tmp_path: Path) -> None:
     paths = _paths(tmp_path)
+    for target in (
+        tmp_path / "generation" / "README.md",
+        tmp_path / "generation" / "baseline" / "README.md",
+    ):
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text("fixture\n", encoding="utf-8")
     for relative in (
         "schema/evidence.schema.json",
         "src/sqlmend_generation_v1/module.py",

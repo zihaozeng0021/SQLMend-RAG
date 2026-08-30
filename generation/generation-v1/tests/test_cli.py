@@ -6,20 +6,24 @@ from types import SimpleNamespace
 import pytest
 
 from sqlmend_generation_v1 import cli
-from sqlmend_generation_v1.contracts import G0_SYSTEM_ID, G1_SYSTEM_ID
+from sqlmend_generation_v1.contracts import BASELINE_SYSTEM_ID, GENERATION_V1_SYSTEM_ID
 
 
 def _paths(tmp_path: Path) -> SimpleNamespace:
     release = tmp_path / "generation" / "generation-v1"
     release.mkdir(parents=True)
-    return SimpleNamespace(root=tmp_path, release=release)
+    baseline = tmp_path / "generation" / "baseline"
+    baseline.mkdir(parents=True)
+    return SimpleNamespace(root=tmp_path, release=release, baseline=baseline)
 
 
-def test_system_aliases_resolve_to_formal_ids() -> None:
-    assert cli._system_id("g0") == G0_SYSTEM_ID
-    assert cli._system_id("g1") == G1_SYSTEM_ID
-    assert cli._system_id(G0_SYSTEM_ID) == G0_SYSTEM_ID
-    assert cli._system_id(G1_SYSTEM_ID) == G1_SYSTEM_ID
+def test_canonical_system_names_resolve_to_formal_ids() -> None:
+    assert cli._system_id("baseline") == BASELINE_SYSTEM_ID
+    assert cli._system_id("generation-v1") == GENERATION_V1_SYSTEM_ID
+    with pytest.raises(KeyError):
+        cli._system_id("g0")
+    with pytest.raises(KeyError):
+        cli._system_id("g1")
 
 
 def test_audit_parser_accepts_all_three_release_phases() -> None:
@@ -43,12 +47,23 @@ def test_clean_removes_only_allowlisted_generated_paths(tmp_path: Path) -> None:
     (paths.release / cli.MANIFEST_NAME).write_text("{}\n", encoding="utf-8")
     outside = tmp_path / "outside.txt"
     outside.write_text("keep", encoding="utf-8")
+    baseline_readme = paths.baseline / "README.md"
+    baseline_readme.write_text("keep", encoding="utf-8")
+    for name in ("runs", "reports"):
+        target = paths.baseline / name
+        target.mkdir()
+        (target / "remove.txt").write_text("remove", encoding="utf-8")
+    (paths.baseline / cli.MANIFEST_NAME).write_text("{}\n", encoding="utf-8")
 
     result = cli.clean_generated(paths)
 
     assert result["status"] == "PASS"
     assert all(not (paths.release / name).exists() for name in cli.GENERATED_DIRECTORY_NAMES)
     assert not (paths.release / cli.MANIFEST_NAME).exists()
+    assert not (paths.baseline / "runs").exists()
+    assert not (paths.baseline / "reports").exists()
+    assert not (paths.baseline / cli.MANIFEST_NAME).exists()
+    assert baseline_readme.is_file()
     assert all((paths.release / name / "keep.txt").is_file() for name in ("config", "schema", "src", "tests"))
     assert outside.read_text(encoding="utf-8") == "keep"
 
@@ -94,7 +109,7 @@ def test_all_runs_after_audit_when_generation_fails(
         "verify",
         "model",
         "prepare",
-        G0_SYSTEM_ID,
+        BASELINE_SYSTEM_ID,
         "after",
         "current",
     ]
@@ -142,8 +157,8 @@ def test_all_orchestration_order_and_quality_exit_state(
         "verify",
         "model",
         "prepare",
-        G0_SYSTEM_ID,
-        G1_SYSTEM_ID,
+        BASELINE_SYSTEM_ID,
+        GENERATION_V1_SYSTEM_ID,
         "evaluate",
         "test",
         "after",

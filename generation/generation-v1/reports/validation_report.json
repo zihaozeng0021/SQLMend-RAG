@@ -19,7 +19,7 @@
     {
       "details": {
         "config": {
-          "experiment_id": "phase10_g0_g1_dev250",
+          "experiment_id": "phase10_baseline_generation_v1_dev250",
           "model_digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
           "model_tag": "qwen3.5:4b",
           "options": {
@@ -79,7 +79,7 @@
           "think": false
         },
         "systems": {
-          "g0_closed_book": {
+          "baseline": {
             "citation_count": 0,
             "citation_validity": 1.0,
             "configuration_signature": {
@@ -111,16 +111,16 @@
             "generation_contract_failure_count": 0,
             "generation_contract_success_count": 250,
             "generation_contract_success_rate": 1.0,
-            "path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/generation/generation-v1/runs/g0_closed_book_dev250.jsonl",
+            "path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/generation/baseline/runs/baseline_closed_book_dev250.jsonl",
             "record_count": 250,
             "record_payloads_embedded": false,
-            "sha256": "8faaeec64fa6b5eb0ff9a831e0a4b819198ac58971b633366f8f1f0b32646997",
+            "sha256": "70e4372ee2414be316ebd084b95503d01d87ecfa6ec49b916da13c64370f0927",
             "structured_output_validity": 1.0,
             "success_count": 250,
             "success_count_semantics": "generation_contract_success",
             "valid_citation_count": 0
           },
-          "g1_retrieval_v1_rag": {
+          "generation_v1": {
             "citation_count": 251,
             "citation_validity": 1.0,
             "configuration_signature": {
@@ -152,10 +152,10 @@
             "generation_contract_failure_count": 9,
             "generation_contract_success_count": 241,
             "generation_contract_success_rate": 0.964,
-            "path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/generation/generation-v1/runs/g1_retrieval_v1_rag_dev250.jsonl",
+            "path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/generation/generation-v1/runs/generation_v1_rag_dev250.jsonl",
             "record_count": 250,
             "record_payloads_embedded": false,
-            "sha256": "05898850acbe662464fcbf2327bcfb326a666ea1e31524fa5b66f50540cffe75",
+            "sha256": "0af9cc7c8dbbcecdeaa87cf73ff51c22cb13c0016e07614060787e3a1434c66c",
             "structured_output_validity": 0.964,
             "success_count": 241,
             "success_count_semantics": "generation_contract_success",
@@ -8965,12 +8965,12 @@
         "engineering_gates": {
           "all_250_judge_calls_succeeded": false,
           "all_250_judgments_succeeded": false,
-          "g0_structured_output_validity_at_least_98pct": true,
-          "g1_structured_output_validity_at_least_98pct": false
+          "baseline_structured_output_validity_at_least_98pct": true,
+          "generation_v1_structured_output_validity_at_least_98pct": false
         },
-        "generation_seal_sha256": "a79d74a9084c0264f624157fb5791897526247201c44f3132631f87926f2b365",
+        "generation_seal_sha256": "37b7656bfc40455d4715b4e196d4de3b86d1b4d21872cc645bc7d0dc76155031",
         "integrity_gates": {
-          "g1_citation_validity_100pct": true
+          "generation_v1_citation_validity_100pct": true
         },
         "judge_call_failure_count": 1,
         "judge_call_success_count": 249,
@@ -8982,8 +8982,8 @@
         "paired": {
           "both_succeeded_count": 99,
           "both_task_success_count": 99,
-          "g1_improved_count": 71,
-          "g1_regressed_count": 28,
+          "generation_v1_improved_count": 71,
+          "generation_v1_regressed_count": 28,
           "neither_succeeded_count": 52,
           "neither_task_success_count": 52,
           "paired_count_semantics": "offline_task_success",
@@ -8993,16 +8993,16 @@
         },
         "paired_row_count": 250,
         "quality_gates": {
-          "g1_dialect_compatibility_not_below_g0": true,
-          "g1_root_cause_accuracy_not_below_g0": true,
-          "g1_sql_repair_correctness_not_below_g0": true,
-          "g1_version_compatibility_not_below_g0": true,
+          "generation_v1_dialect_compatibility_not_below_baseline": true,
+          "generation_v1_root_cause_accuracy_not_below_baseline": true,
+          "generation_v1_sql_repair_correctness_not_below_baseline": true,
+          "generation_v1_version_compatibility_not_below_baseline": true,
           "task_success_absolute_gain_at_least_10pp": true
         },
         "quality_status": "PASS",
         "query_count": 250,
         "systems": {
-          "g0_closed_book": {
+          "baseline": {
             "answer_relevance": 0.8194,
             "citation_coverage": "N/A",
             "citation_validity": "N/A",
@@ -9033,7 +9033,7 @@
             "task_success_rate": 0.508,
             "version_compatibility": 0.796
           },
-          "g1_retrieval_v1_rag": {
+          "generation_v1": {
             "answer_relevance": 0.891,
             "citation_coverage": 0.6416000000000001,
             "citation_validity": 1.0,
@@ -9073,17 +9073,17 @@
       "details": {
         "before_after_current_identical": true,
         "returncode": 0,
-        "source_file_count": 32,
-        "source_tree_sha256": "098c413cdfe09666263435e44eabd425b3308518c831aa7d6510626827eb480a"
+        "source_file_count": 36,
+        "source_tree_sha256": "068cb8637e68a091f3413001f55b4f6506294c4e8cbbb305539d90ef915c3df8"
       },
       "name": "test_evidence_source_stability",
       "status": "PASS"
     },
     {
       "details": {
-        "artifact_file_count": 52,
+        "artifact_file_count": 64,
         "errors": [],
-        "manifest_payload_sha256": "2c292af824325bbb128fc99d69444dd6cf5445d4585a2e123c38df3a7f347dfd",
+        "manifest_payload_sha256": "1e78f60b4f967d45a1d1b49e2b36d5ab8f18b4b013b9c41d46715de4b12be95f",
         "rebuilt_fixed_point_identical": true,
         "status": "PASS"
       },
@@ -9095,29 +9095,29 @@
   "engineering_gates": {
     "all_250_judge_calls_succeeded": false,
     "all_250_judgments_succeeded": false,
-    "g0_structured_output_validity_at_least_98pct": true,
-    "g1_structured_output_validity_at_least_98pct": false
+    "baseline_structured_output_validity_at_least_98pct": true,
+    "generation_v1_structured_output_validity_at_least_98pct": false
   },
   "engineering_status": "FAIL",
   "errors": [
     "engineering acceptance gate failed: all_250_judgments_succeeded",
     "engineering acceptance gate failed: all_250_judge_calls_succeeded",
-    "engineering acceptance gate failed: g1_structured_output_validity_at_least_98pct"
+    "engineering acceptance gate failed: generation_v1_structured_output_validity_at_least_98pct"
   ],
   "evaluation_label": "machine-proposed development evaluation",
   "failed_check_count": 0,
   "integrity_gates": {
-    "g1_citation_validity_100pct": true
+    "generation_v1_citation_validity_100pct": true
   },
   "integrity_status": "PASS",
   "machine_proposed_development_only": true,
   "overall_success": false,
   "passed_check_count": 7,
   "quality_gates": {
-    "g1_dialect_compatibility_not_below_g0": true,
-    "g1_root_cause_accuracy_not_below_g0": true,
-    "g1_sql_repair_correctness_not_below_g0": true,
-    "g1_version_compatibility_not_below_g0": true,
+    "generation_v1_dialect_compatibility_not_below_baseline": true,
+    "generation_v1_root_cause_accuracy_not_below_baseline": true,
+    "generation_v1_sql_repair_correctness_not_below_baseline": true,
+    "generation_v1_version_compatibility_not_below_baseline": true,
     "task_success_absolute_gain_at_least_10pp": true
   },
   "quality_status": "PASS",

@@ -23,6 +23,7 @@ from urllib import request
 
 import yaml
 
+from .contracts import BASELINE_SYSTEM_ID, GENERATION_V1_SYSTEM_ID
 from .metrics import (
     aggregate_system_metrics,
     citation_ids,
@@ -35,8 +36,6 @@ from .metrics import (
 
 EVALUATION_LABEL = "machine-proposed development evaluation"
 EXPECTED_QUERY_COUNT = 250
-G0_SYSTEM_ID = "g0_closed_book"
-G1_SYSTEM_ID = "g1_retrieval_v1_rag"
 JUDGE_MODEL = "qwen3.5:4b"
 JUDGE_MODEL_DIGEST = "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd"
 
@@ -161,9 +160,9 @@ class OfflineEvaluationPaths:
     repo_root: Path
     release_dir: Path
     config: Path
-    g0_run: Path
-    g1_run: Path
-    g1_evidence: Path
+    baseline_run: Path
+    generation_v1_run: Path
+    generation_v1_evidence: Path
     prepared_queries: Path
     references: Path
     qrels: Path
@@ -226,22 +225,22 @@ class OfflineEvaluationPaths:
             config=member(
                 release / "config" / "generation.yaml", "config", "config_file"
             ),
-            g0_run=member(
-                release / "runs" / "g0_closed_book_dev250.jsonl",
-                "g0_run",
-                "g0_run_path",
+            baseline_run=member(
+                repo_root / "generation" / "baseline" / "runs" / "baseline_closed_book_dev250.jsonl",
+                "baseline_run",
+                "baseline_run_path",
                 "closed_book_run",
             ),
-            g1_run=member(
-                release / "runs" / "g1_retrieval_v1_rag_dev250.jsonl",
-                "g1_run",
-                "g1_run_path",
+            generation_v1_run=member(
+                release / "runs" / "generation_v1_rag_dev250.jsonl",
+                "generation_v1_run",
+                "generation_v1_run_path",
                 "rag_run",
             ),
-            g1_evidence=member(
-                release / "prepared_inputs" / "g1_evidence_top5.jsonl",
-                "g1_evidence",
-                "g1_evidence_path",
+            generation_v1_evidence=member(
+                release / "prepared_inputs" / "generation_v1_evidence_top5.jsonl",
+                "generation_v1_evidence",
+                "generation_v1_evidence_path",
                 "prepared_evidence",
             ),
             prepared_queries=member(
@@ -464,10 +463,10 @@ def run_offline_evaluation(
     client: Any = None,
     resume: bool = True,
 ) -> dict[str, Any]:
-    """Evaluate the sealed G0/G1 formal runs and publish Phase 10 artifacts.
+    """Evaluate the sealed baseline/generation_v1 formal runs and publish artifacts.
 
     Ordering is a release invariant: both run files are fully parsed and
-    validated, the G1 evidence/provenance contract is checked, and
+    validated, the generation_v1 evidence/provenance contract is checked, and
     ``generation_seal.json`` is durably written *before* the reference or qrels
     paths are opened for the first time.
     """
@@ -479,15 +478,15 @@ def run_offline_evaluation(
     judge_config_sha256 = _sha256_file(resolved.config)
 
     # Online-safe artifacts only up to and including the durable seal write.
-    g0_rows = _load_formal_run(resolved.g0_run, G0_SYSTEM_ID)
-    g1_rows = _load_formal_run(resolved.g1_run, G1_SYSTEM_ID)
-    query_ids = _validate_paired_runs(g0_rows, g1_rows)
-    evidence = _load_g1_evidence(resolved.g1_evidence, query_ids)
+    baseline_rows = _load_formal_run(resolved.baseline_run, BASELINE_SYSTEM_ID)
+    generation_v1_rows = _load_formal_run(resolved.generation_v1_run, GENERATION_V1_SYSTEM_ID)
+    query_ids = _validate_paired_runs(baseline_rows, generation_v1_rows)
+    evidence = _load_generation_v1_evidence(resolved.generation_v1_evidence, query_ids)
     safe_queries = _load_safe_queries(resolved.prepared_queries, query_ids)
-    _validate_input_provenance(g0_rows, g1_rows, evidence, safe_queries)
-    _validate_generation_identity(g0_rows, g1_rows, judge_policy)
+    _validate_input_provenance(baseline_rows, generation_v1_rows, evidence, safe_queries)
+    _validate_generation_identity(baseline_rows, generation_v1_rows, judge_policy)
 
-    seal = _build_generation_seal(resolved, g0_rows, g1_rows, query_ids)
+    seal = _build_generation_seal(resolved, baseline_rows, generation_v1_rows, query_ids)
     _write_json(resolved.seal, seal)
 
     # This timestamp is captured only after the first seal write has completed.
@@ -511,7 +510,7 @@ def run_offline_evaluation(
         "development_references_file": seal["reference_access"]["references_sha256"],
         "effective_qrels_file": seal["reference_access"]["qrels_sha256"],
         "prepared_queries_file": _sha256_file(resolved.prepared_queries),
-        "g1_evidence_file": _sha256_file(resolved.g1_evidence),
+        "generation_v1_evidence_file": _sha256_file(resolved.generation_v1_evidence),
     }
     evaluation_context_sha256 = _canonical_sha256(evaluation_input_sha256)
     # A resumed judgment is valid only for this exact offline prompt/metric
@@ -529,11 +528,11 @@ def run_offline_evaluation(
     _write_json(resolved.seal, seal)
 
     run_sha = {
-        "g0": seal["runs"]["g0"]["sha256"],
-        "g1": seal["runs"]["g1"]["sha256"],
+        BASELINE_SYSTEM_ID: seal["runs"][BASELINE_SYSTEM_ID]["sha256"],
+        GENERATION_V1_SYSTEM_ID: seal["runs"][GENERATION_V1_SYSTEM_ID]["sha256"],
     }
-    g0_by_id = {row["query_id"]: row for row in g0_rows}
-    g1_by_id = {row["query_id"]: row for row in g1_rows}
+    baseline_by_id = {row["query_id"]: row for row in baseline_rows}
+    generation_v1_by_id = {row["query_id"]: row for row in generation_v1_rows}
     policy_hash = _canonical_sha256(asdict(judge_policy))
     resumed = (
         _load_resumable_judgments(
@@ -568,8 +567,8 @@ def run_offline_evaluation(
             safe_query=safe_queries[query_id],
             reference=references[query_id],
             evidence=evidence[query_id],
-            g0_wrapper=g0_by_id[query_id],
-            g1_wrapper=g1_by_id[query_id],
+            baseline_wrapper=baseline_by_id[query_id],
+            generation_v1_wrapper=generation_v1_by_id[query_id],
             assignment=assignment,
         )
         _validate_resumed_assignment(
@@ -602,8 +601,8 @@ def run_offline_evaluation(
             safe_query=safe_queries[query_id],
             reference=references[query_id],
             evidence=evidence[query_id],
-            g0_wrapper=g0_by_id[query_id],
-            g1_wrapper=g1_by_id[query_id],
+            baseline_wrapper=baseline_by_id[query_id],
+            generation_v1_wrapper=generation_v1_by_id[query_id],
             assignment=assignment,
         )
         anonymous, attempts = _judge_with_retry(judge, prompt, judge_policy)
@@ -619,7 +618,7 @@ def run_offline_evaluation(
             "query_id": query_id,
             "ordinal": ordinal,
             "assignment": assignment,
-            "counterbalance": "odd:g0=A;even:g1=A",
+            "counterbalance": "odd:baseline=A;even:generation_v1=A",
             "status": status,
             "model": judge_policy.model,
             "model_tag": judge_policy.model,
@@ -637,8 +636,8 @@ def run_offline_evaluation(
             "retry_count": max(0, len(attempts) - 1),
             "attempts": attempts,
             "decision": {
-                "g0": _decision_for_wrapper(by_system[G0_SYSTEM_ID], g0_by_id[query_id]),
-                "g1": _decision_for_wrapper(by_system[G1_SYSTEM_ID], g1_by_id[query_id]),
+                BASELINE_SYSTEM_ID: _decision_for_wrapper(by_system[BASELINE_SYSTEM_ID], baseline_by_id[query_id]),
+                GENERATION_V1_SYSTEM_ID: _decision_for_wrapper(by_system[GENERATION_V1_SYSTEM_ID], generation_v1_by_id[query_id]),
             },
         }
         _append_jsonl(resolved.judgments, row)
@@ -655,8 +654,8 @@ def run_offline_evaluation(
         _comparison_row(
             query_id=query_id,
             ordinal=ordinal,
-            g0=g0_by_id[query_id],
-            g1=g1_by_id[query_id],
+            baseline=baseline_by_id[query_id],
+            generation_v1=generation_v1_by_id[query_id],
             evidence=evidence[query_id],
             qrels=qrels.get(query_id, {}),
             judgment=judgments[query_id],
@@ -665,11 +664,11 @@ def run_offline_evaluation(
     ]
     _write_jsonl(resolved.per_query, comparison_rows)
 
-    g0_metrics = aggregate_system_metrics(
-        [row["g0"] for row in comparison_rows], rag_system=False
+    baseline_metrics = aggregate_system_metrics(
+        [row[BASELINE_SYSTEM_ID] for row in comparison_rows], rag_system=False
     )
-    g1_metrics = aggregate_system_metrics(
-        [row["g1"] for row in comparison_rows], rag_system=True
+    generation_v1_metrics = aggregate_system_metrics(
+        [row[GENERATION_V1_SYSTEM_ID] for row in comparison_rows], rag_system=True
     )
     paired = paired_summary(comparison_rows)
     paired["success_target"] = {
@@ -716,26 +715,26 @@ def run_offline_evaluation(
             "retry_count": total_retries,
             "calls_per_query": 1,
             "counterbalance": {
-                "odd": "A=g0,B=g1",
-                "even": "A=g1,B=g0",
-                "a_g0_count": sum(
-                    row["assignment"]["A"] == G0_SYSTEM_ID for row in judgments.values()
+                "odd": "A=baseline,B=generation_v1",
+                "even": "A=generation_v1,B=baseline",
+                "a_baseline_count": sum(
+                    row["assignment"]["A"] == BASELINE_SYSTEM_ID for row in judgments.values()
                 ),
-                "a_g1_count": sum(
-                    row["assignment"]["A"] == G1_SYSTEM_ID for row in judgments.values()
+                "a_generation_v1_count": sum(
+                    row["assignment"]["A"] == GENERATION_V1_SYSTEM_ID for row in judgments.values()
                 ),
             },
             "response_schema_sha256": _canonical_sha256(JUDGE_RESPONSE_SCHEMA),
         },
         "systems": {
-            "g0": {"system_id": G0_SYSTEM_ID, **g0_metrics},
-            "g1": {"system_id": G1_SYSTEM_ID, **g1_metrics},
+            BASELINE_SYSTEM_ID: {"system_id": BASELINE_SYSTEM_ID, **baseline_metrics},
+            GENERATION_V1_SYSTEM_ID: {"system_id": GENERATION_V1_SYSTEM_ID, **generation_v1_metrics},
         },
         "paired": paired,
         "artifacts": {
-            "g0_answers": _display_path(resolved.g0_run, resolved.repo_root),
-            "g1_answers": _display_path(resolved.g1_run, resolved.repo_root),
-            "g1_evidence": _display_path(resolved.g1_evidence, resolved.repo_root),
+            "baseline_answers": _display_path(resolved.baseline_run, resolved.repo_root),
+            "generation_v1_answers": _display_path(resolved.generation_v1_run, resolved.repo_root),
+            "generation_v1_evidence": _display_path(resolved.generation_v1_evidence, resolved.repo_root),
             "judgments": _display_path(resolved.judgments, resolved.repo_root),
             "per_query_comparison": _display_path(resolved.per_query, resolved.repo_root),
             "overall_metrics": _display_path(resolved.overall, resolved.repo_root),
@@ -743,6 +742,17 @@ def run_offline_evaluation(
             "report": _display_path(resolved.report, resolved.repo_root),
         },
     }
+    naming_migration = (
+        resolved.repo_root
+        / "generation"
+        / "generation-v1"
+        / "provenance"
+        / "system_naming_migration.json"
+    )
+    if naming_migration.is_file():
+        overall["artifacts"]["system_naming_migration"] = _display_path(
+            naming_migration, resolved.repo_root
+        )
     _write_json(resolved.overall, overall)
 
     acceptance = _build_acceptance(overall, comparison_rows)
@@ -825,39 +835,39 @@ def _load_formal_run(path: Path, expected_system_id: str) -> list[dict[str, Any]
 
 
 def _validate_paired_runs(
-    g0_rows: Sequence[Mapping[str, Any]],
-    g1_rows: Sequence[Mapping[str, Any]],
+    baseline_rows: Sequence[Mapping[str, Any]],
+    generation_v1_rows: Sequence[Mapping[str, Any]],
 ) -> list[str]:
-    g0_ids = {str(row["query_id"]) for row in g0_rows}
-    g1_ids = {str(row["query_id"]) for row in g1_rows}
-    if g0_ids != g1_ids:
+    baseline_ids = {str(row["query_id"]) for row in baseline_rows}
+    generation_v1_ids = {str(row["query_id"]) for row in generation_v1_rows}
+    if baseline_ids != generation_v1_ids:
         raise ValueError(
-            "G0/G1 query sets differ: "
-            f"only_g0={sorted(g0_ids - g1_ids)[:5]}, "
-            f"only_g1={sorted(g1_ids - g0_ids)[:5]}"
+            "baseline/generation_v1 query sets differ: "
+            f"only_baseline={sorted(baseline_ids - generation_v1_ids)[:5]}, "
+            f"only_generation_v1={sorted(generation_v1_ids - baseline_ids)[:5]}"
         )
-    return sorted(g0_ids, key=_query_sort_key)
+    return sorted(baseline_ids, key=_query_sort_key)
 
 
-def _load_g1_evidence(
+def _load_generation_v1_evidence(
     path: Path,
     query_ids: Sequence[str],
 ) -> dict[str, dict[str, Any]]:
     rows = _read_jsonl(path)
     if len(rows) != EXPECTED_QUERY_COUNT:
-        raise ValueError(f"G1 evidence must have {EXPECTED_QUERY_COUNT} rows")
+        raise ValueError(f"generation_v1 evidence must have {EXPECTED_QUERY_COUNT} rows")
     result: dict[str, dict[str, Any]] = {}
     for row in rows:
         query_id = _identifier(row.get("query_id"), "evidence query_id")
         if query_id in result:
-            raise ValueError(f"duplicate G1 evidence query: {query_id}")
+            raise ValueError(f"duplicate generation_v1 evidence query: {query_id}")
         passages = row.get("passages")
         if not isinstance(passages, list) or len(passages) != 5:
-            raise ValueError(f"G1 evidence must contain exactly Top-5 passages: {query_id}")
+            raise ValueError(f"generation_v1 evidence must contain exactly Top-5 passages: {query_id}")
         ids: list[str] = []
         for expected_rank, passage in enumerate(passages, start=1):
             if not isinstance(passage, Mapping):
-                raise ValueError(f"malformed G1 evidence passage: {query_id}")
+                raise ValueError(f"malformed generation_v1 evidence passage: {query_id}")
             passage_id = _identifier(
                 passage.get("passage_id", passage.get("chunk_id")), "passage_id"
             )
@@ -865,13 +875,13 @@ def _load_g1_evidence(
                 raise ValueError(f"duplicate passage ID for {query_id}: {passage_id}")
             rank = passage.get("rank")
             if rank is not None and int(rank) != expected_rank:
-                raise ValueError(f"G1 evidence ranks are not contiguous for {query_id}")
+                raise ValueError(f"generation_v1 evidence ranks are not contiguous for {query_id}")
             ids.append(passage_id)
         normalized = dict(row)
         normalized["passage_ids"] = ids
         result[query_id] = normalized
     if set(result) != set(query_ids):
-        raise ValueError("G1 evidence query IDs do not match the sealed run pair")
+        raise ValueError("generation_v1 evidence query IDs do not match the sealed run pair")
     return result
 
 
@@ -908,44 +918,44 @@ def _load_safe_queries(
 
 
 def _validate_input_provenance(
-    g0_rows: Sequence[Mapping[str, Any]],
-    g1_rows: Sequence[Mapping[str, Any]],
+    baseline_rows: Sequence[Mapping[str, Any]],
+    generation_v1_rows: Sequence[Mapping[str, Any]],
     evidence: Mapping[str, Mapping[str, Any]],
     safe_queries: Mapping[str, Mapping[str, Any]],
 ) -> None:
-    for row in g0_rows:
+    for row in baseline_rows:
         provenance = row["input_provenance"]
         if provenance.get("serialized_query_sha256") != safe_queries[row["query_id"]].get(
             "serialized_text_sha256"
         ):
-            raise ValueError(f"G0 safe query SHA mismatch: {row['query_id']}")
+            raise ValueError(f"baseline safe query SHA mismatch: {row['query_id']}")
         ids = provenance.get("evidence_passage_ids", [])
         if ids not in (None, []) and tuple(ids) != ():
-            raise ValueError(f"G0 must not receive evidence: {row['query_id']}")
-    for row in g1_rows:
+            raise ValueError(f"baseline must not receive evidence: {row['query_id']}")
+    for row in generation_v1_rows:
         query_id = str(row["query_id"])
         provenance = row["input_provenance"]
         if provenance.get("serialized_query_sha256") != safe_queries[query_id].get(
             "serialized_text_sha256"
         ):
-            raise ValueError(f"G1 safe query SHA mismatch: {query_id}")
+            raise ValueError(f"generation_v1 safe query SHA mismatch: {query_id}")
         ids = provenance.get("evidence_passage_ids")
         if not isinstance(ids, list) or ids != evidence[query_id]["passage_ids"]:
-            raise ValueError(f"G1 wrapper evidence IDs do not match prepared evidence: {query_id}")
+            raise ValueError(f"generation_v1 wrapper evidence IDs do not match prepared evidence: {query_id}")
         wrapper_sha = provenance.get("evidence_sha256")
         evidence_sha = evidence[query_id].get("evidence_sha256")
         if wrapper_sha is not None and evidence_sha is not None and wrapper_sha != evidence_sha:
-            raise ValueError(f"G1 wrapper evidence SHA mismatch: {query_id}")
+            raise ValueError(f"generation_v1 wrapper evidence SHA mismatch: {query_id}")
 
 
 def _validate_generation_identity(
-    g0_rows: Sequence[Mapping[str, Any]],
-    g1_rows: Sequence[Mapping[str, Any]],
+    baseline_rows: Sequence[Mapping[str, Any]],
+    generation_v1_rows: Sequence[Mapping[str, Any]],
     policy: JudgePolicy,
 ) -> None:
     """Require both sealed systems and judge to share model identity/thinking."""
 
-    for row in (*g0_rows, *g1_rows):
+    for row in (*baseline_rows, *generation_v1_rows):
         provenance = row["generation_provenance"]
         query_id = row["query_id"]
         if provenance.get("model_tag") != policy.model:
@@ -992,8 +1002,8 @@ def _judge_preflight(client: Any, policy: JudgePolicy) -> dict[str, Any]:
 
 def _build_generation_seal(
     paths: OfflineEvaluationPaths,
-    g0_rows: Sequence[Mapping[str, Any]],
-    g1_rows: Sequence[Mapping[str, Any]],
+    baseline_rows: Sequence[Mapping[str, Any]],
+    generation_v1_rows: Sequence[Mapping[str, Any]],
     query_ids: Sequence[str],
 ) -> dict[str, Any]:
     sealed_at = _utc_now()
@@ -1024,15 +1034,15 @@ def _build_generation_seal(
         "sealed_at_utc": sealed_at,
         "validation": {
             "expected_records_per_run": EXPECTED_QUERY_COUNT,
-            "g0_valid_formal_wrappers": True,
-            "g1_valid_formal_wrappers": True,
+            "baseline_valid_formal_wrappers": True,
+            "generation_v1_valid_formal_wrappers": True,
             "paired_query_ids_identical": True,
-            "g0_has_no_evidence": True,
-            "g1_evidence_matches_prepared_input": True,
+            "baseline_has_no_evidence": True,
+            "generation_v1_evidence_matches_prepared_input": True,
         },
         "runs": {
-            "g0": run_entry(paths.g0_run, g0_rows),
-            "g1": run_entry(paths.g1_run, g1_rows),
+            BASELINE_SYSTEM_ID: run_entry(paths.baseline_run, baseline_rows),
+            GENERATION_V1_SYSTEM_ID: run_entry(paths.generation_v1_run, generation_v1_rows),
         },
         "reference_access": {
             "seal_written_before_reference_access": False,
@@ -1082,8 +1092,8 @@ def _load_qrels(path: Path) -> dict[str, dict[str, float]]:
 
 def _counterbalanced_assignment(ordinal: int) -> dict[str, str]:
     if ordinal % 2 == 1:
-        return {"A": G0_SYSTEM_ID, "B": G1_SYSTEM_ID}
-    return {"A": G1_SYSTEM_ID, "B": G0_SYSTEM_ID}
+        return {"A": BASELINE_SYSTEM_ID, "B": GENERATION_V1_SYSTEM_ID}
+    return {"A": GENERATION_V1_SYSTEM_ID, "B": BASELINE_SYSTEM_ID}
 
 
 def _judge_prompt(
@@ -1092,11 +1102,14 @@ def _judge_prompt(
     safe_query: Mapping[str, Any],
     reference: Mapping[str, Any],
     evidence: Mapping[str, Any],
-    g0_wrapper: Mapping[str, Any],
-    g1_wrapper: Mapping[str, Any],
+    baseline_wrapper: Mapping[str, Any],
+    generation_v1_wrapper: Mapping[str, Any],
     assignment: Mapping[str, str],
 ) -> str:
-    wrappers = {G0_SYSTEM_ID: g0_wrapper, G1_SYSTEM_ID: g1_wrapper}
+    wrappers = {
+        BASELINE_SYSTEM_ID: baseline_wrapper,
+        GENERATION_V1_SYSTEM_ID: generation_v1_wrapper,
+    }
     answers = {
         label: _answer_for_judge(wrappers[system_id])
         for label, system_id in assignment.items()
@@ -1339,8 +1352,8 @@ def _comparison_row(
     *,
     query_id: str,
     ordinal: int,
-    g0: Mapping[str, Any],
-    g1: Mapping[str, Any],
+    baseline: Mapping[str, Any],
+    generation_v1: Mapping[str, Any],
     evidence: Mapping[str, Any],
     qrels: Mapping[str, float],
     judgment: Mapping[str, Any],
@@ -1371,11 +1384,11 @@ def _comparison_row(
         }
         return view
 
-    g0_view = system_view(g0, decision["g0"])
-    g1_view = system_view(g1, decision["g1"])
-    g0_view["citation_count"] = len(citation_ids(g0.get("answer")))
-    g0_view["citations_empty"] = g0_view["citation_count"] == 0
-    g0_view.update(
+    baseline_view = system_view(baseline, decision[BASELINE_SYSTEM_ID])
+    generation_v1_view = system_view(generation_v1, decision[GENERATION_V1_SYSTEM_ID])
+    baseline_view["citation_count"] = len(citation_ids(baseline.get("answer")))
+    baseline_view["citations_empty"] = baseline_view["citation_count"] == 0
+    baseline_view.update(
         {
             "citation_validity": "N/A",
             "citation_coverage": "N/A",
@@ -1385,13 +1398,17 @@ def _comparison_row(
             "context_fully_judged": "N/A",
         }
     )
-    deterministic_citations = citation_validity(g1.get("answer"), evidence["passage_ids"])
+    deterministic_citations = citation_validity(
+        generation_v1.get("answer"), evidence["passage_ids"]
+    )
     retrieval = context_retrieval_metrics(evidence["passage_ids"], qrels)
-    g1_view.update(
+    generation_v1_view.update(
         {
             "citation_validity": deterministic_citations["score"],
-            "citation_coverage": float(decision["g1"]["citation_coverage"]),
-            "faithfulness": float(decision["g1"]["faithfulness"]),
+            "citation_coverage": float(
+                decision[GENERATION_V1_SYSTEM_ID]["citation_coverage"]
+            ),
+            "faithfulness": float(decision[GENERATION_V1_SYSTEM_ID]["faithfulness"]),
             "context_precision": retrieval["context_precision"],
             "context_query_hit": retrieval["context_query_hit"],
             "context_fully_judged": retrieval["fully_judged"],
@@ -1400,9 +1417,11 @@ def _comparison_row(
             "provided_passage_ids": list(evidence["passage_ids"]),
         }
     )
-    task_delta = int(g1_view["task_success"]) - int(g0_view["task_success"])
+    task_delta = int(generation_v1_view["task_success"]) - int(
+        baseline_view["task_success"]
+    )
     component_delta = sum(
-        int(g1_view[field]) - int(g0_view[field])
+        int(generation_v1_view[field]) - int(baseline_view[field])
         for field in (
             "root_cause_correct",
             "sql_repair_correct",
@@ -1417,18 +1436,19 @@ def _comparison_row(
         "judge_status": judgment["status"],
         "judge_attempt_count": judgment["attempt_count"],
         "judge_retry_count": judgment["retry_count"],
-        "g0": g0_view,
-        "g1": g1_view,
+        BASELINE_SYSTEM_ID: baseline_view,
+        GENERATION_V1_SYSTEM_ID: generation_v1_view,
         "paired": {
             "task_success_delta": task_delta,
             "semantic_component_delta": component_delta,
             "answer_relevance_delta": (
-                g1_view["answer_relevance"] - g0_view["answer_relevance"]
+                generation_v1_view["answer_relevance"]
+                - baseline_view["answer_relevance"]
             ),
             "outcome": (
-                "g1_improved"
+                "generation_v1_improved"
                 if task_delta > 0
-                else "g1_regressed"
+                else "generation_v1_regressed"
                 if task_delta < 0
                 else "tied"
             ),
@@ -1441,12 +1461,12 @@ def _build_acceptance(
     overall: Mapping[str, Any],
     rows: Sequence[Mapping[str, Any]],
 ) -> dict[str, Any]:
-    g0 = overall["systems"]["g0"]
-    g1 = overall["systems"]["g1"]
+    baseline = overall["systems"][BASELINE_SYSTEM_ID]
+    generation_v1 = overall["systems"][GENERATION_V1_SYSTEM_ID]
     paired = overall["paired"]
     engineering_checks = {
-        "g0_has_250_formal_results": g0["formal_result_count"] == EXPECTED_QUERY_COUNT,
-        "g1_has_250_formal_results": g1["formal_result_count"] == EXPECTED_QUERY_COUNT,
+        "baseline_has_250_formal_results": baseline["formal_result_count"] == EXPECTED_QUERY_COUNT,
+        "generation_v1_has_250_formal_results": generation_v1["formal_result_count"] == EXPECTED_QUERY_COUNT,
         "all_queries_have_judgment_records": overall["judge"]["logical_query_count"]
         == EXPECTED_QUERY_COUNT,
         "all_250_judgments_succeeded": overall["judge"]["completed_count"]
@@ -1455,11 +1475,11 @@ def _build_acceptance(
         "all_250_judge_calls_succeeded": overall["judge"]["completed_count"]
         == EXPECTED_QUERY_COUNT
         and overall["judge"]["failed_count"] == 0,
-        "g0_structured_output_validity_at_least_98pct": g0[
+        "baseline_structured_output_validity_at_least_98pct": baseline[
             "structured_output_validity"
         ]
         >= 0.98,
-        "g1_structured_output_validity_at_least_98pct": g1[
+        "generation_v1_structured_output_validity_at_least_98pct": generation_v1[
             "structured_output_validity"
         ]
         >= 0.98,
@@ -1467,26 +1487,28 @@ def _build_acceptance(
     integrity_checks = {
         "sealed_before_reference_access": True,
         "paired_query_ids_identical": True,
-        "g0_received_no_evidence": True,
-        "g1_citation_validity_is_100pct": g1["citation_validity"] == 1.0,
-        "g1_context_is_fully_qrels_judged": all(
-            row["g1"]["context_fully_judged"] is True for row in rows
+        "baseline_received_no_evidence": True,
+        "generation_v1_citation_validity_is_100pct": generation_v1["citation_validity"] == 1.0,
+        "generation_v1_context_is_fully_qrels_judged": all(
+            row[GENERATION_V1_SYSTEM_ID]["context_fully_judged"] is True for row in rows
         ),
-        "g0_citations_are_empty": all(row["g0"]["citations_empty"] for row in rows),
+        "baseline_citations_are_empty": all(
+            row[BASELINE_SYSTEM_ID]["citations_empty"] for row in rows
+        ),
     }
     quality_checks = {
-        "g1_task_success_improves_by_at_least_10pp": paired[
+        "generation_v1_task_success_improves_by_at_least_10pp": paired[
             "task_success_absolute_delta"
         ]
         >= 0.10,
-        "g1_dialect_compatibility_not_below_g0": g1["dialect_compatibility"]
-        >= g0["dialect_compatibility"],
-        "g1_version_compatibility_not_below_g0": g1["version_compatibility"]
-        >= g0["version_compatibility"],
-        "g1_root_cause_accuracy_not_below_g0": g1["root_cause_accuracy"]
-        >= g0["root_cause_accuracy"],
-        "g1_sql_repair_correctness_not_below_g0": g1["sql_repair_correctness"]
-        >= g0["sql_repair_correctness"],
+        "generation_v1_dialect_compatibility_not_below_baseline": generation_v1["dialect_compatibility"]
+        >= baseline["dialect_compatibility"],
+        "generation_v1_version_compatibility_not_below_baseline": generation_v1["version_compatibility"]
+        >= baseline["version_compatibility"],
+        "generation_v1_root_cause_accuracy_not_below_baseline": generation_v1["root_cause_accuracy"]
+        >= baseline["root_cause_accuracy"],
+        "generation_v1_sql_repair_correctness_not_below_baseline": generation_v1["sql_repair_correctness"]
+        >= baseline["sql_repair_correctness"],
     }
     engineering_pass = all(engineering_checks.values())
     integrity_pass = all(integrity_checks.values())
@@ -1819,8 +1841,8 @@ def _utc_now() -> str:
 __all__ = [
     "EVALUATION_LABEL",
     "EXPECTED_QUERY_COUNT",
-    "G0_SYSTEM_ID",
-    "G1_SYSTEM_ID",
+    "BASELINE_SYSTEM_ID",
+    "GENERATION_V1_SYSTEM_ID",
     "JUDGE_MODEL",
     "JUDGE_MODEL_DIGEST",
     "JUDGE_POLICY_DEFAULTS",

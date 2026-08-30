@@ -82,15 +82,15 @@ def load_prepared_queries(path: Path) -> list[PreparedQuery]:
     return queries
 
 
-def load_g1_evidence(path: Path) -> dict[str, EvidenceRow]:
+def load_generation_v1_evidence(path: Path) -> dict[str, EvidenceRow]:
     rows = [EvidenceRow.from_record(record) for record in load_jsonl(path)]
     ids = [row.query_id for row in rows]
     if not rows:
-        raise ValueError("G1 evidence file is empty")
+        raise ValueError("generation_v1 evidence file is empty")
     if ids != sorted(ids) or len(ids) != len(set(ids)):
-        raise ValueError("G1 evidence query IDs must be unique and sorted")
+        raise ValueError("generation_v1 evidence query IDs must be unique and sorted")
     if len({row.run_sha256 for row in rows}) != 1:
-        raise ValueError("G1 evidence rows do not share one run hash")
+        raise ValueError("generation_v1 evidence rows do not share one run hash")
     return {row.query_id: row for row in rows}
 
 
@@ -175,9 +175,8 @@ def _passage_record(run_row: Mapping[str, Any], corpus_record: Mapping[str, Any]
         "content_hash": result["content_hash"],
     }
 
-
 def prepare_inputs(paths: ProjectPaths) -> dict[str, Any]:
-    """Materialize the safe query projection and G1 Final Top-5 evidence.
+    """Materialize the safe query projection and generation-v1 Final Top-5 evidence.
 
     This function has no annotation, qrels, expected answer, reference fix, or
     relevance-label path.  The three permitted frozen inputs are hash-pinned
@@ -236,14 +235,14 @@ def prepare_inputs(paths: ProjectPaths) -> dict[str, Any]:
         evidence_records.append(evidence)
 
     write_jsonl(paths.prepared_queries, (query.to_record() for query in queries))
-    write_jsonl(paths.g1_evidence, evidence_records)
+    write_jsonl(paths.generation_v1_evidence, evidence_records)
     # Reload the exact bytes that downstream generation will consume.
     reloaded_queries = load_prepared_queries(paths.prepared_queries)
-    reloaded_evidence = load_g1_evidence(paths.g1_evidence)
+    reloaded_evidence = load_generation_v1_evidence(paths.generation_v1_evidence)
     if [query.query_id for query in reloaded_queries] != list(query_ids):
         raise ValueError("Prepared query round trip changed the query universe")
     if set(reloaded_evidence) != set(query_ids):
-        raise ValueError("Prepared G1 evidence differs from the query universe")
+        raise ValueError("Prepared Generation v1 evidence differs from the query universe")
     return {
         "schema_version": "sqlmend-prepared-input-summary-v1",
         "query_count": len(queries),
@@ -257,7 +256,7 @@ def prepare_inputs(paths: ProjectPaths) -> dict[str, Any]:
         "artifacts": {
             "queries": str(paths.prepared_queries),
             "queries_sha256": sha256_file(paths.prepared_queries),
-            "g1_evidence": str(paths.g1_evidence),
-            "g1_evidence_sha256": sha256_file(paths.g1_evidence),
+            "generation_v1_evidence": str(paths.generation_v1_evidence),
+            "generation_v1_evidence_sha256": sha256_file(paths.generation_v1_evidence),
         },
     }

@@ -8,7 +8,7 @@ from sqlmend_generation_v1.inputs import (
     FROZEN_CORPUS_SHA256,
     FROZEN_FINAL_RUN_SHA256,
     FROZEN_SERIALIZED_QUERIES_SHA256,
-    load_g1_evidence,
+    load_generation_v1_evidence,
     load_prepared_queries,
     prepare_inputs,
 )
@@ -35,12 +35,12 @@ def test_prepare_inputs_uses_only_frozen_safe_queries_and_final_top5(tmp_path: P
         / "hybrid_rrf_dialect_version_lexical_rerank_dev250.trec",
         corpus=REPOSITORY_ROOT / "construction" / "data" / "processed" / "corpus.jsonl",
         prepared_queries=prepared / "online_queries.jsonl",
-        g1_evidence=prepared / "g1_evidence_top5.jsonl",
+        generation_v1_evidence=prepared / "generation_v1_evidence_top5.jsonl",
     )
 
     summary = prepare_inputs(paths)
     queries = load_prepared_queries(paths.prepared_queries)
-    evidence = load_g1_evidence(paths.g1_evidence)
+    evidence = load_generation_v1_evidence(paths.generation_v1_evidence)
 
     assert summary["query_count"] == 250
     assert len(queries) == len(evidence) == 250
@@ -96,16 +96,16 @@ def test_evidence_digest_detects_any_passage_mutation(tmp_path: Path) -> None:
         / "hybrid_rrf_dialect_version_lexical_rerank_dev250.trec",
         corpus=REPOSITORY_ROOT / "construction" / "data" / "processed" / "corpus.jsonl",
         prepared_queries=prepared / "online_queries.jsonl",
-        g1_evidence=prepared / "g1_evidence_top5.jsonl",
+        generation_v1_evidence=prepared / "generation_v1_evidence_top5.jsonl",
     )
     prepare_inputs(paths)
-    lines = paths.g1_evidence.read_text(encoding="utf-8").splitlines()
+    lines = paths.generation_v1_evidence.read_text(encoding="utf-8").splitlines()
     first = json.loads(lines[0])
     first["passages"][0]["text"] += " tampered"
     lines[0] = json.dumps(first, ensure_ascii=False, separators=(",", ":"))
-    paths.g1_evidence.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    paths.generation_v1_evidence.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
 
     import pytest
 
     with pytest.raises(ValueError, match="evidence_sha256 mismatch"):
-        load_g1_evidence(paths.g1_evidence)
+        load_generation_v1_evidence(paths.generation_v1_evidence)

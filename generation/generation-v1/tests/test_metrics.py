@@ -89,23 +89,25 @@ def _row(success: bool, latency: float) -> dict[str, object]:
     }
 
 
-def test_aggregate_keeps_failures_in_denominator_and_g0_rag_is_na() -> None:
-    g0 = aggregate_system_metrics([_row(True, 100), _row(False, 300)], rag_system=False)
-    assert g0["formal_result_count"] == 2
-    assert g0["failure_count"] == 1
-    assert g0["success_count_semantics"] == "generation_contract_success"
-    assert g0["generation_contract_success_count"] == 1
-    assert g0["generation_contract_failure_count"] == 1
-    assert g0["generation_contract_success_rate"] == 0.5
-    assert g0["task_success_rate"] == 0.5
-    assert g0["structured_output_validity"] == 0.5
-    assert g0["latency_ms"]["mean"] == 200.0
-    assert g0["faithfulness"] == NOT_APPLICABLE
-    assert g0["context_precision"] == NOT_APPLICABLE
+def test_aggregate_keeps_failures_in_denominator_and_baseline_rag_is_na() -> None:
+    baseline = aggregate_system_metrics([_row(True, 100), _row(False, 300)], rag_system=False)
+    assert baseline["formal_result_count"] == 2
+    assert baseline["failure_count"] == 1
+    assert baseline["success_count_semantics"] == "generation_contract_success"
+    assert baseline["generation_contract_success_count"] == 1
+    assert baseline["generation_contract_failure_count"] == 1
+    assert baseline["generation_contract_success_rate"] == 0.5
+    assert baseline["task_success_rate"] == 0.5
+    assert baseline["structured_output_validity"] == 0.5
+    assert baseline["latency_ms"]["mean"] == 200.0
+    assert baseline["faithfulness"] == NOT_APPLICABLE
+    assert baseline["context_precision"] == NOT_APPLICABLE
 
-    g1 = aggregate_system_metrics([_row(True, 100), _row(False, 300)], rag_system=True)
-    assert g1["citation_validity"] == 1.0
-    assert g1["context_query_hit_rate"] == 0.5
+    generation_v1 = aggregate_system_metrics(
+        [_row(True, 100), _row(False, 300)], rag_system=True
+    )
+    assert generation_v1["citation_validity"] == 1.0
+    assert generation_v1["context_query_hit_rate"] == 0.5
 
 
 def test_aggregate_separates_shape_contract_and_retry_recovery() -> None:
@@ -134,15 +136,15 @@ def test_aggregate_separates_shape_contract_and_retry_recovery() -> None:
 
 def test_paired_summary_counts_every_query() -> None:
     rows = [
-        {"g0": {"task_success": False}, "g1": {"task_success": True}},
-        {"g0": {"task_success": True}, "g1": {"task_success": False}},
-        {"g0": {"task_success": True}, "g1": {"task_success": True}},
-        {"g0": {"task_success": False}, "g1": {"task_success": False}},
+        {"baseline": {"task_success": False}, "generation_v1": {"task_success": True}},
+        {"baseline": {"task_success": True}, "generation_v1": {"task_success": False}},
+        {"baseline": {"task_success": True}, "generation_v1": {"task_success": True}},
+        {"baseline": {"task_success": False}, "generation_v1": {"task_success": False}},
     ]
     summary = paired_summary(rows)
     assert summary["query_count"] == 4
-    assert summary["g1_improved_count"] == 1
-    assert summary["g1_regressed_count"] == 1
+    assert summary["generation_v1_improved_count"] == 1
+    assert summary["generation_v1_regressed_count"] == 1
     assert summary["paired_count_semantics"] == "offline_task_success"
     assert summary["both_task_success_count"] == 1
     assert summary["neither_task_success_count"] == 1

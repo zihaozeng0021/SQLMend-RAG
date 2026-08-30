@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "SQLMend G1 Retrieval Evidence v1",
+  "title": "SQLMend Generation-v1 Retrieval Evidence v1",
   "type": "object",
   "additionalProperties": false,
   "required": [

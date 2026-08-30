@@ -1,4 +1,4 @@
-"""One frozen prompt template shared by G0 and G1."""
+"""One frozen prompt template shared by baseline and generation-v1."""
 
 from __future__ import annotations
 
@@ -120,7 +120,8 @@ def retry_messages(
     """Append fixed, non-answer-bearing feedback after a validation failure.
 
     Transport errors reuse the byte-identical base request.  Every response
-    validation category uses the same feedback wording in G0 and G1; no raw
+    validation category uses the same feedback wording in baseline and
+    generation-v1; no raw
     model output is reflected into the next prompt.
     """
 

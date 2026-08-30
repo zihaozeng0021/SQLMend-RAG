@@ -8,8 +8,8 @@ import yaml
 from sqlmend_generation_v1.contracts import (
     EVIDENCE_SCHEMA_VERSION,
     FINAL_RETRIEVAL_SYSTEM_ID,
-    G0_SYSTEM_ID,
-    G1_SYSTEM_ID,
+    BASELINE_SYSTEM_ID,
+    GENERATION_V1_SYSTEM_ID,
     GenerationConfig,
     PreparedQuery,
 )
@@ -138,19 +138,21 @@ def _write_evidence(paths: ProjectPaths) -> None:
         "passages": passages,
     }
     record["evidence_sha256"] = sha256_json(record)
-    write_jsonl(paths.g1_evidence, (record,))
+    write_jsonl(paths.generation_v1_evidence, (record,))
 
 
-def test_g0_never_loads_or_opens_g1_evidence(tmp_path: Path, monkeypatch) -> None:
+def test_baseline_never_loads_or_opens_generation_v1_evidence(tmp_path: Path, monkeypatch) -> None:
     paths = _paths(tmp_path)
 
     def forbidden_loader(_path):
-        raise AssertionError("G0 attempted to load G1 evidence")
+        raise AssertionError("baseline attempted to load generation-v1 evidence")
 
-    monkeypatch.setattr("sqlmend_generation_v1.runner.load_g1_evidence", forbidden_loader)
+    monkeypatch.setattr(
+        "sqlmend_generation_v1.runner.load_generation_v1_evidence", forbidden_loader
+    )
     client = FakeClient([_answer([])])
-    summary = generate_system(paths, G0_SYSTEM_ID, client=client, resume=False)
-    record = load_jsonl(paths.g0_run)[0]
+    summary = generate_system(paths, BASELINE_SYSTEM_ID, client=client, resume=False)
+    record = load_jsonl(paths.baseline_run)[0]
 
     assert summary["complete"] is True
     assert client.calls == 1
@@ -164,13 +166,13 @@ def test_g0_never_loads_or_opens_g1_evidence(tmp_path: Path, monkeypatch) -> Non
     assert client.payloads[0]["think"] is False
 
 
-def test_g1_retries_fabricated_citation_and_records_every_attempt(tmp_path: Path) -> None:
+def test_generation_v1_retries_fabricated_citation_and_records_every_attempt(tmp_path: Path) -> None:
     paths = _paths(tmp_path)
     _write_evidence(paths)
     client = FakeClient([_answer(["invented"]), _answer(["p1"])])
 
-    summary = generate_system(paths, G1_SYSTEM_ID, client=client, resume=False)
-    record = load_jsonl(paths.g1_run)[0]
+    summary = generate_system(paths, GENERATION_V1_SYSTEM_ID, client=client, resume=False)
+    record = load_jsonl(paths.generation_v1_run)[0]
 
     assert summary["success_count"] == 1
     assert summary["success_count_semantics"] == "generation_contract_success"
@@ -206,16 +208,16 @@ def test_g1_retries_fabricated_citation_and_records_every_attempt(tmp_path: Path
 def test_resume_preserves_existing_formal_record_without_regeneration(tmp_path: Path) -> None:
     paths = _paths(tmp_path)
     first_client = FakeClient([_answer([])])
-    generate_system(paths, G0_SYSTEM_ID, client=first_client, resume=False)
-    before = paths.g0_run.read_bytes()
+    generate_system(paths, BASELINE_SYSTEM_ID, client=first_client, resume=False)
+    before = paths.baseline_run.read_bytes()
 
     second_client = FakeClient([])
-    summary = generate_system(paths, G0_SYSTEM_ID, client=second_client, resume=True)
+    summary = generate_system(paths, BASELINE_SYSTEM_ID, client=second_client, resume=True)
 
     assert second_client.calls == 0
     assert summary["generated_this_invocation"] == 0
     assert summary["resumed_record_count"] == 1
-    assert paths.g0_run.read_bytes() == before
+    assert paths.baseline_run.read_bytes() == before
 
 
 def test_model_identity_and_boolean_think_are_loaded_from_config() -> None:

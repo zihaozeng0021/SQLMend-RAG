@@ -10,10 +10,12 @@ from typing import Any, Mapping
 from .io import sha256_json, sha256_text
 
 
-G0_SYSTEM_ID = "g0_closed_book"
-G1_SYSTEM_ID = "g1_retrieval_v1_rag"
-GENERATION_SYSTEM_IDS = (G0_SYSTEM_ID, G1_SYSTEM_ID)
+BASELINE_SYSTEM_ID = "baseline"
+GENERATION_V1_SYSTEM_ID = "generation_v1"
+GENERATION_SYSTEM_IDS = (BASELINE_SYSTEM_ID, GENERATION_V1_SYSTEM_ID)
 QUERY_SCHEMA_VERSION = "sqlmend-online-query-v1"
+# Historical serialization identifier retained so prepared-evidence and
+# formal prompt/input hashes remain byte-bound across the naming migration.
 EVIDENCE_SCHEMA_VERSION = "sqlmend-g1-evidence-v1"
 GENERATION_RECORD_SCHEMA_VERSION = "sqlmend-generation-record-v1"
 SERIALIZER_VERSION = "sqlmend-query-v1"
@@ -147,11 +149,11 @@ class GenerationConfig:
             raise ValueError("Unexpected generation config schema_version")
         systems = value.get("systems")
         if not isinstance(systems, Mapping) or set(systems) != set(GENERATION_SYSTEM_IDS):
-            raise ValueError("Config must contain exactly the G0 and G1 systems")
-        if systems[G0_SYSTEM_ID].get("evidence_mode") != "none":
-            raise ValueError("G0 evidence mode must be none")
-        if systems[G1_SYSTEM_ID].get("evidence_mode") != "retrieval_v1_final_top5":
-            raise ValueError("G1 evidence mode must be the frozen Retrieval-v1 Final Top-5")
+            raise ValueError("Config must contain exactly baseline and generation_v1 systems")
+        if systems[BASELINE_SYSTEM_ID].get("evidence_mode") != "none":
+            raise ValueError("baseline evidence mode must be none")
+        if systems[GENERATION_V1_SYSTEM_ID].get("evidence_mode") != "retrieval_v1_final_top5":
+            raise ValueError("generation_v1 evidence mode must be the frozen Retrieval-v1 Final Top-5")
         retrieval = value.get("retrieval")
         ollama = value.get("ollama")
         retry = value.get("retry_policy")
@@ -275,7 +277,7 @@ class EvidenceRow:
             raise ValueError("Evidence is not frozen Retrieval-v1 Final Top-5")
         passages = value.get("passages")
         if not isinstance(passages, list) or len(passages) != 5:
-            raise ValueError("Every G1 evidence row must contain exactly five passages")
+            raise ValueError("Every generation_v1 evidence row must contain exactly five passages")
         passage_fields = frozenset(
             {
                 "passage_id",
@@ -388,15 +390,15 @@ def validate_answer_contract(
         return errors
     citations = value["citations"]
     allowed = set(allowed_citation_ids)
-    if system_id == G0_SYSTEM_ID:
+    if system_id == BASELINE_SYSTEM_ID:
         if allowed:
-            errors.append("G0 allowed citation IDs must be empty")
+            errors.append("baseline allowed citation IDs must be empty")
         if citations:
-            errors.append("G0 citations must be empty")
-    elif system_id == G1_SYSTEM_ID:
+            errors.append("baseline citations must be empty")
+    elif system_id == GENERATION_V1_SYSTEM_ID:
         fabricated = sorted(set(citations) - allowed)
         if fabricated:
-            errors.append(f"G1 citations are outside provided evidence: {fabricated}")
+            errors.append(f"generation_v1 citations are outside provided evidence: {fabricated}")
     else:
         errors.append(f"unknown generation system: {system_id}")
     return errors

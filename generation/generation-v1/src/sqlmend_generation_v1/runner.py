@@ -10,13 +10,17 @@ from typing import Any, Mapping, Protocol
 from .contracts import (
     GENERATION_RECORD_SCHEMA_VERSION,
     GENERATION_SYSTEM_IDS,
-    G0_SYSTEM_ID,
-    G1_SYSTEM_ID,
+    BASELINE_SYSTEM_ID,
+    GENERATION_V1_SYSTEM_ID,
     GenerationConfig,
     validate_answer_contract,
     validate_answer_shape,
 )
-from .inputs import load_g1_evidence, load_generation_config, load_prepared_queries
+from .inputs import (
+    load_generation_v1_evidence,
+    load_generation_config,
+    load_prepared_queries,
+)
 from .io import (
     append_jsonl,
     load_json,
@@ -300,7 +304,8 @@ def generate_system(
 ) -> dict[str, Any]:
     """Generate every query for one formal system, retaining all failures.
 
-    The G0 branch deliberately never loads, stats, hashes, or opens the G1
+    The baseline branch deliberately never loads, stats, hashes, or opens the
+    generation-v1 evidence
     evidence artifact.  ``prepare_inputs`` is therefore an explicit earlier
     step instead of an implicit call from this function.
     """
@@ -315,12 +320,15 @@ def generate_system(
         )
     query_ids = {query.query_id for query in queries}
 
-    # This conditional is the enforced file-I/O boundary between G0 and G1.
+    # This conditional is the enforced file-I/O boundary between baseline and
+    # generation-v1.
     evidence_by_query = None
-    if system_id == G1_SYSTEM_ID:
-        evidence_by_query = load_g1_evidence(paths.g1_evidence)
+    if system_id == GENERATION_V1_SYSTEM_ID:
+        evidence_by_query = load_generation_v1_evidence(paths.generation_v1_evidence)
         if set(evidence_by_query) != query_ids:
-            raise ValueError("G1 evidence query universe differs from prepared queries")
+            raise ValueError(
+                "generation-v1 evidence query universe differs from prepared queries"
+            )
 
     output_schema = load_json(paths.answer_schema)
     output_schema_sha256 = sha256_file(paths.answer_schema)

@@ -251,13 +251,13 @@ def paired_summary(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
         raise ValueError("cannot summarize an empty comparison")
     improved = regressed = both_success = both_failure = 0
     for row in rows:
-        g0 = bool(_system_view(row, "g0").get("task_success"))
-        g1 = bool(_system_view(row, "g1").get("task_success"))
-        if g1 and not g0:
+        baseline = bool(_system_view(row, "baseline").get("task_success"))
+        generation_v1 = bool(_system_view(row, "generation_v1").get("task_success"))
+        if generation_v1 and not baseline:
             improved += 1
-        elif g0 and not g1:
+        elif baseline and not generation_v1:
             regressed += 1
-        elif g0:
+        elif baseline:
             both_success += 1
         else:
             both_failure += 1
@@ -266,8 +266,8 @@ def paired_summary(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     return {
         "query_count": count,
         "paired_count_semantics": "offline_task_success",
-        "g1_improved_count": improved,
-        "g1_regressed_count": regressed,
+        "generation_v1_improved_count": improved,
+        "generation_v1_regressed_count": regressed,
         "both_succeeded_count": both_success,
         "neither_succeeded_count": both_failure,
         "both_task_success_count": both_success,

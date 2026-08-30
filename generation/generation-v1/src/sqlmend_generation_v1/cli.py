@@ -13,7 +13,7 @@ import sys
 from typing import Any
 
 from .audit import audit_protected_paths
-from .contracts import G0_SYSTEM_ID, G1_SYSTEM_ID
+from .contracts import BASELINE_SYSTEM_ID, GENERATION_V1_SYSTEM_ID
 from .inputs import (
     FROZEN_CORPUS_SHA256,
     FROZEN_FINAL_RUN_SHA256,
@@ -53,7 +53,7 @@ def _parser() -> argparse.ArgumentParser:
     generate.add_argument(
         "--system",
         required=True,
-        choices=("g0", "g1", G0_SYSTEM_ID, G1_SYSTEM_ID),
+        choices=(BASELINE_SYSTEM_ID, "generation-v1"),
     )
     generate.add_argument("--no-resume", action="store_true")
 
@@ -69,12 +69,11 @@ def _parser() -> argparse.ArgumentParser:
 
 
 def _system_id(value: str) -> str:
-    return {
-        "g0": G0_SYSTEM_ID,
-        "g1": G1_SYSTEM_ID,
-        G0_SYSTEM_ID: G0_SYSTEM_ID,
-        G1_SYSTEM_ID: G1_SYSTEM_ID,
-    }[value]
+    if value == BASELINE_SYSTEM_ID:
+        return BASELINE_SYSTEM_ID
+    if value == "generation-v1":
+        return GENERATION_V1_SYSTEM_ID
+    raise KeyError(value)
 
 
 def verify_inputs_command(paths: ProjectPaths) -> dict[str, Any]:
@@ -182,7 +181,12 @@ def _warmup_model(paths: ProjectPaths, client: OllamaClient, system_id: str) -> 
         "completion_tokens": response.completion_tokens,
         "raw_response_sha256": response.raw_response_sha256,
     }
-    write_json(paths.release / "reports" / f"warmup_{system_id}.json", result)
+    report_dir = (
+        paths.baseline_reports
+        if system_id == BASELINE_SYSTEM_ID
+        else paths.release / "reports"
+    )
+    write_json(report_dir / f"warmup_{system_id}.json", result)
     return result
 
 
@@ -344,22 +348,31 @@ def _ensure_within_release(release: Path, target: Path) -> Path:
     try:
         relative = target_resolved.relative_to(release_resolved)
     except ValueError as exc:
-        raise OrchestrationError(f"refusing clean outside Generation-v1: {target}") from exc
+        raise OrchestrationError(f"refusing clean outside generated release: {target}") from exc
     if not relative.parts:
-        raise OrchestrationError("refusing to clean the Generation-v1 root")
+        raise OrchestrationError("refusing to clean a release root")
     return target_resolved
 
 
 def clean_generated(paths: ProjectPaths) -> dict[str, Any]:
     release = paths.release.resolve()
-    targets = [release / name for name in GENERATED_DIRECTORY_NAMES]
-    targets.append(release / MANIFEST_NAME)
+    baseline = paths.baseline.resolve()
+    targets = [(release, release / name) for name in GENERATED_DIRECTORY_NAMES]
+    targets.append((release, release / MANIFEST_NAME))
+    # Baseline contains generated outputs but its README is protected.
+    targets.extend(
+        (
+            (baseline, baseline / "runs"),
+            (baseline, baseline / "reports"),
+            (baseline, baseline / MANIFEST_NAME),
+        )
+    )
     removed: list[str] = []
     absent: list[str] = []
-    for target in targets:
-        resolved = _ensure_within_release(release, target)
+    for owner, target in targets:
+        resolved = _ensure_within_release(owner, target)
         literal = Path(os.path.abspath(target))
-        relative = target.relative_to(release).as_posix()
+        relative = target.relative_to(paths.root.resolve()).as_posix()
         if resolved != literal or target.is_symlink():
             raise OrchestrationError(f"refusing redirected clean target: {target}")
         if not target.exists():
@@ -428,8 +441,10 @@ def all_command(paths: ProjectPaths, *, clean: bool = False) -> dict[str, Any]:
         results["verify_inputs"] = verify_inputs_command(paths)
         results["inspect_model"] = inspect_model_command(paths)
         results["prepare"] = prepare_command(paths)
-        results["generate_g0"] = generate_command(paths, G0_SYSTEM_ID)
-        results["generate_g1"] = generate_command(paths, G1_SYSTEM_ID)
+        results["generate_baseline"] = generate_command(paths, BASELINE_SYSTEM_ID)
+        results["generate_generation_v1"] = generate_command(
+            paths, GENERATION_V1_SYSTEM_ID
+        )
         results["evaluate"] = evaluate_command(paths)
         tests = test_command(paths)
         results["test"] = tests

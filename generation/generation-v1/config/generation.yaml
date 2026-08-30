@@ -1,20 +1,21 @@
 schema_version: sqlmend-generation-config-v1
-experiment_id: phase10_g0_g1_dev250
+experiment_id: phase10_baseline_generation_v1_dev250
 expected_query_count: 250
 systems:
-  g0_closed_book:
+  baseline:
     evidence_mode: none
-    output_file: g0_closed_book_dev250.jsonl
-  g1_retrieval_v1_rag:
+    output_file: baseline_closed_book_dev250.jsonl
+  generation_v1:
     evidence_mode: retrieval_v1_final_top5
-    output_file: g1_retrieval_v1_rag_dev250.jsonl
+    output_file: generation_v1_rag_dev250.jsonl
 retrieval:
   system_id: hybrid_rrf_dialect_version_lexical_rerank_v1
   top_k: 5
   rationale: >-
     Top-5 is fixed before generation because it matches the primary retrieval
     operating depth, preserves high-ranked dialect/version-aware evidence, and
-    limits prompt dilution and latency while keeping G0 and G1 otherwise identical.
+    limits prompt dilution and latency while keeping Baseline and Generation v1
+    otherwise identical.
 ollama:
   base_url: http://127.0.0.1:11434
   model_tag: qwen3.5:4b

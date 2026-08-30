@@ -27,8 +27,8 @@ from .audit import (
 from .contracts import (
     EVIDENCE_SCHEMA_VERSION,
     FINAL_RETRIEVAL_SYSTEM_ID,
-    G0_SYSTEM_ID,
-    G1_SYSTEM_ID,
+    BASELINE_SYSTEM_ID,
+    GENERATION_V1_SYSTEM_ID,
     GENERATION_SYSTEM_IDS,
     GenerationConfig,
     PreparedQuery,
@@ -174,11 +174,11 @@ def _prepared_query_path(paths: Any) -> Path:
 
 
 def _evidence_path(paths: Any) -> Path:
-    value = getattr(paths, "g1_evidence", None)
+    value = getattr(paths, "generation_v1_evidence", None)
     return (
         Path(value)
         if value is not None
-        else release_root(paths) / "prepared_inputs/g1_evidence_top5.jsonl"
+        else release_root(paths) / "prepared_inputs/generation_v1_evidence_top5.jsonl"
     )
 
 
@@ -205,12 +205,14 @@ def _run_path(paths: Any, system_id: str) -> Path:
     method = getattr(paths, "result_path", None)
     if callable(method):
         return Path(method(system_id))
-    name = (
-        "g0_closed_book_dev250.jsonl"
-        if system_id == G0_SYSTEM_ID
-        else "g1_retrieval_v1_rag_dev250.jsonl"
-    )
-    return release_root(paths) / "runs" / name
+    if system_id == BASELINE_SYSTEM_ID:
+        return (
+            repository_root(paths)
+            / "generation/baseline/runs/baseline_closed_book_dev250.jsonl"
+        )
+    if system_id == GENERATION_V1_SYSTEM_ID:
+        return release_root(paths) / "runs/generation_v1_rag_dev250.jsonl"
+    raise ReleaseValidationError(f"Unknown generation system: {system_id}")
 
 
 def _evaluation_path(paths: Any, name: str) -> Path:
@@ -316,7 +318,7 @@ def _validate_prepared_inputs(paths: Any) -> dict[str, Any]:
     _require(len(corpus) == len(corpus_rows), "Production corpus has duplicate chunk IDs")
 
     evidence_records = load_jsonl(_evidence_path(paths))
-    evidence = _complete_index(evidence_records, "prepared G1 evidence")
+    evidence = _complete_index(evidence_records, "prepared Generation v1 evidence")
     run_hash = sha256_file(_final_run_path(paths))
     expected_passage_fields = (
         "dialect",
@@ -537,16 +539,16 @@ def _validate_formal_runs(paths: Any, prepared_details: Mapping[str, Any]) -> di
             latency = _wrapper_latency(record, attempts)
             expected_ids = (
                 tuple(str(passage["passage_id"]) for passage in evidence_records[query_id]["passages"])
-                if system_id == G1_SYSTEM_ID
+                if system_id == GENERATION_V1_SYSTEM_ID
                 else ()
             )
             allowed_ids = _allowed_citation_ids(record)
             supplied_ids = _record_evidence_ids(record)
-            if system_id == G0_SYSTEM_ID:
-                _require(not allowed_ids and not supplied_ids, f"G0 received evidence for {query_id}")
+            if system_id == BASELINE_SYSTEM_ID:
+                _require(not allowed_ids and not supplied_ids, f"Baseline received evidence for {query_id}")
             else:
-                _require(allowed_ids == expected_ids, f"G1 allowed citation IDs differ from actual Top-5 for {query_id}")
-                _require(supplied_ids == expected_ids, f"G1 evidence IDs differ from actual Top-5 for {query_id}")
+                _require(allowed_ids == expected_ids, f"Generation v1 allowed citation IDs differ from actual Top-5 for {query_id}")
+                _require(supplied_ids == expected_ids, f"Generation v1 evidence IDs differ from actual Top-5 for {query_id}")
             answer = _answer(record)
             last_attempt = attempts[-1]
             _require(
@@ -572,13 +574,13 @@ def _validate_formal_runs(paths: Any, prepared_details: Mapping[str, Any]) -> di
             # by generation-contract and citation metrics.
             structured_valid = wrapper_shape_valid is True
             structured_count += int(structured_valid)
-            if system_id == G1_SYSTEM_ID:
+            if system_id == GENERATION_V1_SYSTEM_ID:
                 citation = citation_validity(answer, expected_ids)
                 citation_occurrences += int(citation["citation_count"])
                 valid_citation_occurrences += int(citation["valid_count"])
-                _require(citation["invalid_count"] == 0, f"G1 fabricated a citation for {query_id}")
+                _require(citation["invalid_count"] == 0, f"Generation v1 fabricated a citation for {query_id}")
             elif isinstance(answer, Mapping):
-                _require(answer.get("citations") == [], f"G0 citations are not empty for {query_id}")
+                _require(answer.get("citations") == [], f"Baseline citations are not empty for {query_id}")
 
             signature = _configuration_signature(record)
             signatures.append(signature)
@@ -629,16 +631,16 @@ def _validate_formal_runs(paths: Any, prepared_details: Mapping[str, Any]) -> di
             ),
             "configuration_signature": signature,
         }
-    _require(global_signatures and all(value == global_signatures[0] for value in global_signatures), "G0 and G1 prompt/schema/model/think/decoding/retry settings differ")
+    _require(global_signatures and all(value == global_signatures[0] for value in global_signatures), "Baseline and Generation v1 prompt/schema/model/think/decoding/retry settings differ")
     _require(sum(system["record_count"] for system in systems.values()) == EXPECTED_FORMAL_ANSWER_COUNT, "Formal answer wrapper count differs from 500")
-    _require(systems[G1_SYSTEM_ID]["citation_validity"] == 1.0, "G1 Citation Validity is not 100%")
+    _require(systems[GENERATION_V1_SYSTEM_ID]["citation_validity"] == 1.0, "Generation v1 Citation Validity is not 100%")
     return {"systems": systems, "shared_configuration": global_signatures[0]}
 
 
 def _seal_run_entry(seal: Mapping[str, Any], system_id: str) -> Mapping[str, Any]:
     runs = seal.get("runs")
     _require(isinstance(runs, Mapping), "Generation seal has no runs mapping")
-    for key in (system_id, "g0" if system_id == G0_SYSTEM_ID else "g1"):
+    for key in (system_id, "baseline" if system_id == BASELINE_SYSTEM_ID else "generation_v1"):
         value = runs.get(key)
         if isinstance(value, Mapping):
             return value
@@ -685,7 +687,7 @@ def _validate_generation_seal(paths: Any, run_details: Mapping[str, Any]) -> dic
 
 
 def _system_view(row: Mapping[str, Any], system_id: str) -> Mapping[str, Any]:
-    keys = (system_id, "g0" if system_id == G0_SYSTEM_ID else "g1")
+    keys = (system_id, "baseline" if system_id == BASELINE_SYSTEM_ID else "generation_v1")
     for key in keys:
         value = row.get(key)
         if isinstance(value, Mapping):
@@ -865,14 +867,14 @@ def _validate_offline_evaluation(
     for input_path, label in (
         (reference_path, "development reference"),
         (prepared_query_path, "prepared online queries"),
-        (evidence_path, "prepared G1 evidence"),
+        (evidence_path, "prepared Generation v1 evidence"),
     ):
         _require(input_path.is_file(), f"Offline {label} file is missing")
     evaluation_input_sha256 = {
         "development_references_file": sha256_file(reference_path),
         "effective_qrels_file": sha256_file(_qrels_path(paths)),
         "prepared_queries_file": sha256_file(prepared_query_path),
-        "g1_evidence_file": sha256_file(evidence_path),
+        "generation_v1_evidence_file": sha256_file(evidence_path),
     }
     evaluation_context_sha256 = sha256_json(evaluation_input_sha256)
     sealed_offline_inputs = seal["payload"].get("offline_evaluation_inputs")
@@ -895,8 +897,8 @@ def _validate_offline_evaluation(
 
     config = GenerationConfig.from_mapping(load_yaml(_config_path(paths)))
     sealed_run_hashes = {
-        "g0": run_details["systems"][G0_SYSTEM_ID]["sha256"],
-        "g1": run_details["systems"][G1_SYSTEM_ID]["sha256"],
+        "baseline": run_details["systems"][BASELINE_SYSTEM_ID]["sha256"],
+        "generation_v1": run_details["systems"][GENERATION_V1_SYSTEM_ID]["sha256"],
     }
     judge_signatures: list[dict[str, Any]] = []
     for ordinal, query_id in enumerate(EXPECTED_QUERY_IDS, start=1):
@@ -913,9 +915,9 @@ def _validate_offline_evaluation(
             f"Judge ordinal differs for {query_id}",
         )
         expected_assignment = (
-            {"A": G0_SYSTEM_ID, "B": G1_SYSTEM_ID}
+            {"A": BASELINE_SYSTEM_ID, "B": GENERATION_V1_SYSTEM_ID}
             if ordinal % 2 == 1
-            else {"A": G1_SYSTEM_ID, "B": G0_SYSTEM_ID}
+            else {"A": GENERATION_V1_SYSTEM_ID, "B": BASELINE_SYSTEM_ID}
         )
         _require(judgment.get("assignment") == expected_assignment, f"Judge counterbalance differs for {query_id}")
         _require(judgment.get("status") in {"success", "failed"}, f"Judge status differs for {query_id}")
@@ -931,10 +933,10 @@ def _validate_offline_evaluation(
         )
         judge_attempts = _validate_judge_attempts(judgment, query_id)
         decision = judgment.get("decision")
-        _require(isinstance(decision, Mapping) and set(decision) == {"g0", "g1"}, f"Judge decision differs for {query_id}")
+        _require(isinstance(decision, Mapping) and set(decision) == {"baseline", "generation_v1"}, f"Judge decision differs for {query_id}")
         normalized_decision = {
             system_id: _validate_judge_side(
-                decision["g0" if system_id == G0_SYSTEM_ID else "g1"],
+                decision["baseline" if system_id == BASELINE_SYSTEM_ID else "generation_v1"],
                 f"Judge decision for {query_id}/{system_id}",
             )
             for system_id in GENERATION_SYSTEM_IDS
@@ -990,8 +992,8 @@ def _validate_offline_evaluation(
     _require(all(signature == judge_signatures[0] for signature in judge_signatures), "Judge model provenance changes across queries")
 
     normalized_by_system: dict[str, list[dict[str, Any]]] = {
-        G0_SYSTEM_ID: [],
-        G1_SYSTEM_ID: [],
+        BASELINE_SYSTEM_ID: [],
+        GENERATION_V1_SYSTEM_ID: [],
     }
     for ordinal, query_id in enumerate(EXPECTED_QUERY_IDS, start=1):
         row = paired[query_id]
@@ -1030,7 +1032,7 @@ def _validate_offline_evaluation(
         row_answer_relevance: dict[str, float] = {}
         for system_id in GENERATION_SYSTEM_IDS:
             view = _system_view(row, system_id)
-            short_name = "g0" if system_id == G0_SYSTEM_ID else "g1"
+            short_name = "baseline" if system_id == BASELINE_SYSTEM_ID else "generation_v1"
             journal_side = judgment["decision"][short_name]
             core: dict[str, bool] = {}
             for field in (
@@ -1098,14 +1100,14 @@ def _validate_offline_evaluation(
                 "generation_attempt_count": generation_attempt_count,
                 "generation_retry_count": generation_retry_count,
             }
-            if system_id == G0_SYSTEM_ID:
-                _require(_view_value(view, "faithfulness") == NOT_APPLICABLE, f"G0 faithfulness must be the string N/A for {query_id}")
-                _require(_view_value(view, "context_precision") == NOT_APPLICABLE, f"G0 context precision must be the string N/A for {query_id}")
+            if system_id == BASELINE_SYSTEM_ID:
+                _require(_view_value(view, "faithfulness") == NOT_APPLICABLE, f"Baseline faithfulness must be the string N/A for {query_id}")
+                _require(_view_value(view, "context_precision") == NOT_APPLICABLE, f"Baseline context precision must be the string N/A for {query_id}")
             else:
                 passage_ids = formal["allowed_citation_ids"]
                 citation = citation_validity(formal["answer"], passage_ids)
                 context = context_retrieval_metrics(passage_ids, qrels.get(query_id, {}))
-                _require(context["fully_judged"] is True, f"G1 Top-5 has an unjudged passage for {query_id}")
+                _require(context["fully_judged"] is True, f"Generation v1 Top-5 has an unjudged passage for {query_id}")
                 citation_score = _bounded(_view_value(view, "citation_validity"), f"{query_id} citation validity")
                 _require(_float_equal(citation_score, citation["score"]), f"Citation validity arithmetic differs for {query_id}")
                 context_precision = _bounded(_view_value(view, "context_precision"), f"{query_id} context precision")
@@ -1134,8 +1136,8 @@ def _validate_offline_evaluation(
 
         paired_view = row.get("paired")
         _require(isinstance(paired_view, Mapping), f"Paired delta payload is missing for {query_id}")
-        expected_task_delta = int(row_task_success[G1_SYSTEM_ID]) - int(
-            row_task_success[G0_SYSTEM_ID]
+        expected_task_delta = int(row_task_success[GENERATION_V1_SYSTEM_ID]) - int(
+            row_task_success[BASELINE_SYSTEM_ID]
         )
         task_success_delta = paired_view.get("task_success_delta")
         _require(
@@ -1145,8 +1147,8 @@ def _validate_offline_evaluation(
             f"Paired Task Success delta differs for {query_id}",
         )
         expected_component_delta = sum(
-            int(row_core[G1_SYSTEM_ID][field])
-            - int(row_core[G0_SYSTEM_ID][field])
+            int(row_core[GENERATION_V1_SYSTEM_ID][field])
+            - int(row_core[BASELINE_SYSTEM_ID][field])
             for field in _JUDGE_BOOLEAN_FIELDS
         )
         semantic_component_delta = paired_view.get("semantic_component_delta")
@@ -1157,8 +1159,8 @@ def _validate_offline_evaluation(
             f"Paired semantic component delta differs for {query_id}",
         )
         expected_relevance_delta = (
-            row_answer_relevance[G1_SYSTEM_ID]
-            - row_answer_relevance[G0_SYSTEM_ID]
+            row_answer_relevance[GENERATION_V1_SYSTEM_ID]
+            - row_answer_relevance[BASELINE_SYSTEM_ID]
         )
         _require(
             _float_equal(
@@ -1168,9 +1170,9 @@ def _validate_offline_evaluation(
             f"Paired answer relevance delta differs for {query_id}",
         )
         expected_outcome = (
-            "g1_improved"
+            "generation_v1_improved"
             if expected_task_delta > 0
-            else "g1_regressed"
+            else "generation_v1_regressed"
             if expected_task_delta < 0
             else "tied"
         )
@@ -1184,8 +1186,8 @@ def _validate_offline_evaluation(
         )
 
     recomputed_systems = {
-        G0_SYSTEM_ID: aggregate_system_metrics(normalized_by_system[G0_SYSTEM_ID], rag_system=False),
-        G1_SYSTEM_ID: aggregate_system_metrics(normalized_by_system[G1_SYSTEM_ID], rag_system=True),
+        BASELINE_SYSTEM_ID: aggregate_system_metrics(normalized_by_system[BASELINE_SYSTEM_ID], rag_system=False),
+        GENERATION_V1_SYSTEM_ID: aggregate_system_metrics(normalized_by_system[GENERATION_V1_SYSTEM_ID], rag_system=True),
     }
     recomputed_paired = paired_summary(list(paired.values()))
     overall = load_json(overall_path)
@@ -1252,7 +1254,7 @@ def _validate_offline_evaluation(
     systems_payload = overall.get("systems")
     _require(isinstance(systems_payload, Mapping), "Overall metrics has no systems mapping")
     for system_id in GENERATION_SYSTEM_IDS:
-        short_name = "g0" if system_id == G0_SYSTEM_ID else "g1"
+        short_name = "baseline" if system_id == BASELINE_SYSTEM_ID else "generation_v1"
         actual = systems_payload.get(system_id, systems_payload.get(short_name))
         _require(isinstance(actual, Mapping), f"Overall metrics lacks {system_id}")
         _compare_metrics(actual, recomputed_systems[system_id], f"overall.systems.{system_id}")
@@ -1260,31 +1262,31 @@ def _validate_offline_evaluation(
     _require(isinstance(actual_paired, Mapping), "Overall metrics lacks paired summary")
     _compare_metrics(actual_paired, recomputed_paired, "overall.paired")
 
-    g0 = recomputed_systems[G0_SYSTEM_ID]
-    g1 = recomputed_systems[G1_SYSTEM_ID]
+    baseline = recomputed_systems[BASELINE_SYSTEM_ID]
+    generation_v1 = recomputed_systems[GENERATION_V1_SYSTEM_ID]
     all_judge_calls_succeeded = all(
         judgment.get("status") == "success" for judgment in judgments.values()
     )
     engineering_gates = {
         "all_250_judgments_succeeded": all_judge_calls_succeeded,
         "all_250_judge_calls_succeeded": all_judge_calls_succeeded,
-        "g0_structured_output_validity_at_least_98pct": g0["structured_output_validity"] >= 0.98,
-        "g1_structured_output_validity_at_least_98pct": g1["structured_output_validity"] >= 0.98,
+        "baseline_structured_output_validity_at_least_98pct": baseline["structured_output_validity"] >= 0.98,
+        "generation_v1_structured_output_validity_at_least_98pct": generation_v1["structured_output_validity"] >= 0.98,
     }
     integrity_gates = {
-        "g1_citation_validity_100pct": g1["citation_validity"] == 1.0,
+        "generation_v1_citation_validity_100pct": generation_v1["citation_validity"] == 1.0,
     }
     quality_gates = {
-        "task_success_absolute_gain_at_least_10pp": g1["task_success_rate"] - g0["task_success_rate"] >= 0.10,
-        "g1_dialect_compatibility_not_below_g0": g1["dialect_compatibility"] >= g0["dialect_compatibility"],
-        "g1_version_compatibility_not_below_g0": g1["version_compatibility"] >= g0["version_compatibility"],
-        "g1_root_cause_accuracy_not_below_g0": g1["root_cause_accuracy"] >= g0["root_cause_accuracy"],
-        "g1_sql_repair_correctness_not_below_g0": g1["sql_repair_correctness"] >= g0["sql_repair_correctness"],
+        "task_success_absolute_gain_at_least_10pp": generation_v1["task_success_rate"] - baseline["task_success_rate"] >= 0.10,
+        "generation_v1_dialect_compatibility_not_below_baseline": generation_v1["dialect_compatibility"] >= baseline["dialect_compatibility"],
+        "generation_v1_version_compatibility_not_below_baseline": generation_v1["version_compatibility"] >= baseline["version_compatibility"],
+        "generation_v1_root_cause_accuracy_not_below_baseline": generation_v1["root_cause_accuracy"] >= baseline["root_cause_accuracy"],
+        "generation_v1_sql_repair_correctness_not_below_baseline": generation_v1["sql_repair_correctness"] >= baseline["sql_repair_correctness"],
     }
     # The saved quality claim may fail, but it must not disagree with recomputation.
     saved_target = actual_paired.get("success_target")
     if isinstance(saved_target, Mapping):
-        observed_delta = g1["task_success_rate"] - g0["task_success_rate"]
+        observed_delta = generation_v1["task_success_rate"] - baseline["task_success_rate"]
         if "observed_absolute_delta" in saved_target:
             _require(_float_equal(saved_target["observed_absolute_delta"], observed_delta), "Saved Task Success delta differs")
         if "passed" in saved_target:
@@ -1304,27 +1306,27 @@ def _validate_offline_evaluation(
     )
     expected_saved_checks = {
         "engineering": {
-            "g0_has_250_formal_results": g0["formal_result_count"] == EXPECTED_QUERY_COUNT,
-            "g1_has_250_formal_results": g1["formal_result_count"] == EXPECTED_QUERY_COUNT,
+            "baseline_has_250_formal_results": baseline["formal_result_count"] == EXPECTED_QUERY_COUNT,
+            "generation_v1_has_250_formal_results": generation_v1["formal_result_count"] == EXPECTED_QUERY_COUNT,
             "all_queries_have_judgment_records": len(judgments) == EXPECTED_QUERY_COUNT,
             **engineering_gates,
         },
         "integrity": {
             "sealed_before_reference_access": True,
             "paired_query_ids_identical": True,
-            "g0_received_no_evidence": True,
-            "g1_citation_validity_is_100pct": integrity_gates["g1_citation_validity_100pct"],
-            "g1_context_is_fully_qrels_judged": all(
-                row["g1"]["context_fully_judged"] is True for row in paired.values()
+            "baseline_received_no_evidence": True,
+            "generation_v1_citation_validity_is_100pct": integrity_gates["generation_v1_citation_validity_100pct"],
+            "generation_v1_context_is_fully_qrels_judged": all(
+                row["generation_v1"]["context_fully_judged"] is True for row in paired.values()
             ),
-            "g0_citations_are_empty": all(row["g0"].get("citations_empty") is True for row in paired.values()),
+            "baseline_citations_are_empty": all(row["baseline"].get("citations_empty") is True for row in paired.values()),
         },
         "quality": {
-            "g1_task_success_improves_by_at_least_10pp": quality_gates["task_success_absolute_gain_at_least_10pp"],
-            "g1_dialect_compatibility_not_below_g0": quality_gates["g1_dialect_compatibility_not_below_g0"],
-            "g1_version_compatibility_not_below_g0": quality_gates["g1_version_compatibility_not_below_g0"],
-            "g1_root_cause_accuracy_not_below_g0": quality_gates["g1_root_cause_accuracy_not_below_g0"],
-            "g1_sql_repair_correctness_not_below_g0": quality_gates["g1_sql_repair_correctness_not_below_g0"],
+            "generation_v1_task_success_improves_by_at_least_10pp": quality_gates["task_success_absolute_gain_at_least_10pp"],
+            "generation_v1_dialect_compatibility_not_below_baseline": quality_gates["generation_v1_dialect_compatibility_not_below_baseline"],
+            "generation_v1_version_compatibility_not_below_baseline": quality_gates["generation_v1_version_compatibility_not_below_baseline"],
+            "generation_v1_root_cause_accuracy_not_below_baseline": quality_gates["generation_v1_root_cause_accuracy_not_below_baseline"],
+            "generation_v1_sql_repair_correctness_not_below_baseline": quality_gates["generation_v1_sql_repair_correctness_not_below_baseline"],
         },
     }
     for section, expected_checks in expected_saved_checks.items():

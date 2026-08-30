@@ -4,7 +4,7 @@
 >
 > Last verified: 2026-08-30 (UTC+8)
 >
-> 当前阶段：知识库、machine-proposed development annotation、冻结 retrieval baseline 和正式 retrieval v1 均已完成验证；Phase 10 Generation v1 的 500 个正式 wrapper、离线评估、测试、manifest 与 validation 也已完成。Generation 的主要质量目标通过，但总验收真实标记为 `FAIL`（G1 structured validity 96.4%，judge calls 249/250）；UI 和最终人工 held-out dataset 仍未实现。
+> 当前阶段：知识库、machine-proposed development annotation、冻结 retrieval baseline 和正式 retrieval v1 均已完成验证；Phase 10 Generation Baseline / Generation v1 的 500 个正式 wrapper、离线评估、测试、manifest 与 validation 也已完成。Generation 的主要质量目标通过，但总验收真实标记为 `FAIL`（Generation v1 structured validity 96.4%，judge calls 249/250）；UI 和最终人工 held-out dataset 仍未实现。
 
 ## 1. 这份文件的用途
 
@@ -84,7 +84,8 @@
 | 正式检索评估完整性 | `PASS` | BM25、dense、hybrid 的 `Judged@5/10/20/30` 均为 1.0，完整评估工件已原子发布 |
 | 检索质量 | `PASS_FOR_MACHINE_DEVELOPMENT_EVAL` | hybrid 在四个主指标上均领先并通过既定门禁；结论只适用于当前机器开发集 |
 | `retrieval/retrieval-v1/` | `VERIFIED_COMPLETE_FOR_DEVELOPMENT_ONLY` | 五套独立系统、Dialect/Version awareness、lexical reranker、完整 pool、60 tests、manifest 与 12/12 validation checks 均通过；没有修改冻结 baseline |
-| `generation/generation-v1/` | `COMPLETE_WITH_FAILED_ENGINEERING_GATES_FOR_DEVELOPMENT_ONLY` | G0/G1 共 500 个正式 wrapper；Task Success 50.8% → 68.0%（+17.2pp），质量目标通过；G1 structured validity 96.4% 与 judge calls 249/250 导致 Phase success=false |
+| `generation/baseline/` | `FORMAL_BASELINE_COMPLETE_FOR_DEVELOPMENT_ONLY` | Closed-Book Baseline 250 个正式 wrapper；Generation Contract Success 250/250，Task Success 50.8% |
+| `generation/generation-v1/` | `COMPLETE_WITH_FAILED_ENGINEERING_GATES_FOR_DEVELOPMENT_ONLY` | Retrieval-v1 RAG 250 个正式 wrapper及配对评估；Task Success 68.0%，相对 Baseline +17.2pp；structured validity 96.4% 与 judge calls 249/250 导致 Phase success=false |
 | 最终人工 held-out 数据 | `PLANNED` | 仍需至少 1,000 条人工记录和 IAA >= 80% |
 | UI 与 5 条演示查询 | `PLANNED` | 尚未实现 |
 | 最终课程报告与用户 README | `PARTIAL` | 根 README 已同步当前工程状态；最终课程报告及 UI/人工评估说明仍待完成 |
@@ -131,13 +132,13 @@ required_validation=test -> finalize -> validate
 ```text
 release=generation-v1
 generation_wrappers=500
-generation_contract_success=G0 250/250; G1 241/250
-task_success=G0 50.8%; G1 68.0%; delta +17.2pp
+generation_contract_success=Baseline 250/250; Generation v1 241/250
+task_success=Baseline 50.8%; Generation v1 68.0%; delta +17.2pp
 engineering_status=FAIL
 evaluation_integrity_status=PASS
 quality_status=PASS
 phase_success=false
-tests=60 passed
+tests=64 passed
 independent_artifact_checks=7/7 PASS
 protected_before_after_current_identical=true
 ```
@@ -167,7 +168,8 @@ SQLMend-RAG/
 │  ├─ baseline/            # 冻结检索基线、runs、评估门禁和报告
 │  └─ retrieval-v1/        # 冻结正式 Retrieval v1、五系统对照和 Final 接口
 ├─ generation/
-│  └─ generation-v1/       # Phase 10 G0/G1、500 wrappers、离线评估和验收证据
+│  ├─ baseline/            # Phase 10 Closed-Book Baseline：250 wrappers 与独立 manifest
+│  └─ generation-v1/       # Retrieval-v1 RAG：250 wrappers、配对离线评估和验收证据
 ├─ tmp/                    # 本地临时目录；不是事实来源或交付契约
 ├─ DEVELOPMENT_CONTEXT.md  # 本文件：内部开发交接入口
 └─ README.md               # 用户入口；已同步当前模块和 Phase 10 状态
@@ -600,7 +602,7 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 这些工作不是全部串行依赖。当前状态与可推进方向为：
 
 1. `VERIFIED_COMPLETE_FOR_DEVELOPMENT_ONLY` **正式 retrieval v1**：保留冻结 baseline 对照，五系统结果已发布；任何未来新 retriever 若扩大候选 pool，仍须先完成相同口径的盲补判；
-2. `COMPLETE_WITH_FAILED_ENGINEERING_GATES_FOR_DEVELOPMENT_ONLY` **Generation v1**：G0/G1 的 500 个正式 wrapper、离线对照和全部真实失败均已封存；质量目标通过，但 Phase success=false，不得把它改写为整体通过；
+2. `COMPLETE_WITH_FAILED_ENGINEERING_GATES_FOR_DEVELOPMENT_ONLY` **Generation Baseline / Generation v1**：两系统的 500 个正式 wrapper、离线对照和全部真实失败均已封存；质量目标通过，但 Phase success=false，不得把它改写为整体通过；
 3. `PLANNED_NEXT` **human evaluation protocol**：在任何相关调参前冻结 held-out split、schema、指南、抽样、平衡、annotator 和 adjudication 流程；
 4. `PLANNED` **UI/product scaffolding**：基于冻结 Retrieval v1 接口和 Generation v1 output schema 建立简单 UI。
 
@@ -612,7 +614,7 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 4. 在最终人工集上一次性完成任务指标、faithfulness、answer relevance、context precision/relevance，以及 latency、吞吐量、成本、可扩展性评估；
 5. 准备 5 条代表性查询、结果、来源和查询速度；
 6. 更新最终用户 README，准备 Q1-Q5 报告、截图、两份压缩包链接和 Week 13 演示；
-7. 若未来专门修复 Generation v1 的 9 个 G1 invalid-JSON failures 或 judge failure，必须发布新 generation release 并保留本次真实 baseline，不得覆盖现有 500 wrappers。
+7. 若未来专门修复 Generation v1 的 9 个 invalid-JSON failures 或 judge failure，必须发布新 generation release 并保留本次真实 Baseline，不得覆盖现有 500 wrappers。
 
 现有 250 条 Codex 机器数据可以作为开发数据用于 prompt 设计、回归检查和明确记录 provenance 的离线训练；它绝不能充当最终测试数据，也不得污染最终 held-out split。
 
@@ -715,9 +717,12 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 - [Acceptance gates](generation/generation-v1/evaluation/acceptance.json)
 - [Overall metrics](generation/generation-v1/evaluation/overall_metrics.json)
 - [Paired per-query comparison](generation/generation-v1/evaluation/per_query_comparison.jsonl)
-- [G0 formal run](generation/generation-v1/runs/g0_closed_book_dev250.jsonl)
-- [G1 formal run](generation/generation-v1/runs/g1_retrieval_v1_rag_dev250.jsonl)
+- [Generation Baseline README](generation/baseline/README.md)
+- [Baseline formal run](generation/baseline/runs/baseline_closed_book_dev250.jsonl)
+- [Baseline manifest](generation/baseline/manifest.json)
+- [Generation v1 formal run](generation/generation-v1/runs/generation_v1_rag_dev250.jsonl)
 - [Offline judge journal](generation/generation-v1/evaluation/judgments.jsonl)
+- [Naming migration provenance](generation/generation-v1/provenance/system_naming_migration.json)
 - [Test evidence](generation/generation-v1/reports/test_results.json)
 - [Protected before/after/current audit](generation/generation-v1/reports/protected_paths_current.json)
 
@@ -749,5 +754,6 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 | 2026-08-30 | 当前 retrieval baseline 正式证据重新绑定并通过 | source tree SHA 为 `104d6f59...`；95 tests、protected after audit、`finalize -> validate` 共同构成当前证据 |
 | 2026-08-30 | Retrieval v1 采用 soft metadata bonuses 与 deterministic field-aware lexical reranker | 不硬删除跨方言或旧文档；版本冲突只依据 corpus metadata/明确文本边界；reranker 只读合法在线字段与 passage，不使用开发标签 |
 | 2026-08-30 | Retrieval v1 五系统 release 通过正式干净重建 | 五系统 `Judged@30=1.0`、pool expansion 为 0、60 tests、12/12 validation checks、protected bytes unchanged；当前结果只称 machine-proposed development evaluation |
-| 2026-08-30 | Phase 10 改用本地 `qwen3.5:4b`，精确 digest `2a654d98...e4eefd`，两系统均 `think=false`；G1 固定 Retrieval v1 Final Top-5 | `gpt-oss-20b` 不提供完全关闭 reasoning 的正式选项，用户以效率为目标选择可关闭 thinking 的 Qwen；G0/G1 除是否接收 evidence 外保持同模型、prompt、schema、decoding 与 retry policy |
-| 2026-08-30 | Generation v1 保留真实 `quality=PASS`、`engineering=FAIL`、`phase_success=false` | G1 Task Success 68.0% 相对 G0 50.8% 提高 17.2pp，但 G1 structured validity 96.4% 未达 98%，offline judge calls 249/250；不修改 reference labels、不隐藏失败、不覆盖 500 个正式 wrapper |
+| 2026-08-30 | Phase 10 改用本地 `qwen3.5:4b`，精确 digest `2a654d98...e4eefd`，两系统均 `think=false`；Generation v1 固定 Retrieval v1 Final Top-5 | `gpt-oss-20b` 不提供完全关闭 reasoning 的正式选项，用户以效率为目标选择可关闭 thinking 的 Qwen；Baseline / Generation v1 除是否接收 evidence 外保持同模型、prompt、schema、decoding 与 retry policy |
+| 2026-08-30 | Generation v1 保留真实 `quality=PASS`、`engineering=FAIL`、`phase_success=false` | Generation v1 Task Success 68.0% 相对 Baseline 50.8% 提高 17.2pp，但 structured validity 96.4% 未达 98%，offline judge calls 249/250；不修改 reference labels、不隐藏失败、不覆盖 500 个正式 wrapper |
+| 2026-08-30 | 生成系统正式定名为 Generation Baseline 与 Generation v1，并分别归档到 `generation/baseline/`、`generation/generation-v1/` | 仅迁移命名元数据；500 个答案、失败、attempt、latency、模型 provenance 与 judge 决策保持不变。历史臂名只保留在 `provenance/legacy/` 与迁移 ledger 中 |

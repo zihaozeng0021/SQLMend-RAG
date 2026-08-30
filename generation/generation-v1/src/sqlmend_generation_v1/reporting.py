@@ -53,8 +53,8 @@ def render_generation_report(
     """Render all required Phase 10 comparisons from published artifacts."""
 
     _validate_inputs(overall, per_query_rows)
-    g0 = overall["systems"]["g0"]
-    g1 = overall["systems"]["g1"]
+    baseline = overall["systems"]["baseline"]
+    generation_v1 = overall["systems"]["generation_v1"]
     paired = overall["paired"]
     judge = overall["judge"]
     artifacts = overall.get("artifacts", {})
@@ -72,7 +72,7 @@ def render_generation_report(
     )
 
     lines = [
-        "# Phase 10：Closed-Book 与 Retrieval-v1 RAG Generation",
+        "# Phase 10：Generation Baseline 与 Generation v1",
         "",
         f"Schema: `{REPORT_SCHEMA_VERSION}`。本报告是 **{overall['evaluation_label']}**；",
         "当前 250 条记录及离线 reference/qrels 均为 machine-proposed development data，",
@@ -82,14 +82,14 @@ def render_generation_report(
         "",
         f"- 配对查询：{overall['query_count']}；正式结果 wrapper（含明确失败记录）："
         f"{overall.get('formal_result_wrapper_count', overall['formal_answer_count'])}。",
-        f"- G0：`{g0['system_id']}`，不接收 retrieval evidence；G0 的 RAG 指标为 `N/A`。",
-        f"- G1：`{g1['system_id']}`，只使用冻结 Retrieval v1 本次 Top-5 evidence。",
+        f"- Baseline：`{baseline['system_id']}`，不接收 retrieval evidence；Baseline 的 RAG 指标为 `N/A`。",
+        f"- Generation v1：`{generation_v1['system_id']}`，只使用冻结 Retrieval v1 本次 Top-5 evidence。",
         f"- 离线 judge：`{overall['judge']['model_tag']}`，digest "
         f"`{overall['judge']['model_digest']}`，`think=false`（thinking disabled）；"
         "每 query 一次匿名 A/B 逻辑调用，奇偶反转，"
         f"最多 {overall['judge']['max_attempts']} 次 attempt。",
-        f"- Run seal：G0 `{overall['generation_seals']['g0']['sha256']}`；"
-        f"G1 `{overall['generation_seals']['g1']['sha256']}`。两个 run 在 reference/qrels 首次打开前封存。",
+        f"- Run seal：Baseline `{overall['generation_seals']['baseline']['sha256']}`；"
+        f"Generation v1 `{overall['generation_seals']['generation_v1']['sha256']}`。两个 run 在 reference/qrels 首次打开前封存。",
         "- 在线 generation 输出没有被 reference、annotation evidence 或 qrels 回写；reference 字段只进入此离线评估。",
         "- Generation `status=success` 只表示调用最终通过 JSON/schema/citation 合同，不表示 SQL 问题已修对；语义正确性只由下方离线指标衡量。",
         "",
@@ -97,16 +97,16 @@ def render_generation_report(
         "",
         "| 系统 | 正式 wrapper | Generation Contract Success | 明确失败 | retries | 重试后恢复 |",
         "|---|---:|---:|---:|---:|---:|",
-        f"| G0 | {g0['formal_result_count']} | "
-        f"{g0.get('generation_contract_success_count', g0['success_count'])} | "
-        f"{g0.get('generation_contract_failure_count', g0['failure_count'])} | "
-        f"{g0.get('generation_retry_count', 0)} | "
-        f"{g0.get('generation_recovered_after_retry_count', 0)} |",
-        f"| G1 | {g1['formal_result_count']} | "
-        f"{g1.get('generation_contract_success_count', g1['success_count'])} | "
-        f"{g1.get('generation_contract_failure_count', g1['failure_count'])} | "
-        f"{g1.get('generation_retry_count', 0)} | "
-        f"{g1.get('generation_recovered_after_retry_count', 0)} |",
+        f"| Baseline | {baseline['formal_result_count']} | "
+        f"{baseline.get('generation_contract_success_count', baseline['success_count'])} | "
+        f"{baseline.get('generation_contract_failure_count', baseline['failure_count'])} | "
+        f"{baseline.get('generation_retry_count', 0)} | "
+        f"{baseline.get('generation_recovered_after_retry_count', 0)} |",
+        f"| Generation v1 | {generation_v1['formal_result_count']} | "
+        f"{generation_v1.get('generation_contract_success_count', generation_v1['success_count'])} | "
+        f"{generation_v1.get('generation_contract_failure_count', generation_v1['failure_count'])} | "
+        f"{generation_v1.get('generation_retry_count', 0)} | "
+        f"{generation_v1.get('generation_recovered_after_retry_count', 0)} |",
         "",
         "Attempts/retries 由每条正式 wrapper 保留的 `attempts` 数组独立复算；"
         "Generation Contract Success 不代表 SQL 语义正确。",
@@ -120,22 +120,22 @@ def render_generation_report(
         "",
         "## 完整指标表",
         "",
-        "| 指标 | G0 Closed-Book | G1 Retrieval-v1 RAG | G1 - G0 |",
+        "| 指标 | Baseline Closed-Book | Generation v1 Retrieval-v1 RAG | Generation v1 - Baseline |",
         "|---|---:|---:|---:|",
     ]
     for label, key, kind in METRIC_ROWS:
-        g0_value = g0[key]
-        g1_value = g1[key]
+        baseline_value = baseline[key]
+        generation_v1_value = generation_v1[key]
         lines.append(
-            f"| {label} | {_format_metric(g0_value, kind)} | "
-            f"{_format_metric(g1_value, kind)} | {_format_delta(g0_value, g1_value, kind)} |"
+            f"| {label} | {_format_metric(baseline_value, kind)} | "
+            f"{_format_metric(generation_v1_value, kind)} | {_format_delta(baseline_value, generation_v1_value, kind)} |"
         )
 
     lines.extend(
         [
             "",
             "Task Success 只在根因、SQL 修复、dialect 兼容性和 version 兼容性四项同时为真时计 1。",
-            f"G1 相对 G0 的绝对变化为 **{paired['task_success_percentage_point_delta']:+.2f} 个百分点**；"
+            f"Generation v1 相对 Baseline 的绝对变化为 **{paired['task_success_percentage_point_delta']:+.2f} 个百分点**；"
             f"主要目标（至少 +10pp）：**{'达到' if paired['success_target']['achieved'] else '未达到'}**。",
             "",
             "## Paired per-query comparison",
@@ -143,24 +143,24 @@ def render_generation_report(
             f"完整 {len(per_query_rows)} 行配对结果见 "
             f"[{_artifact_label(artifacts, 'per_query_comparison')}]({_artifact_link(artifacts, 'per_query_comparison', '../evaluation/per_query_comparison.jsonl')})。",
             "该文件逐 query 保留两系统 generation status、四项任务判断、structured validity、latency、judge retry，",
-            "以及 G1 的 citation/context audit；没有删除失败案例。",
+            "以及 Generation v1 的 citation/context audit；没有删除失败案例。",
             "",
             "| 配对结果 | 查询数 |",
             "|---|---:|",
-            f"| G1 改善（G0 Task fail → G1 Task Success） | {paired['g1_improved_count']} |",
-            f"| G1 变差（G0 Task Success → G1 Task fail） | {paired['g1_regressed_count']} |",
+            f"| Generation v1 改善（Baseline Task fail → Generation v1 Task Success） | {paired['generation_v1_improved_count']} |",
+            f"| Generation v1 变差（Baseline Task Success → Generation v1 Task fail） | {paired['generation_v1_regressed_count']} |",
             f"| 两者均 Task Success | "
             f"{paired.get('both_task_success_count', paired['both_succeeded_count'])} |",
             f"| 两者均 Task fail | "
             f"{paired.get('neither_task_success_count', paired['neither_succeeded_count'])} |",
             "",
-            "## G1 改善最明显的案例",
+            "## Generation v1 改善最明显的案例",
             "",
         ]
     )
     improvements = _rank_improvements(per_query_rows)[:3]
     lines.append(
-        f"实际符合 G0 Task fail → G1 Task Success 的案例共 {len(_rank_improvements(per_query_rows))} 条；"
+        f"实际符合 Baseline Task fail → Generation v1 Task Success 的案例共 {len(_rank_improvements(per_query_rows))} 条；"
         "不足 3 条时以明确占位行保留报告结构，不会把 tie 或 regression 冒充 improvement。"
     )
     lines.append("")
@@ -175,7 +175,7 @@ def render_generation_report(
     lines.extend(
         [
             "",
-            "## G1 没有改善或表现更差的案例",
+            "## Generation v1 没有改善或表现更差的案例",
             "",
         ]
     )
@@ -190,8 +190,8 @@ def render_generation_report(
 
     lines.extend(_rag_analysis(per_query_rows))
 
-    g0_latency = g0["latency_ms"]
-    g1_latency = g1["latency_ms"]
+    baseline_latency = baseline["latency_ms"]
+    generation_v1_latency = generation_v1["latency_ms"]
     lines.extend(
         [
             "",
@@ -201,19 +201,24 @@ def render_generation_report(
             "",
             "| 系统 | Mean (ms) | P50 (ms) | P95 (ms) |",
             "|---|---:|---:|---:|",
-            f"| G0 | {g0_latency['mean']:.3f} | {g0_latency['p50']:.3f} | {g0_latency['p95']:.3f} |",
-            f"| G1 | {g1_latency['mean']:.3f} | {g1_latency['p50']:.3f} | {g1_latency['p95']:.3f} |",
-            f"| G1 - G0 | {g1_latency['mean'] - g0_latency['mean']:+.3f} | "
-            f"{g1_latency['p50'] - g0_latency['p50']:+.3f} | "
-            f"{g1_latency['p95'] - g0_latency['p95']:+.3f} |",
+            f"| Baseline | {baseline_latency['mean']:.3f} | {baseline_latency['p50']:.3f} | {baseline_latency['p95']:.3f} |",
+            f"| Generation v1 | {generation_v1_latency['mean']:.3f} | {generation_v1_latency['p50']:.3f} | {generation_v1_latency['p95']:.3f} |",
+            f"| Generation v1 - Baseline | {generation_v1_latency['mean'] - baseline_latency['mean']:+.3f} | "
+            f"{generation_v1_latency['p50'] - baseline_latency['p50']:+.3f} | "
+            f"{generation_v1_latency['p95'] - baseline_latency['p95']:+.3f} |",
             "",
             "## 500 个正式结果 wrapper 与 provenance",
             "",
-            f"- G0 的 250 个 wrapper：`{artifacts.get('g0_answers', 'generation/generation-v1/runs/g0_closed_book_dev250.jsonl')}`。",
-            f"- G1 的 250 个 wrapper：`{artifacts.get('g1_answers', 'generation/generation-v1/runs/g1_retrieval_v1_rag_dev250.jsonl')}`。",
-            f"- G1 实际 Top-5 evidence：`{artifacts.get('g1_evidence', 'generation/generation-v1/prepared_inputs/g1_evidence_top5.jsonl')}`。",
+            f"- Baseline 的 250 个 wrapper：`{artifacts.get('baseline_answers', 'generation/baseline/runs/baseline_closed_book_dev250.jsonl')}`。",
+            f"- Generation v1 的 250 个 wrapper：`{artifacts.get('generation_v1_answers', 'generation/generation-v1/runs/generation_v1_rag_dev250.jsonl')}`。",
+            f"- Generation v1 实际 Top-5 evidence：`{artifacts.get('generation_v1_evidence', 'generation/generation-v1/prepared_inputs/generation_v1_evidence_top5.jsonl')}`。",
             f"- 匿名配对 judge journal：`{artifacts.get('judgments', 'generation/generation-v1/evaluation/judgments.jsonl')}`。",
             f"- Generation seal：`{overall.get('seal_path', 'generation/generation-v1/evaluation/generation_seal.json')}`。",
+            *(
+                [f"- 命名迁移 ledger：`{artifacts['system_naming_migration']}`。"]
+                if artifacts.get("system_naming_migration")
+                else []
+            ),
             "",
             "每个 answer wrapper 自带 input provenance、prompt SHA、exact model provenance、统一 retry attempts 和 wall latency；",
             "因此 500 个正式结果 wrapper 都可以回溯到自己的无标签输入和模型调用；"
@@ -226,7 +231,7 @@ def render_generation_report(
             f"- Quality target：**{_nested_status(acceptance, 'quality')}**。",
             f"- Phase success：**{'PASS' if acceptance.get('phase_success') else 'FAIL'}**。",
             "",
-            "Quality FAIL 不会阻止真实 artifact 发布，也不会触发 reference label 修改、失败案例删除或结果覆盖。",
+            "任何失败门禁都不会触发 reference label 修改、失败案例删除或结果覆盖。",
             "",
             "## 从干净环境重新生成与评估",
             "",
@@ -249,42 +254,42 @@ def render_generation_report(
 
 def _rag_analysis(rows: Sequence[Mapping[str, Any]]) -> list[str]:
     judge_failures = sum(row.get("judge_status", "success") != "success" for row in rows)
-    g0_generation_failures = sum(row["g0"].get("status", "success") != "success" for row in rows)
-    g1_generation_failures = sum(row["g1"].get("status", "success") != "success" for row in rows)
+    baseline_generation_failures = sum(row["baseline"].get("status", "success") != "success" for row in rows)
+    generation_v1_generation_failures = sum(row["generation_v1"].get("status", "success") != "success" for row in rows)
     analyzable = [
         row
         for row in rows
         if row.get("judge_status", "success") == "success"
-        and row["g1"].get("status", "success") == "success"
+        and row["generation_v1"].get("status", "success") == "success"
     ]
     hit_improved = sum(
-        row["g1"]["context_query_hit"] and row["paired"]["task_success_delta"] > 0
+        row["generation_v1"]["context_query_hit"] and row["paired"]["task_success_delta"] > 0
         for row in analyzable
     )
     hit_not_improved = sum(
-        row["g1"]["context_query_hit"] and row["paired"]["task_success_delta"] <= 0
+        row["generation_v1"]["context_query_hit"] and row["paired"]["task_success_delta"] <= 0
         for row in analyzable
     )
-    miss_count = sum(not row["g1"]["context_query_hit"] for row in analyzable)
-    faithful = sum(row["g1"]["faithfulness"] >= 0.8 for row in analyzable)
+    miss_count = sum(not row["generation_v1"]["context_query_hit"] for row in analyzable)
+    faithful = sum(row["generation_v1"]["faithfulness"] >= 0.8 for row in analyzable)
     low_faithfulness = len(analyzable) - faithful
     valid_but_uncovered = sum(
-        row["g1"]["citation_validity"] == 1.0
-        and row["g1"]["citation_coverage"] < 0.8
+        row["generation_v1"]["citation_validity"] == 1.0
+        and row["generation_v1"]["citation_coverage"] < 0.8
         for row in analyzable
     )
     return [
         "",
         "## RAG 有效与无效的原因",
         "",
-        f"- Generation failure 分开统计：G0 {g0_generation_failures} 条，"
-        f"G1 {g1_generation_failures} 条；offline judge failure {judge_failures} 条。"
-        f"以下 context/evidence-utilization 计数只分析 judge 与 G1 generation 都成功的 {len(analyzable)} 条，"
+        f"- Generation failure 分开统计：Baseline {baseline_generation_failures} 条，"
+        f"Generation v1 {generation_v1_generation_failures} 条；offline judge failure {judge_failures} 条。"
+        f"以下 context/evidence-utilization 计数只分析 judge 与 Generation v1 generation 都成功的 {len(analyzable)} 条，"
         "不会把调用失败误归因于 retrieval 或 evidence utilization。",
         f"- 在 qrels rel>=1 context hit 的查询中，{hit_improved} 条转为 Task Success，"
         f"{hit_not_improved} 条没有形成净改善。命中相关 passage 是必要帮助，但不保证模型会利用它。",
         f"- {miss_count} 条查询的 Top-5 没有 rel>=1 hit；这类失败更可能来自 retrieval context 不相关或不足。",
-        f"- {faithful} 条 G1 answer 的 faithfulness ≥ 0.8，{low_faithfulness} 条低于 0.8；"
+        f"- {faithful} 条 Generation v1 answer 的 faithfulness ≥ 0.8，{low_faithfulness} 条低于 0.8；"
         "相关 context 已存在但 faithfulness 仍低时，问题更接近 evidence utilization 或模型能力。",
         f"- {valid_but_uncovered} 条答案没有虚构 citation（validity=1）但 coverage<0.8；"
         "这说明 citation validity 单独不能证明关键诊断与修复都被证据覆盖。",
@@ -332,18 +337,18 @@ def _case_table(
     placeholder: str = "无符合条件的案例",
 ) -> list[str]:
     lines = [
-        "| Query | Paired outcome | G0 → G1 task | Context | Judge 摘要 |",
+        "| Query | Paired outcome | Baseline → Generation v1 task | Context | Judge 摘要 |",
         "|---|---|---:|---:|---|",
     ]
     for row in rows:
         reason = (
-            f"G0: {row['g0'].get('judge_reason', '')}; "
-            f"G1: {row['g1'].get('judge_reason', '')}"
+            f"Baseline: {row['baseline'].get('judge_reason', '')}; "
+            f"Generation v1: {row['generation_v1'].get('judge_reason', '')}"
         )
         lines.append(
             f"| `{_escape_cell(row['query_id'])}` | {row['paired']['outcome']} | "
-            f"{int(bool(row['g0']['task_success']))} → {int(bool(row['g1']['task_success']))} | "
-            f"P={row['g1']['context_precision']:.2f}, hit={str(row['g1']['context_query_hit']).lower()} | "
+            f"{int(bool(row['baseline']['task_success']))} → {int(bool(row['generation_v1']['task_success']))} | "
+            f"P={row['generation_v1']['context_precision']:.2f}, hit={str(row['generation_v1']['context_query_hit']).lower()} | "
             f"{_escape_cell(_truncate(reason, 220))} |"
         )
     for _ in range(max(0, minimum_rows - len(rows))):
@@ -360,14 +365,14 @@ def _validate_inputs(
     if not isinstance(overall.get("systems"), Mapping):
         raise ValueError("overall metrics missing systems")
     systems = overall["systems"]
-    if not isinstance(systems.get("g0"), Mapping) or not isinstance(
-        systems.get("g1"), Mapping
+    if not isinstance(systems.get("baseline"), Mapping) or not isinstance(
+        systems.get("generation_v1"), Mapping
     ):
-        raise ValueError("overall metrics require g0 and g1")
-    if systems["g0"].get("faithfulness") != NOT_APPLICABLE:
-        raise ValueError("G0 faithfulness must be N/A")
-    if systems["g0"].get("context_precision") != NOT_APPLICABLE:
-        raise ValueError("G0 context precision must be N/A")
+        raise ValueError("overall metrics require baseline and generation_v1")
+    if systems["baseline"].get("faithfulness") != NOT_APPLICABLE:
+        raise ValueError("Baseline faithfulness must be N/A")
+    if systems["baseline"].get("context_precision") != NOT_APPLICABLE:
+        raise ValueError("Baseline context precision must be N/A")
     if len(rows) != int(overall.get("query_count", -1)):
         raise ValueError("paired rows do not match overall query_count")
     ids = [row.get("query_id") for row in rows]
@@ -384,10 +389,10 @@ def _format_metric(value: Any, kind: str) -> str:
     return f"{number:.4f}"
 
 
-def _format_delta(g0: Any, g1: Any, kind: str) -> str:
-    if g0 == NOT_APPLICABLE or g1 == NOT_APPLICABLE:
+def _format_delta(baseline: Any, generation_v1: Any, kind: str) -> str:
+    if baseline == NOT_APPLICABLE or generation_v1 == NOT_APPLICABLE:
         return NOT_APPLICABLE
-    delta = float(g1) - float(g0)
+    delta = float(generation_v1) - float(baseline)
     if kind == "rate":
         return f"{delta * 100.0:+.2f}pp"
     return f"{delta:+.4f}"

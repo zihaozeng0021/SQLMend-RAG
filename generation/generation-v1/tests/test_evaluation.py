@@ -10,8 +10,8 @@ import pytest
 import sqlmend_generation_v1.evaluation as evaluation
 from sqlmend_generation_v1.evaluation import (
     EXPECTED_QUERY_COUNT,
-    G0_SYSTEM_ID,
-    G1_SYSTEM_ID,
+    BASELINE_SYSTEM_ID,
+    GENERATION_V1_SYSTEM_ID,
     run_offline_evaluation,
 )
 
@@ -62,7 +62,7 @@ def _wrapper(query_id: str, system_id: str, *, failed: bool = False) -> dict[str
             "explanation": "explanation",
             "dialect_version_compatibility": "compatible",
             "confidence": 0.9,
-            "citations": [evidence_ids[0]] if system_id == G1_SYSTEM_ID else [],
+            "citations": [evidence_ids[0]] if system_id == GENERATION_V1_SYSTEM_ID else [],
         }
     return {
         "schema_version": "sqlmend-generation-record-v1",
@@ -79,8 +79,8 @@ def _wrapper(query_id: str, system_id: str, *, failed: bool = False) -> dict[str
             "serialized_query_sha256": hashlib.sha256(
                 serialized_query.encode("utf-8")
             ).hexdigest(),
-            "evidence_sha256": "e" * 64 if system_id == G1_SYSTEM_ID else None,
-            "evidence_passage_ids": evidence_ids if system_id == G1_SYSTEM_ID else [],
+            "evidence_sha256": "e" * 64 if system_id == GENERATION_V1_SYSTEM_ID else None,
+            "evidence_passage_ids": evidence_ids if system_id == GENERATION_V1_SYSTEM_ID else [],
             "prompt_sha256": "p" * 64,
         },
         "generation_provenance": {
@@ -100,7 +100,7 @@ def _wrapper(query_id: str, system_id: str, *, failed: bool = False) -> dict[str
     }
 
 
-def _build_fixture(root: Path, *, one_g0_failure: bool = True) -> None:
+def _build_fixture(root: Path, *, one_baseline_failure: bool = True) -> None:
     release = root / "generation" / "generation-v1"
     config = release / "config/generation.yaml"
     config.parent.mkdir(parents=True, exist_ok=True)
@@ -136,18 +136,18 @@ offline_judge:
 """,
         encoding="utf-8",
     )
-    g0_rows: list[dict[str, Any]] = []
-    g1_rows: list[dict[str, Any]] = []
+    baseline_rows: list[dict[str, Any]] = []
+    generation_v1_rows: list[dict[str, Any]] = []
     evidence_rows: list[dict[str, Any]] = []
     safe_query_rows: list[dict[str, Any]] = []
     references: list[dict[str, Any]] = []
     qrel_lines: list[str] = []
     for number in range(1, EXPECTED_QUERY_COUNT + 1):
         query_id = f"DEV{number:04d}"
-        g0_rows.append(
-            _wrapper(query_id, G0_SYSTEM_ID, failed=one_g0_failure and number == 1)
+        baseline_rows.append(
+            _wrapper(query_id, BASELINE_SYSTEM_ID, failed=one_baseline_failure and number == 1)
         )
-        g1_rows.append(_wrapper(query_id, G1_SYSTEM_ID))
+        generation_v1_rows.append(_wrapper(query_id, GENERATION_V1_SYSTEM_ID))
         serialized_query = f"Dialect: sqlite\n\nVersion: 3.46\n\nQuestion:\nFix {query_id}\n\nSQL:\nSELECT 1;"
         safe_query_rows.append(
             {
@@ -198,9 +198,9 @@ offline_judge:
                 "evidence": [{"chunk_id": "must-not-enter-online-generation"}],
             }
         )
-    _write_jsonl(release / "runs/g0_closed_book_dev250.jsonl", g0_rows)
-    _write_jsonl(release / "runs/g1_retrieval_v1_rag_dev250.jsonl", g1_rows)
-    _write_jsonl(release / "prepared_inputs/g1_evidence_top5.jsonl", evidence_rows)
+    _write_jsonl(root / "generation/baseline/runs/baseline_closed_book_dev250.jsonl", baseline_rows)
+    _write_jsonl(release / "runs/generation_v1_rag_dev250.jsonl", generation_v1_rows)
+    _write_jsonl(release / "prepared_inputs/generation_v1_evidence_top5.jsonl", evidence_rows)
     _write_jsonl(release / "prepared_inputs/online_queries.jsonl", safe_query_rows)
     _write_jsonl(root / "annotation/codex/dev_250.jsonl", references)
     qrels = root / "retrieval/baseline/qrels/qrels_effective_dev250.trec"
@@ -231,18 +231,18 @@ def test_evaluate_seals_before_references_and_keeps_all_failures(
     overall = run_offline_evaluation(root, client=judge, resume=False)
 
     assert len(judge.prompts) == EXPECTED_QUERY_COUNT
-    assert all("g0_closed_book" not in prompt for prompt in judge.prompts)
-    assert all("g1_retrieval_v1_rag" not in prompt for prompt in judge.prompts)
+    assert all("baseline" not in prompt for prompt in judge.prompts)
+    assert all("generation_v1" not in prompt for prompt in judge.prompts)
     assert overall["formal_answer_count"] == 500
     assert overall["formal_result_wrapper_count"] == 500
-    assert overall["systems"]["g0"]["failure_count"] == 1
-    assert overall["systems"]["g0"]["task_success_rate"] == pytest.approx(249 / 250)
-    assert overall["systems"]["g1"]["task_success_rate"] == 1.0
-    assert overall["systems"]["g1"]["citation_validity"] == 1.0
-    assert overall["systems"]["g1"]["context_precision"] == 1.0
-    assert overall["systems"]["g0"]["faithfulness"] == "N/A"
-    assert overall["judge"]["counterbalance"]["a_g0_count"] == 125
-    assert overall["judge"]["counterbalance"]["a_g1_count"] == 125
+    assert overall["systems"][BASELINE_SYSTEM_ID]["failure_count"] == 1
+    assert overall["systems"][BASELINE_SYSTEM_ID]["task_success_rate"] == pytest.approx(249 / 250)
+    assert overall["systems"][GENERATION_V1_SYSTEM_ID]["task_success_rate"] == 1.0
+    assert overall["systems"][GENERATION_V1_SYSTEM_ID]["citation_validity"] == 1.0
+    assert overall["systems"][GENERATION_V1_SYSTEM_ID]["context_precision"] == 1.0
+    assert overall["systems"][BASELINE_SYSTEM_ID]["faithfulness"] == "N/A"
+    assert overall["judge"]["counterbalance"]["a_baseline_count"] == 125
+    assert overall["judge"]["counterbalance"]["a_generation_v1_count"] == 125
     assert overall["judge"]["completed_count"] == 250
     assert overall["judge"]["judge_call_success_count"] == 250
     assert overall["judge"]["failed_count"] == 0
@@ -256,7 +256,7 @@ def test_evaluate_seals_before_references_and_keeps_all_failures(
     final_seal = json.loads(seal_path.read_text(encoding="utf-8"))
     assert final_seal["reference_access"]["seal_written_before_reference_access"] is True
     assert len(final_seal["offline_evaluation_inputs"]["context_sha256"]) == 64
-    for system in ("g0", "g1"):
+    for system in (BASELINE_SYSTEM_ID, GENERATION_V1_SYSTEM_ID):
         run_path = root / final_seal["runs"][system]["path"]
         expected_sha = hashlib.sha256(run_path.read_bytes()).hexdigest()
         assert final_seal["runs"][system]["sha256"] == expected_sha
@@ -286,7 +286,7 @@ def test_resume_does_not_rejudge_completed_queries(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     root = tmp_path / "repo"
-    _build_fixture(root, one_g0_failure=False)
+    _build_fixture(root, one_baseline_failure=False)
     first = FakeJudge()
     run_offline_evaluation(root, client=first, resume=False)
     assert len(first.prompts) == 250
@@ -335,7 +335,7 @@ def test_incomplete_resume_still_requires_preflight_and_only_judges_missing_quer
     tmp_path: Path,
 ) -> None:
     root = tmp_path / "repo"
-    _build_fixture(root, one_g0_failure=False)
+    _build_fixture(root, one_baseline_failure=False)
     run_offline_evaluation(root, client=FakeJudge(), resume=False)
     judgments_path = root / "generation/generation-v1/evaluation/judgments.jsonl"
     rows = judgments_path.read_text(encoding="utf-8").splitlines()
@@ -371,7 +371,7 @@ def _resume_judgment(
     return {
         "query_id": "DEV0001",
         "status": status,
-        "run_sha256": {"g0": "g0-sha", "g1": "g1-sha"},
+        "run_sha256": {BASELINE_SYSTEM_ID: "baseline-sha", GENERATION_V1_SYSTEM_ID: "generation-v1-sha"},
         "evaluation_input_sha256": {"fixture": "input-sha"},
         "evaluation_context_sha256": "context-sha",
         "policy_sha256": "policy-sha",
@@ -385,7 +385,7 @@ def _load_resume_fixture(path: Path, row: dict[str, Any]) -> dict[str, Any]:
     _write_jsonl(path, [row])
     return evaluation._load_resumable_judgments(
         path,
-        {"g0": "g0-sha", "g1": "g1-sha"},
+        {BASELINE_SYSTEM_ID: "baseline-sha", GENERATION_V1_SYSTEM_ID: "generation-v1-sha"},
         {"fixture": "input-sha"},
         "context-sha",
         "policy-sha",
@@ -524,7 +524,7 @@ def test_judge_success_is_an_engineering_acceptance_gate() -> None:
             "failed_count": 1,
         },
         "systems": {
-            "g0": {
+            BASELINE_SYSTEM_ID: {
                 "formal_result_count": 250,
                 "structured_output_validity": 1.0,
                 "citation_validity": "N/A",
@@ -533,7 +533,7 @@ def test_judge_success_is_an_engineering_acceptance_gate() -> None:
                 "root_cause_accuracy": 1.0,
                 "sql_repair_correctness": 1.0,
             },
-            "g1": {
+            GENERATION_V1_SYSTEM_ID: {
                 "formal_result_count": 250,
                 "structured_output_validity": 1.0,
                 "citation_validity": 1.0,
@@ -562,10 +562,10 @@ def test_invalid_run_blocks_before_reference_or_seal(
 ) -> None:
     root = tmp_path / "repo"
     _build_fixture(root)
-    g0_path = root / "generation/generation-v1/runs/g0_closed_book_dev250.jsonl"
-    rows = [json.loads(line) for line in g0_path.read_text().splitlines()]
+    baseline_path = root / "generation/baseline/runs/baseline_closed_book_dev250.jsonl"
+    rows = [json.loads(line) for line in baseline_path.read_text().splitlines()]
     rows.pop()
-    _write_jsonl(g0_path, rows)
+    _write_jsonl(baseline_path, rows)
 
     called = False
 

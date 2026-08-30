@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from .contracts import G0_SYSTEM_ID, G1_SYSTEM_ID
+from .contracts import BASELINE_SYSTEM_ID, GENERATION_V1_SYSTEM_ID
 
 
 @dataclass(frozen=True, slots=True)
@@ -45,6 +45,10 @@ class ProjectPaths:
     @property
     def release(self) -> Path:
         return self.root / "generation" / "generation-v1"
+
+    @property
+    def baseline(self) -> Path:
+        return self.root / "generation" / "baseline"
 
     @property
     def config_file(self) -> Path:
@@ -87,24 +91,36 @@ class ProjectPaths:
         return self.prepared_inputs / "online_queries.jsonl"
 
     @property
-    def g1_evidence(self) -> Path:
-        return self.prepared_inputs / "g1_evidence_top5.jsonl"
+    def generation_v1_evidence(self) -> Path:
+        return self.prepared_inputs / "generation_v1_evidence_top5.jsonl"
 
     @property
     def runs(self) -> Path:
         return self.release / "runs"
 
     @property
-    def g0_run(self) -> Path:
-        return self.runs / "g0_closed_book_dev250.jsonl"
+    def baseline_runs(self) -> Path:
+        return self.baseline / "runs"
 
     @property
-    def g1_run(self) -> Path:
-        return self.runs / "g1_retrieval_v1_rag_dev250.jsonl"
+    def baseline_reports(self) -> Path:
+        return self.baseline / "reports"
+
+    @property
+    def baseline_manifest(self) -> Path:
+        return self.baseline / "manifest.json"
+
+    @property
+    def baseline_run(self) -> Path:
+        return self.baseline_runs / "baseline_closed_book_dev250.jsonl"
+
+    @property
+    def generation_v1_run(self) -> Path:
+        return self.runs / "generation_v1_rag_dev250.jsonl"
 
     def result_path(self, system_id: str) -> Path:
-        if system_id == G0_SYSTEM_ID:
-            return self.g0_run
-        if system_id == G1_SYSTEM_ID:
-            return self.g1_run
+        if system_id == BASELINE_SYSTEM_ID:
+            return self.baseline_run
+        if system_id == GENERATION_V1_SYSTEM_ID:
+            return self.generation_v1_run
         raise ValueError(f"Unknown generation system: {system_id!r}")
