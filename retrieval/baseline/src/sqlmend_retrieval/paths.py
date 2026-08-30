@@ -36,7 +36,7 @@ class ProjectPaths:
 
     @property
     def retrieval(self) -> Path:
-        return self.root / "retrieval"
+        return self.root / "retrieval" / "baseline"
 
     @property
     def corpus(self) -> Path:

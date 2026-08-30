@@ -696,7 +696,7 @@ def test_command(paths: ProjectPaths) -> dict[str, Any]:
         sys.executable,
         "-m",
         "pytest",
-        "retrieval/tests",
+        "retrieval/baseline/tests",
         "-q",
         "-p",
         "no:cacheprovider",

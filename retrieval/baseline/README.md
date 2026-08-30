@@ -78,7 +78,7 @@ query_id Q0 chunk_id rank score run_tag
 
 ### 怎样补充 pool judgments
 
-`check-pool` 生成的 `retrieval/pool_expansion/pool_expansion_required.jsonl` 是只读请求清单，其中带有 passage 快照、正式系统排名和 component ranks。人工或独立标注流程完成后，把新增判断另存为 `retrieval/qrels/pool_expansion_judgments.jsonl`，每行只需：
+`check-pool` 生成的 `retrieval/baseline/pool_expansion/pool_expansion_required.jsonl` 是只读请求清单，其中带有 passage 快照、正式系统排名和 component ranks。人工或独立标注流程完成后，把新增判断另存为 `retrieval/baseline/qrels/pool_expansion_judgments.jsonl`，每行只需：
 
 ```json
 {"query_id":"DEV0001","chunk_id":"smr_example","relevance":1}
@@ -94,7 +94,7 @@ query_id Q0 chunk_id rank score run_tag
 
 ```powershell
 $env:PYTHONDONTWRITEBYTECODE = "1"
-python -m pip install -e retrieval
+python -m pip install -e retrieval/baseline
 
 python -m sqlmend_retrieval.cli audit-protected-paths --phase before
 python -m sqlmend_retrieval.cli verify-inputs
@@ -118,11 +118,11 @@ python -m sqlmend_retrieval.cli finalize
 python -m sqlmend_retrieval.cli validate
 ```
 
-正式测试证据必须由 `test` 子命令生成。它内部执行 `python -m pytest retrieval/tests -q -p no:cacheprovider`，记录 stdout/stderr、return code、Python 信息与测试前后 source-tree hash；直接运行 pytest 可用于开发诊断，但不能替代 `retrieval/reports/test_results.json`。
+正式测试证据必须由 `test` 子命令生成。它内部执行 `python -m pytest retrieval/baseline/tests -q -p no:cacheprovider`，记录 stdout/stderr、return code、Python 信息与测试前后 source-tree hash；直接运行 pytest 可用于开发诊断，但不能替代 `retrieval/baseline/reports/test_results.json`。
 
 `finalize` 重新生成 failure analysis、manifest、baseline/completion reports，并对最终重写后的产物再次 validation。当前 pool 尚未补齐时，`evaluate` 会正常写入 BLOCKED 哨兵，而 `finalize` 与 `validate` 会以非零状态明确拒绝发布；这是预期的完整性门禁，不应绕过。
 
-`python -m sqlmend_retrieval.cli all` 按同一依赖顺序执行完整流水线，在输入、索引、run、确定性或受保护目录硬失败时停止。Dense 模型首次下载保存在 `retrieval/indices/dense/model_cache/`；以后可离线重建 embedding。要重建索引，无需删除目录或执行未记录步骤，直接依次重跑 `build-bm25`、`build-dense`、三个 `run-*`、pool/evaluation/benchmark/test/after-audit/finalize 即可；每个项目自有产物都会按固定配置重写并重新绑定 hash。
+`python -m sqlmend_retrieval.cli all` 按同一依赖顺序执行完整流水线，在输入、索引、run、确定性或受保护目录硬失败时停止。Dense 模型首次下载保存在 `retrieval/baseline/indices/dense/model_cache/`；以后可离线重建 embedding。要重建索引，无需删除目录或执行未记录步骤，直接依次重跑 `build-bm25`、`build-dense`、三个 `run-*`、pool/evaluation/benchmark/test/after-audit/finalize 即可；每个项目自有产物都会按固定配置重写并重新绑定 hash。
 
 关键正式产物包括：`serialized_queries/dev_250_queries.jsonl`、两个 index 目录、三套 TREC run、hybrid provenance、base/effective TREC qrels、pool-expansion 请求与 summary、evaluation 目录、四份人工可读报告、validation report 和根部 `manifest.json`。模型缓存内部文件由上游 snapshot 管理，manifest 用目录 tree hash 整体绑定。
 

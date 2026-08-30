@@ -122,7 +122,7 @@
 15. `python -m sqlmend_retrieval.cli finalize`
 16. `python -m sqlmend_retrieval.cli validate`
 
-`test` 子命令内部执行并记录 `python -m pytest retrieval/tests -q -p no:cacheprovider`，且比较测试前后 source tree；单独运行 pytest 只适合开发诊断，不能替代 `reports/test_results.json`。在 pool 未补齐时，`evaluate` 写入 BLOCKED sentinel 并返回 0；`finalize`、`validate`（以及因 `finalize` 阻塞而失败的 `all`）返回非零，这是预期阻塞信号，不是发布成功。
+`test` 子命令内部执行并记录 `python -m pytest retrieval/baseline/tests -q -p no:cacheprovider`，且比较测试前后 source tree；单独运行 pytest 只适合开发诊断，但不能替代 `reports/test_results.json`。在 pool 未补齐时，`evaluate` 写入 BLOCKED sentinel 并返回 0；`finalize`、`validate`（以及因 `finalize` 阻塞而失败的 `all`）返回非零，这是预期阻塞信号，不是发布成功。
 
 ## Corpus、query 与 qrel 验证
 
@@ -1301,15 +1301,15 @@
     "E:\\MyProgramFiles\\anaconda\\python.exe",
     "-m",
     "pytest",
-    "retrieval/tests",
+    "retrieval/baseline/tests",
     "-q",
     "-p",
     "no:cacheprovider"
   ],
   "returncode": 0,
   "source_stable_during_tests": true,
-  "source_tree_sha256": "cc89618c684b849b256c4a74ee71c11efb9d9ed36217a19e9d046e026d0f8552",
-  "source_tree_sha256_after": "cc89618c684b849b256c4a74ee71c11efb9d9ed36217a19e9d046e026d0f8552",
+  "source_tree_sha256": "02bf56a20642d5563097c01f0232cba37b358b9929b5f0cb2a43f2da20d0c3c8",
+  "source_tree_sha256_after": "02bf56a20642d5563097c01f0232cba37b358b9929b5f0cb2a43f2da20d0c3c8",
   "status": "PASS"
 }
 ```

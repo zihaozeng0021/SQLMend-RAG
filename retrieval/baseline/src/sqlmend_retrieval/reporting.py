@@ -761,12 +761,12 @@ def generate_failure_analysis(
         lines.extend(["- future handling：" + "；".join(future) + "。", ""])
 
     pool_handoff = (
-        "完整未判定请求位于 `retrieval/pool_expansion/pool_expansion_required.jsonl`；它保存实际 "
+        "完整未判定请求位于 `retrieval/baseline/pool_expansion/pool_expansion_required.jsonl`；它保存实际 "
         "passage 快照、三个系统的出现位置与 component ranks。人工或独立标注应写入独立的 "
-        "`retrieval/qrels/pool_expansion_judgments.jsonl`，不得编辑受保护 qrels 或把未判定项自动写成 0。"
+        "`retrieval/baseline/qrels/pool_expansion_judgments.jsonl`，不得编辑受保护 qrels 或把未判定项自动写成 0。"
         "补判后必须重跑 check-pool、evaluate、test、受保护目录 after audit 与 finalize。"
         if evaluation_blocked
-        else "当前 `retrieval/pool_expansion/pool_expansion_required.jsonl` 为空。新增 retriever 或修改 run "
+        else "当前 `retrieval/baseline/pool_expansion/pool_expansion_required.jsonl` 为空。新增 retriever 或修改 run "
         "若引入未判断 pair，必须先按版本化标注流程补齐；不得把 missing qrel 自动写成 0。"
     )
     lines.extend(["## Pool expansion 交接", "", pool_handoff, ""])
@@ -1538,7 +1538,7 @@ BM25 与 dense 共用 `sqlmend-query-v1` 严格白名单序列化。Dense 模型
 
 {chr(10).join(f'{index}. `python -m sqlmend_retrieval.cli {command}`' for index, command in enumerate(commands, start=1))}
 
-`test` 子命令内部执行并记录 `python -m pytest retrieval/tests -q -p no:cacheprovider`，且比较测试前后 source tree；单独运行 pytest 只适合开发诊断，不能替代 `reports/test_results.json`。在 pool 未补齐时，`evaluate` 写入 BLOCKED sentinel 并返回 0；`finalize`、`validate`（以及因 `finalize` 阻塞而失败的 `all`）返回非零，这是预期阻塞信号，不是发布成功。
+`test` 子命令内部执行并记录 `python -m pytest retrieval/baseline/tests -q -p no:cacheprovider`，且比较测试前后 source tree；单独运行 pytest 只适合开发诊断，但不能替代 `reports/test_results.json`。在 pool 未补齐时，`evaluate` 写入 BLOCKED sentinel 并返回 0；`finalize`、`validate`（以及因 `finalize` 阻塞而失败的 `all`）返回非零，这是预期阻塞信号，不是发布成功。
 
 ## Corpus、query 与 qrel 验证
 

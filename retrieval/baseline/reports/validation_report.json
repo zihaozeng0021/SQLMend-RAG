@@ -24,12 +24,12 @@
       "check_id": "engineering.tests.current_source",
       "explanation": "The full automated test suite passed against the current source/config/test bytes.",
       "observed_value": {
-        "current_source_tree_sha256": "cc89618c684b849b256c4a74ee71c11efb9d9ed36217a19e9d046e026d0f8552",
+        "current_source_tree_sha256": "02bf56a20642d5563097c01f0232cba37b358b9929b5f0cb2a43f2da20d0c3c8",
         "reported_status": "PASS",
         "returncode": 0,
         "source_stable_during_tests": true,
-        "tested_source_tree_sha256": "cc89618c684b849b256c4a74ee71c11efb9d9ed36217a19e9d046e026d0f8552",
-        "tested_source_tree_sha256_after": "cc89618c684b849b256c4a74ee71c11efb9d9ed36217a19e9d046e026d0f8552"
+        "tested_source_tree_sha256": "02bf56a20642d5563097c01f0232cba37b358b9929b5f0cb2a43f2da20d0c3c8",
+        "tested_source_tree_sha256_after": "02bf56a20642d5563097c01f0232cba37b358b9929b5f0cb2a43f2da20d0c3c8"
       },
       "recommended_remediation": "No remediation required.",
       "required_value": {
@@ -363,7 +363,7 @@
         "maximum_results_per_query": 30,
         "minimum_results_per_query": 30,
         "missing_query_ids": [],
-        "path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/retrieval/runs/bm25_formal_dev250.trec",
+        "path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/retrieval/baseline/runs/bm25_formal_dev250.trec",
         "query_count": 250,
         "result_count": 7500,
         "sha256": "e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98",
@@ -388,7 +388,7 @@
         "maximum_results_per_query": 30,
         "minimum_results_per_query": 30,
         "missing_query_ids": [],
-        "path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/retrieval/runs/dense_formal_dev250.trec",
+        "path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/retrieval/baseline/runs/dense_formal_dev250.trec",
         "query_count": 250,
         "result_count": 7500,
         "sha256": "eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd",
@@ -413,7 +413,7 @@
         "maximum_results_per_query": 30,
         "minimum_results_per_query": 30,
         "missing_query_ids": [],
-        "path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/retrieval/runs/hybrid_rrf_formal_dev250.trec",
+        "path": "C:/Users/zihao/Desktop/Projects/SQLMend-RAG/retrieval/baseline/runs/hybrid_rrf_formal_dev250.trec",
         "query_count": 250,
         "result_count": 7500,
         "sha256": "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468",

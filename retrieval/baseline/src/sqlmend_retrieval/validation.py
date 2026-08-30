@@ -1143,7 +1143,7 @@ def validate_release(paths: ProjectPaths) -> dict[str, Any]:
                 "The TREC qrels preserve every source judgment exactly."
                 if converted_ok
                 else "The TREC qrels are stale or differ from the protected source qrels.",
-                "Regenerate retrieval/qrels from the source qrels without changing labels."
+                "Regenerate retrieval/baseline/qrels from the source qrels without changing labels."
                 if not converted_ok
                 else "No remediation required.",
             )
@@ -1436,7 +1436,7 @@ def validate_release(paths: ProjectPaths) -> dict[str, Any]:
                 _error(exc),
                 "Valid run-hash metadata when a manifest is present.",
                 "The present manifest could not be used to validate run hashes.",
-                "Repair or regenerate retrieval/manifest.json from the current artifacts.",
+                "Repair or regenerate retrieval/baseline/manifest.json from the current artifacts.",
             )
         )
 
@@ -1911,7 +1911,7 @@ def validate_release(paths: ProjectPaths) -> dict[str, Any]:
         )
 
     # The release manifest must bind all inputs and generated evidence to the
-    # current bytes.  A Git commit alone is insufficient because retrieval/
+    # current bytes.  A Git commit alone is insufficient because retrieval/baseline/
     # may be dirty or untracked during development.
     release_manifest_payload: Mapping[str, Any] | None = None
     try:

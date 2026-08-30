@@ -1495,4 +1495,4 @@ Pool 状态：`PASS`；未判定 top-30 出现次数：`0`；唯一扩池请求�
 
 ## Pool expansion 交接
 
-当前 `retrieval/pool_expansion/pool_expansion_required.jsonl` 为空。新增 retriever 或修改 run 若引入未判断 pair，必须先按版本化标注流程补齐；不得把 missing qrel 自动写成 0。
+当前 `retrieval/baseline/pool_expansion/pool_expansion_required.jsonl` 为空。新增 retriever 或修改 run 若引入未判断 pair，必须先按版本化标注流程补齐；不得把 missing qrel 自动写成 0。

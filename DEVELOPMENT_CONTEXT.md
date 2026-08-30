@@ -80,7 +80,7 @@
 |---|---|---|
 | `construction/` | `VERIFIED_COMPLETE` | 12,000 chunks 的五方言知识库；24/24 验证和 90/90 测试通过 |
 | `annotation/codex/` | `VERIFIED_COMPLETE_FOR_DEVELOPMENT_ONLY` | 当前主版本 v1、revision 1.1.0；250 queries、23,452 个机器判断，三路正式 Top-30 均已覆盖；不是人工 gold 或最终测试集 |
-| `retrieval/` 工程 | `VERIFIED_COMPLETE` | BM25、零样本 E5、两路 RRF、审计、测试、性能与发布门禁均已实现并与当前源码快照绑定 |
+| `retrieval/baseline/` 工程 | `VERIFIED_COMPLETE` | BM25、零样本 E5、两路 RRF、审计、测试、性能与发布门禁均已实现并与当前源码快照绑定 |
 | 正式检索评估完整性 | `PASS` | BM25、dense、hybrid 的 `Judged@5/10/20/30` 均为 1.0，完整评估工件已原子发布 |
 | 检索质量 | `PASS_FOR_MACHINE_DEVELOPMENT_EVAL` | hybrid 在四个主指标上均领先并通过既定门禁；结论只适用于当前机器开发集 |
 | 方言/版本感知检索创新 | `PLANNED_NEXT` | 可在保留固定 v1 对照的前提下开始 retrieval v2 |
@@ -104,23 +104,23 @@ overall_success=true
 
 ```text
 current_checkout_retrieval_evidence=VERIFIED
-current_source_tree_sha256=cc89618c684b849b256c4a74ee71c11efb9d9ed36217a19e9d046e026d0f8552
+current_source_tree_sha256=02bf56a20642d5563097c01f0232cba37b358b9929b5f0cb2a43f2da20d0c3c8
 formal_run_bytes_unchanged=true
 required_validation=test -> finalize -> validate
 ```
 
-[retrieval manifest](retrieval/manifest.json) 和 [retrieval validation](retrieval/reports/validation_report.json) 是当前状态的权威来源。本文只保留摘要；状态或数字冲突时以重新运行的 validator 为准。
+[retrieval manifest](retrieval/baseline/manifest.json) 和 [retrieval validation](retrieval/baseline/reports/validation_report.json) 是当前状态的权威来源。本文只保留摘要；状态或数字冲突时以重新运行的 validator 为准。
 
 ## 5. Git 时点说明
 
 当前观察到：
 
 - branch：`refactor1`
-- HEAD：`40cbc89233b2bdecda7fc17bcd4161595edf8d6a`
+- HEAD：`89a9da271172a43bc228a68d04048f47cd6652af`
 - retrieval 首次提交：`0cca1db2c667e56bfa2693cf642efac287ada4b3`
 - 机器开发标注提交：`f6afc4023e44218e89d4ad9ce6ad37b4350d391e`
 
-当前 annotation v1 revision 1.1.0 与 retrieval 评估刷新尚在工作树中，未由本文替代为 Git 提交。`retrieval/manifest.json` 记录的是生成时 provenance；不要手工修改其 commit 或 worktree 字段，只能通过正式流程重新绑定。
+当前 annotation v1 revision 1.1.0 与 retrieval 评估刷新尚在工作树中，未由本文替代为 Git 提交。`retrieval/baseline/manifest.json` 记录的是生成时 provenance；不要手工修改其 commit 或 worktree 字段，只能通过正式流程重新绑定。
 
 `DEVELOPMENT_CONTEXT.md` 位于 retrieval source snapshot 之外，单独更新本文不会再次改变该 snapshot。
 
@@ -130,7 +130,8 @@ required_validation=test -> finalize -> validate
 SQLMend-RAG/
 ├─ construction/           # 知识库采集、清洗、去重、分块、统计、验证；冻结输入
 ├─ annotation/             # Codex 机器开发集、provenance 与 VERSION_HISTORY；当前主版本 v1
-├─ retrieval/              # 当前正式检索基线、runs、评估门禁和报告
+├─ retrieval/              # 检索方法总目录
+│  └─ baseline/            # 当前正式检索基线、runs、评估门禁和报告
 ├─ tmp/                    # 本地临时目录；不是事实来源或交付契约
 ├─ DEVELOPMENT_CONTEXT.md  # 本文件：内部开发交接入口
 └─ README.md               # 最终用户入口；计划在项目后期重写
@@ -163,9 +164,9 @@ $env:PYTHONDONTWRITEBYTECODE = "1"
 
 以下内容由 `.gitignore` 排除，fresh clone 不会自带：
 
-- `retrieval/indices/bm25/index.pkl` 和 metadata；
-- `retrieval/indices/dense/embeddings.npy`、chunk mapping、metadata 与 E5 model cache；
-- `retrieval/reproduction/model_cache/` 中的历史 BGE snapshot；
+- `retrieval/baseline/indices/bm25/index.pkl` 和 metadata；
+- `retrieval/baseline/indices/dense/embeddings.npy`、chunk mapping、metadata 与 E5 model cache；
+- `retrieval/baseline/reproduction/model_cache/` 中的历史 BGE snapshot；
 - Python bytecode 和 pytest cache。
 
 不要把这些目录的“本机存在”当作仓库可复现性的证明；重建命令和 manifest binding 才是证明。
@@ -284,7 +285,7 @@ python annotation/codex/validate_annotations.py --root .
 
 ## 9. 正式检索基线设计
 
-技术入口见 [retrieval README](retrieval/README.md)。`retrieval/` 是独立模块，当前只负责 fixed v1 baseline，不负责 UI、生成、SQL 修复、reranker、query rewriting、HyDE 或显式方言/版本调权。
+技术入口见 [retrieval README](retrieval/baseline/README.md)。`retrieval/baseline/` 是独立模块，当前只负责 fixed v1 baseline，不负责 UI、生成、SQL 修复、reranker、query rewriting、HyDE 或显式方言/版本调权。
 
 ### 9.1 数据流与隔离
 
@@ -334,7 +335,7 @@ Qrels 只进入离线评估，绝不进入 BM25、E5、RRF 或线上回答路径
 序列化输出：
 
 ```text
-retrieval/serialized_queries/dev_250_queries.jsonl
+retrieval/baseline/serialized_queries/dev_250_queries.jsonl
 sha256=e9cc591b815e9afb584381ad60c6872b7c36d82e65e255e6dc7045e21ecbdb3c
 ```
 
@@ -392,10 +393,10 @@ Hybrid 05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468
 
 权威文件：
 
-- [judged coverage](retrieval/evaluation/judged_coverage.json)
-- [pool summary](retrieval/pool_expansion/pool_expansion_summary.json)
-- [overall metrics](retrieval/evaluation/overall_metrics.json)
-- [pairwise differences](retrieval/evaluation/pairwise_differences.json)
+- [judged coverage](retrieval/baseline/evaluation/judged_coverage.json)
+- [pool summary](retrieval/baseline/pool_expansion/pool_expansion_summary.json)
+- [overall metrics](retrieval/baseline/evaluation/overall_metrics.json)
+- [pairwise differences](retrieval/baseline/evaluation/pairwise_differences.json)
 - [annotation sensitivity](annotation/codex/reports/top30_annotation_sensitivity.json)
 
 完整性：
@@ -438,16 +439,16 @@ A、B 和最终裁决版 qrels 在四个主指标上都选择 hybrid；主指标
 - 历史 ONNX/tokenizer/runtime 的全部传递依赖未完整锁定；
 - 当前 ONNX/runtime 下 dense 分数存在极小数值漂移，且历史 neural tie behavior 没有显式 `chunk_id` tie-breaker。
 
-权威细节见 [annotation reproduction report](retrieval/reproduction/reproduction_report.json)。这项 `PARTIAL` 不阻止正式 baseline，因为正式检索不读取历史 candidate ranks，也不在 search 中使用 qrels 或 annotation evidence；正式三路 run 自身重复运行仍字节一致。修改 `reproduction.py` 或相关输入可能使 cache 失效并触发数小时重算。
+权威细节见 [annotation reproduction report](retrieval/baseline/reproduction/reproduction_report.json)。这项 `PARTIAL` 不阻止正式 baseline，因为正式检索不读取历史 candidate ranks，也不在 search 中使用 qrels 或 annotation evidence；正式三路 run 自身重复运行仍字节一致。修改 `reproduction.py` 或相关输入可能使 cache 失效并触发数小时重算。
 
 ## 12. 当前 baseline 的测试、性能和本机快照
 
 ### 12.1 Retrieval 测试证据（当前 checkout：`PASS`）
 
-权威文件：[test results](retrieval/reports/test_results.json)。
+权威文件：[test results](retrieval/baseline/reports/test_results.json)。
 
 ```text
-95 tests PASS in 48.81 s
+95 tests PASS in 49.79 s
 Python 3.12.7
 source_file_count=41
 source_tree_sha256=cc89618c684b849b256c4a74ee71c11efb9d9ed36217a19e9d046e026d0f8552
@@ -459,7 +460,7 @@ evidence_applies_to_current_checkout=true
 
 ### 12.2 性能快照
 
-权威文件：[latency report](retrieval/evaluation/latency.json)。当前环境为 Windows 11、CPU-only、20 logical CPUs、约 34 GB RAM。不同硬件不得直接比较。
+权威文件：[latency report](retrieval/baseline/evaluation/latency.json)。当前环境为 Windows 11、CPU-only、20 logical CPUs、约 34 GB RAM。不同硬件不得直接比较。
 
 | 系统 | Mean | P95 | QPS |
 |---|---:|---:|---:|
@@ -482,13 +483,13 @@ Dense model load/download=9.585 s
 
 ## 13. Retrieval 安装、重建与退出码
 
-要求 Python 3.11+。`retrieval/pyproject.toml` 和 `retrieval/requirements.txt` 固定了直接 runtime/test 依赖，但仓库没有完整 lockfile；build system（如 `setuptools>=69`、`wheel`）及传递依赖并未全部精确锁定。
+要求 Python 3.11+。`retrieval/baseline/pyproject.toml` 和 `retrieval/baseline/requirements.txt` 固定了直接 runtime/test 依赖，但仓库没有完整 lockfile；build system（如 `setuptools>=69`、`wheel`）及传递依赖并未全部精确锁定。
 
 从仓库根目录执行：
 
 ```powershell
 $env:PYTHONDONTWRITEBYTECODE = "1"
-python -m pip install -e retrieval
+python -m pip install -e retrieval/baseline
 
 python -m sqlmend_retrieval.cli audit-protected-paths --phase before
 python -m sqlmend_retrieval.cli verify-inputs
@@ -584,7 +585,7 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 |---|---|
 | 仅本文 | 无需重跑 retrieval；提交本文即可 |
 | 根 `README.md` | 不在 retrieval source snapshot 中；按最终用户体验验证 |
-| `retrieval/README.md` | `test -> finalize -> validate` |
+| `retrieval/baseline/README.md` | `test -> finalize -> validate` |
 | retrieval 源码、测试、config、requirements、pyproject | 相关 build/run/eval；正式 `test`；after audit；`finalize -> validate` |
 | query serializer 或允许字段 | serialized queries、两个 retriever runs、RRF、pool、evaluation、test、finalize、validate |
 | corpus | 这是新数据版本；不能原地修改受保护文件。新建版本并重建全部索引、runs、qrels binding、评估和报告 |
@@ -632,22 +633,22 @@ qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运�
 
 ### Formal retrieval baseline
 
-- [Retrieval README](retrieval/README.md)
-- [Retrieval manifest](retrieval/manifest.json)
-- [Retrieval validation](retrieval/reports/validation_report.json)
-- [Retrieval completion report](retrieval/reports/completion_report.md)
-- [Baseline report](retrieval/reports/baseline_report.md)
-- [Failure analysis](retrieval/reports/failure_analysis.md)
-- [Provenance audit](retrieval/reports/provenance_audit.md)
-- [Judged coverage](retrieval/evaluation/judged_coverage.json)
-- [Pool summary](retrieval/pool_expansion/pool_expansion_summary.json)
-- [Pool expansion requests](retrieval/pool_expansion/pool_expansion_required.jsonl)
-- [Overall metrics](retrieval/evaluation/overall_metrics.json)
-- [Confidence intervals](retrieval/evaluation/confidence_intervals.json)
-- [Pairwise differences](retrieval/evaluation/pairwise_differences.json)
-- [Complementarity](retrieval/evaluation/complementarity_report.json)
-- [Latency](retrieval/evaluation/latency.json)
-- [Test evidence](retrieval/reports/test_results.json)
+- [Retrieval README](retrieval/baseline/README.md)
+- [Retrieval manifest](retrieval/baseline/manifest.json)
+- [Retrieval validation](retrieval/baseline/reports/validation_report.json)
+- [Retrieval completion report](retrieval/baseline/reports/completion_report.md)
+- [Baseline report](retrieval/baseline/reports/baseline_report.md)
+- [Failure analysis](retrieval/baseline/reports/failure_analysis.md)
+- [Provenance audit](retrieval/baseline/reports/provenance_audit.md)
+- [Judged coverage](retrieval/baseline/evaluation/judged_coverage.json)
+- [Pool summary](retrieval/baseline/pool_expansion/pool_expansion_summary.json)
+- [Pool expansion requests](retrieval/baseline/pool_expansion/pool_expansion_required.jsonl)
+- [Overall metrics](retrieval/baseline/evaluation/overall_metrics.json)
+- [Confidence intervals](retrieval/baseline/evaluation/confidence_intervals.json)
+- [Pairwise differences](retrieval/baseline/evaluation/pairwise_differences.json)
+- [Complementarity](retrieval/baseline/evaluation/complementarity_report.json)
+- [Latency](retrieval/baseline/evaluation/latency.json)
+- [Test evidence](retrieval/baseline/reports/test_results.json)
 
 ## 19. 本文件维护协议
 
