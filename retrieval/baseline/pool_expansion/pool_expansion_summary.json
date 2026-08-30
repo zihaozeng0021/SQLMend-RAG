@@ -1,0 +1,47 @@
+{
+  "cutoffs": [
+    5,
+    10,
+    20,
+    30
+  ],
+  "evaluation_integrity_status": "PASS",
+  "evaluation_label": "machine-proposed development evaluation",
+  "machine_proposed_development_only": true,
+  "overall": {
+    "Judged@10": 1.0,
+    "Judged@20": 1.0,
+    "Judged@30": 1.0,
+    "Judged@5": 1.0,
+    "query_count_per_system": 250,
+    "system_count": 3
+  },
+  "per_system": {
+    "bm25_formal": {
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "query_count": 250
+    },
+    "dense_formal": {
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "query_count": 250
+    },
+    "hybrid_rrf_formal": {
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "query_count": 250
+    }
+  },
+  "pool_expansion_record_count": 0,
+  "pool_expansion_required": false,
+  "required_Judged@30": 1.0,
+  "schema_version": "sqlmend-pool-audit-v1",
+  "unjudged_top30_occurrence_count": 0
+}

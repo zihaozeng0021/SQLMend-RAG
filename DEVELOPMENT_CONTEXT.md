@@ -2,9 +2,9 @@
 
 > 内部开发交接文档，不面向最终用户。
 >
-> Last verified: 2026-08-29 (Singapore Time)
+> Last verified: 2026-08-30 (UTC+8)
 >
-> 当前阶段：知识库已完成；Codex 机器开发集已完成；正式检索 v1 的上一候选快照工程为 `PASS`，但当前 checkout 的正式证据已 `STALE`；质量评估仍因 judgment pool 不完整而 `BLOCKED`。
+> 当前阶段：知识库已完成；Codex annotation 的当前主版本为 **v1**（dataset revision `1.1.0`），正式 Top-30 开发 pool 已完整判断；固定 retrieval v1 baseline 的工程、评估完整性和质量门禁均已通过，可以开始 dialect/version-aware retrieval 的后续开发。
 
 ## 1. 这份文件的用途
 
@@ -35,7 +35,7 @@
 4. 仓库模块文档与工程惯例。
 5. 本文和 README。
 
-当前已确认的特殊决定：现有 250 条 Codex 生成数据可用于开发和调试，人工标注之后补充；这不改变 PDF 对最终人工评估集的要求。
+当前已确认的特殊决定：现有 250 条 Codex 生成数据及其 Top-30 机器判断可用于开发、调试和 baseline 回归；它们不是人工 gold，不能替代 PDF 要求的最终人工 held-out 数据。Annotation v2 实验已放弃，当前主版本仍为 v1；版本沿革只在 `annotation/VERSION_HISTORY.md` 维护。
 
 阶段 5-6 规格中“不实现 UI、生成器或最终人工集”只是当时的实现边界，不代表这些课程要求被取消。
 
@@ -63,7 +63,7 @@
 |---|---|---|
 | Q1 | 语料来源、采集、清洗、分块、存储；应用与示例查询；文档/chunk/word/type 数量 | 知识库工程已完成，最终报告尚未写 |
 | Q2 | 简单友好的 UI；5 条查询、结果与查询速度 | `PLANNED` |
-| Q3 | sparse、dense、hybrid；检索创新；Precision@K、Recall@K、MRR、nDCG 等 rank-aware 指标与案例 | v1 已实现；上一候选 engineering `PASS`，当前证据 `STALE`；正式质量评估 `BLOCKED`，创新阶段未开始 |
+| Q3 | sparse、dense、hybrid；检索创新；Precision@K、Recall@K、MRR、nDCG 等 rank-aware 指标与案例 | 固定 v1 baseline 已实现并通过工程、评估完整性和质量门禁；机器开发评估已发布，dialect/version-aware 创新阶段可开始 |
 | Q4 | 生成/分类方法选择与预处理；自行建立至少 1,000 条无重复、尽量平衡的人工 held-out records；IAA 至少 80%（推荐 3 名 annotators，2 名也可）；任务指标、RAG 指标和性能指标 | `PLANNED` |
 | Q5 | 下游创新；若有多个创新必须做单项与组合 ablation；解释具体问题与案例 | `PLANNED` |
 
@@ -79,58 +79,48 @@
 | 模块或交付 | 状态 | 结论 |
 |---|---|---|
 | `construction/` | `VERIFIED_COMPLETE` | 12,000 chunks 的五方言知识库；24/24 验证和 90/90 测试通过 |
-| `annotation/codex/` | `VERIFIED_COMPLETE_FOR_DEVELOPMENT_ONLY` | 250 条 Codex 机器建议开发数据；不是人工 gold 或最终测试集 |
-| `retrieval/` 工程 | `LAST_VERIFIED_PASS / CURRENT_EVIDENCE_STALE` | BM25、零样本 E5、两路 RRF、审计、测试、性能与发布门禁均已实现；`retrieval/README.md` 后续变更使当前源码快照与旧证据绑定不一致 |
-| 正式检索评估完整性 | `LAST_SNAPSHOT_BLOCKED` | 上一候选的三路正式 top-30 中仍有未判断文档；当前 checkout 尚未重新最终化 |
-| 检索质量 | `NOT_EVALUATED` | 未发布正式 Precision/pooled Recall/MRR/nDCG 或比较结论 |
-| 方言/版本感知检索创新 | `PLANNED` | 当前项目决定先完成有效 baseline 评估，再开始 v2 创新 |
+| `annotation/codex/` | `VERIFIED_COMPLETE_FOR_DEVELOPMENT_ONLY` | 当前主版本 v1、revision 1.1.0；250 queries、23,452 个机器判断，三路正式 Top-30 均已覆盖；不是人工 gold 或最终测试集 |
+| `retrieval/baseline/` 工程 | `VERIFIED_COMPLETE` | BM25、零样本 E5、两路 RRF、审计、测试、性能与发布门禁均已实现并与当前源码快照绑定 |
+| 正式检索评估完整性 | `PASS` | BM25、dense、hybrid 的 `Judged@5/10/20/30` 均为 1.0，完整评估工件已原子发布 |
+| 检索质量 | `PASS_FOR_MACHINE_DEVELOPMENT_EVAL` | hybrid 在四个主指标上均领先并通过既定门禁；结论只适用于当前机器开发集 |
+| 方言/版本感知检索创新 | `PLANNED_NEXT` | 可在保留固定 v1 对照的前提下开始 retrieval v2 |
 | Grounded generator / SQL repair | `PLANNED` | 尚未实现 |
 | 最终人工 held-out 数据 | `PLANNED` | 仍需至少 1,000 条人工记录和 IAA >= 80% |
 | UI 与 5 条演示查询 | `PLANNED` | 尚未实现 |
 | 最终课程报告与用户 README | `PLANNED` | 根 README 暂不作为当前开发状态来源 |
 
-上一次已最终化候选的发布状态对象：
+当前已最终化 baseline 的发布状态对象：
 
 ```text
-release=retrieval-baseline-v1-candidate
+release=retrieval-baseline-v1
 engineering_status=PASS
-evaluation_integrity_status=BLOCKED
-retrieval_quality_status=NOT_EVALUATED
+evaluation_integrity_status=PASS
+retrieval_quality_status=PASS
 annotation_reproduction_status=PARTIAL
-overall_success=false
+overall_success=true
 ```
 
-当前 checkout 的证据状态：
+当前 checkout 的证据绑定：
 
 ```text
-current_checkout_retrieval_evidence=STALE
-stale_reason=retrieval/README.md changed after the last formal test/finalize/validate cycle
-last_verified_source_tree_sha256=d804a637d0c64b2f79170f929d1e9520f37060b13e0edefc797728f438572562
-current_source_tree_sha256=afecdc290e80248a8f9826ceab80930269b463567cfbee17fdd6c9f1ab7c4f31
-required_refresh=test -> finalize -> validate
+current_checkout_retrieval_evidence=VERIFIED
+current_source_tree_sha256=02bf56a20642d5563097c01f0232cba37b358b9929b5f0cb2a43f2da20d0c3c8
+formal_run_bytes_unchanged=true
+required_validation=test -> finalize -> validate
 ```
 
-[retrieval manifest](retrieval/manifest.json) 和 [retrieval validation](retrieval/reports/validation_report.json) 是上一候选快照的权威来源：当时 validation 共 31 项，29 `PASS`、2 `BLOCKED`、0 `FAIL`。它们不能作为当前 checkout 已验证的证明；刷新后应以新报告为准。
+[retrieval manifest](retrieval/baseline/manifest.json) 和 [retrieval validation](retrieval/baseline/reports/validation_report.json) 是当前状态的权威来源。本文只保留摘要；状态或数字冲突时以重新运行的 validator 为准。
 
 ## 5. Git 时点说明
 
-本文创建前观察到：
+当前观察到：
 
-- branch：`baseline-retrieval`
-- HEAD：`a192ed166549a9b46f706999729d4a219e4e2d59`
+- branch：`refactor1`
+- HEAD：`89a9da271172a43bc228a68d04048f47cd6652af`
 - retrieval 首次提交：`0cca1db2c667e56bfa2693cf642efac287ada4b3`
 - 机器开发标注提交：`f6afc4023e44218e89d4ad9ce6ad37b4350d391e`
 
-`retrieval/manifest.json` 是 retrieval 被提交前生成的候选工件，所以其中仍记录：
-
-```text
-git_commit=f6afc4023e44218e89d4ad9ce6ad37b4350d391e
-retrieval_status_porcelain=["?? retrieval/"]
-```
-
-这是生成时 provenance，不是当前 Git 状态。不要手工把它改成当前 HEAD；只能通过正式流程重新绑定。
-
-提交 `a192ed1` 在上一轮正式证据生成后修改了 `retrieval/README.md`，使当前 source tree SHA 从 `d804a6...` 变为 `afecdc...`。因此现有 test/manifest/validation 只描述上一候选；若现在直接运行 validator，它应拒绝旧的 source binding。下一次正式 retrieval 维护必须先运行 `test -> finalize -> validate`，并按 pool 不完整时的预期非零退出语义解释结果。
+当前 annotation v1 revision 1.1.0 与 retrieval 评估刷新尚在工作树中，未由本文替代为 Git 提交。`retrieval/baseline/manifest.json` 记录的是生成时 provenance；不要手工修改其 commit 或 worktree 字段，只能通过正式流程重新绑定。
 
 `DEVELOPMENT_CONTEXT.md` 位于 retrieval source snapshot 之外，单独更新本文不会再次改变该 snapshot。
 
@@ -139,8 +129,9 @@ retrieval_status_porcelain=["?? retrieval/"]
 ```text
 SQLMend-RAG/
 ├─ construction/           # 知识库采集、清洗、去重、分块、统计、验证；冻结输入
-├─ annotation/codex/       # Codex 机器开发集与其 provenance；冻结输入
-├─ retrieval/              # 当前正式检索基线、runs、评估门禁和报告
+├─ annotation/             # Codex 机器开发集、provenance 与 VERSION_HISTORY；当前主版本 v1
+├─ retrieval/              # 检索方法总目录
+│  └─ baseline/            # 当前正式检索基线、runs、评估门禁和报告
 ├─ tmp/                    # 本地临时目录；不是事实来源或交付契约
 ├─ DEVELOPMENT_CONTEXT.md  # 本文件：内部开发交接入口
 └─ README.md               # 最终用户入口；计划在项目后期重写
@@ -148,7 +139,7 @@ SQLMend-RAG/
 
 ### 6.1 受保护目录
 
-`construction/` 和 `annotation/codex/` 在 retrieval v1 中是只读、字节级保护输入。除非用户明确启动一个独立的数据维护版本，否则不得：
+`construction/` 和当前主版 `annotation/codex/` 在 retrieval v1 中是只读、字节级保护输入。本轮用户明确授权的 v1 数据维护已经结束并重新锚定快照；除非用户再次明确启动版本化的数据维护，否则不得：
 
 - 新增、删除、重命名或修改任何文件；
 - 运行可能生成 `__pycache__` 的 Python 命令；
@@ -159,7 +150,7 @@ SQLMend-RAG/
 
 ```text
 protected_file_count=8481
-protected_tree_sha256=0d53bc19626850bd469eda2350d117a9fcfb2e5758dd84b9c92a7a60fa15bd26
+protected_tree_sha256=9b1b97126cc678effded5ef866ddcff02fe47639ed6db16f39b08c94f630cb7b
 protected_paths_unchanged=true
 ```
 
@@ -173,9 +164,9 @@ $env:PYTHONDONTWRITEBYTECODE = "1"
 
 以下内容由 `.gitignore` 排除，fresh clone 不会自带：
 
-- `retrieval/indices/bm25/index.pkl` 和 metadata；
-- `retrieval/indices/dense/embeddings.npy`、chunk mapping、metadata 与 E5 model cache；
-- `retrieval/reproduction/model_cache/` 中的历史 BGE snapshot；
+- `retrieval/baseline/indices/bm25/index.pkl` 和 metadata；
+- `retrieval/baseline/indices/dense/embeddings.npy`、chunk mapping、metadata 与 E5 model cache；
+- `retrieval/baseline/reproduction/model_cache/` 中的历史 BGE snapshot；
 - Python bytecode 和 pytest cache。
 
 不要把这些目录的“本机存在”当作仓库可复现性的证明；重建命令和 manifest binding 才是证明。
@@ -233,6 +224,8 @@ Manifest 明确记录：
 
 ```text
 dataset_id=sqlmendrag-codex-dev-250
+dataset_version=1.1.0
+annotation_main_version=v1
 purpose=development_only
 split=dev
 annotation_origin=codex_machine_proposed
@@ -247,7 +240,7 @@ validation_status=PASS
 >
 > machine-proposed development evaluation
 
-严禁称为 `gold`、人工标注、adjudicated、held-out test 或最终评估集。固定 50 条 Codex 独立质量审计也不是人工验证，不能计入 PDF 的人工标注要求。
+严禁称为 `gold`、人工标注、human-adjudicated、held-out test 或最终评估集。Top-30 双盲机器标注、第三轮机器裁决和固定 50 条 Codex 独立质量审计都不是人工验证，不能计入 PDF 的人工标注要求。
 
 ### 8.1 数据身份与统计
 
@@ -255,10 +248,12 @@ validation_status=PASS
 |---|---|
 | queries | 250；五方言各 50 |
 | query SHA | `2ce81dd27690795266fc5cc813dc1999f8c55d86ed1605fd6e1013213a416fae` |
-| candidate pool SHA | `0d8a89ad0eb39b3e481e58668c15df9416da69bf750100ec695f5d150f3f8d85` |
-| qrels source SHA | `bcc0ef136a7ef06409ddf9a8e9d811ebe39671e4c4ad24e5c67e15b4463a47c6` |
-| qrels | 13,449 |
-| relevance 0 / 1 / 2 | 9,216 / 3,931 / 302 |
+| candidate pool SHA | `86549c5b1bb59cb1557c747db37c66b77a0812c8a8f9ff02dd2d75c0be87a60f` |
+| qrels source SHA | `bc672f2767762d253e8c9dc239d37d00bdb88a547c0c80585788c8c9021e8d3f` |
+| qrels | 23,452 |
+| relevance 0 / 1 / 2 | 20,154 / 2,839 / 459 |
+| 正式 Top-30 union | 14,232 pairs；三路 `Judged@30=1.0` |
+| 双盲一致 / 分歧 | 13,326 / 906；exact agreement 93.63%；Cohen's kappa 0.523 |
 | dialect-sensitive | 174 |
 | version-sensitive | 53 |
 | documented-error cases | 69 |
@@ -275,22 +270,22 @@ validation_status=PASS
 - `2`：直接支持诊断、修复或兼容性结论；
 - qrels 中不存在的 pair：`unjudged`，绝不能静默转换为 relevance 0。
 
-现有 qrels 只完整覆盖历史 candidate pool。正式 E5/BM25 可以返回这个 pool 之外的文档，因此“每个历史 candidate 都有标签”不代表“正式 top-30 已完整判断”。
+当前主 qrels 同时保留原 v1 的正式范围外判断，并完整覆盖冻结 BM25、dense、hybrid 三路正式 Top-30 并集。原 v1 的显式 case-evidence 标签被保留；正式范围内启发式标签由 A/B 双盲共识或第三轮盲裁决替换。具体范围、转移计数和哈希见 [Top-30 blind refresh provenance](annotation/codex/provenance/top30_blind_refresh.json)。
 
-历史验证参考（**不要在当前受保护 checkout 中执行**）：
+数据维护验证命令（**不要在普通 retrieval 开发中执行**）：
 
-该 validator 不是只读检查；它会重写 execution evidence、quality audit、statistics、validation report 和 manifest。只有在一次性干净副本或用户明确授权的数据维护版本中才运行。`PYTHONDONTWRITEBYTECODE` 不能阻止这些应用级写入。
+该 validator 不是只读检查；它会重写 execution evidence、quality audit、statistics、validation report 和 manifest。本轮 v1 revision 1.1.0 已通过 25/25 checks。以后只有在一次性干净副本或用户明确授权的数据维护版本中才运行；完成后必须重新锚定 protected audit 并重跑 retrieval 最终化链。
 
 ```powershell
 $env:PYTHONDONTWRITEBYTECODE = "1"
 python annotation/codex/validate_annotations.py --root .
 ```
 
-通常不要重建这个受保护开发集；需要新人工数据时，应新建独立目录、schema 和 manifest。
+通常不要重建这个受保护开发集。Annotation 版本记录统一写入 [VERSION_HISTORY](annotation/VERSION_HISTORY.md)；需要最终人工数据时，应新建独立目录、schema 和 manifest。
 
 ## 9. 正式检索基线设计
 
-技术入口见 [retrieval README](retrieval/README.md)。`retrieval/` 是独立模块，当前只负责 fixed v1 baseline，不负责 UI、生成、SQL 修复、reranker、query rewriting、HyDE 或显式方言/版本调权。
+技术入口见 [retrieval README](retrieval/baseline/README.md)。`retrieval/baseline/` 是独立模块，当前只负责 fixed v1 baseline，不负责 UI、生成、SQL 修复、reranker、query rewriting、HyDE 或显式方言/版本调权。
 
 ### 9.1 数据流与隔离
 
@@ -340,7 +335,7 @@ Qrels 只进入离线评估，绝不进入 BM25、E5、RRF 或线上回答路径
 序列化输出：
 
 ```text
-retrieval/serialized_queries/dev_250_queries.jsonl
+retrieval/baseline/serialized_queries/dev_250_queries.jsonl
 sha256=e9cc591b815e9afb584381ad60c6872b7c36d82e65e255e6dc7045e21ecbdb3c
 ```
 
@@ -356,7 +351,7 @@ BM25 和 dense 必须共用同一序列化文本。
 
 每个正式 run 必须恰好覆盖 250 个 query，每个 query 恰好 30 条结果；rank 连续、chunk 唯一、score 有限、chunk 属于冻结 corpus。
 
-上一候选的正式 run hashes（当前文件字节仍在，但正式证据待刷新）：
+当前正式 run hashes（annotation 维护前后字节一致）：
 
 ```text
 BM25   e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98
@@ -364,7 +359,7 @@ Dense  eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd
 Hybrid 05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468
 ```
 
-上一候选的三路重复正式运行均字节一致。不要原地修改 v1 YAML 进行调参；需要创新实验时创建明确的 v2 配置、system ID、artifact 名称和验证契约。
+三路重复正式运行均字节一致。不要原地修改 v1 YAML 进行调参；需要创新实验时创建明确的 v2 配置、system ID、artifact 名称和验证契约。
 
 ### 9.4 源码职责
 
@@ -392,102 +387,80 @@ Hybrid 05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468
 
 增加第四个正式 retriever 不是注册一个插件即可完成；至少需要同步修改 `paths.py`、`cli.py`、`pool_audit.py`、`validation.py`、`reporting.py` 和测试中的三系统显式契约。
 
-## 10. 当前 blocker：正式 top-30 未完整判断
+## 10. 正式 Top-30 开发评估：已完整
 
-本节数字来自上一候选工件。run 与 qrels 输入未因 `a192ed1` 的 README 变更而改变，因此它们仍指出同一个补判缺口；但当前 checkout 的发布证据仍必须刷新。
+当前固定 BM25、dense、hybrid 三路正式 run 未因标注维护而改变。它们的 Top-30 并集共有 14,232 个 query/chunk pair，现已全部进入 annotation v1 主 qrels：原来缺失的 10,003 个 pair 已补齐，三路所有 cutoff 均无 unjudged。
 
 权威文件：
 
-- [judged coverage](retrieval/evaluation/judged_coverage.json)
-- [pool summary](retrieval/pool_expansion/pool_expansion_summary.json)
-- [pool expansion requests](retrieval/pool_expansion/pool_expansion_required.jsonl)
-- [BLOCKED sentinel](retrieval/evaluation/overall_metrics.json)
+- [judged coverage](retrieval/baseline/evaluation/judged_coverage.json)
+- [pool summary](retrieval/baseline/pool_expansion/pool_expansion_summary.json)
+- [overall metrics](retrieval/baseline/evaluation/overall_metrics.json)
+- [pairwise differences](retrieval/baseline/evaluation/pairwise_differences.json)
+- [annotation sensitivity](annotation/codex/reports/top30_annotation_sensitivity.json)
 
-当前覆盖：
+完整性：
 
 | 系统 | Judged@5 | Judged@10 | Judged@20 | Judged@30 | top-30 未判断出现次数 |
 |---|---:|---:|---:|---:|---:|
-| BM25 | 0.7152 | 0.6024 | 0.4700 | 0.3841333333 | 4,619 |
-| Dense | 0.4608 | 0.3752 | 0.3054 | 0.2592 | 5,556 |
-| Hybrid | 0.6608 | 0.5764 | 0.4698 | 0.4009333333 | 4,493 |
+| BM25 | 1.0 | 1.0 | 1.0 | 1.0 | 0 |
+| Dense | 1.0 | 1.0 | 1.0 | 1.0 | 0 |
+| Hybrid | 1.0 | 1.0 | 1.0 | 1.0 | 0 |
 
-合计：
+主质量指标：
 
-```text
-unjudged_top30_occurrences=14668
-unique_pool_expansion_requests=10003
-required_Judged@30=1.0 for every system
-```
+| 系统 | graded nDCG@10 | MRR@10 rel2 | pooled Recall@10 rel2 | HitRate@5 rel2 |
+|---|---:|---:|---:|---:|
+| BM25 | 0.2649 | 0.3806 | 0.4232 | 0.480 |
+| Dense | 0.2398 | 0.3614 | 0.3870 | 0.456 |
+| Hybrid | **0.3070** | **0.4319** | **0.5002** | **0.544** |
 
-因此当前必须：
+Hybrid 相对 BM25 与 dense 的四项 paired bootstrap 95% CI 均高于 0，因此“hybrid 是当前固定 baseline 中最强系统”在这套机器开发标注上成立。BM25 与 dense 的两两差值 CI 包含 0，不能据此声称 BM25 确定优于 dense。
 
-- 只发布六字段 `BLOCKED` sentinel；
-- 保持 `per_query_metrics.csv`、`slice_metrics.csv`、CI、pairwise 和 complementarity 不存在；
-- 不发布或使用不完整 pool 上的正式质量结论；
-- 不把缺失判断当 0；
-- 不在这些不完整指标上选择模型、修改 RRF 或宣称 hybrid 更好。
+A、B 和最终裁决版 qrels 在四个主指标上都选择 hybrid；主指标最大绝对波动为 0.024，nDCG 的系统内最大波动为 0.00832。这说明当前系统排序几乎不受 A/B 单次机器判断波动影响，但不能测量两轮机器标注共享的模型偏差。所有结论仍只属于 **machine-proposed development evaluation**。
 
-任何 Recall 即使在 pool 完整后也只能写作 **pooled Recall**，因为分母来自有限 pool，而不是穷举 12,000 chunks。
-
-### 10.1 开发 pool 补判入口
-
-不要编辑冻结的 `annotation/codex/qrels_machine_proposed.jsonl`、已生成的 TREC qrels 或扩池请求。外部补判只能写入：
-
-```text
-retrieval/qrels/pool_expansion_judgments.jsonl
-```
-
-每行：
-
-```json
-{"query_id":"DEV0001","chunk_id":"smr_example","relevance":1}
-```
-
-合并器只接受当前三套正式 top-30 union 内尚未判断的 pair、已知 chunk 和 relevance 0/1/2；冲突、重复、未知 chunk 或 pool 外记录会失败。
-
-即使这 10,003 个 pair 全部由人工补判，effective qrels 仍混合原有机器 base labels，不能称为全人工 held-out test。
+任何 Recall 只能写作 **pooled Recall**，因为分母来自有限 pool，而不是穷举 12,000 chunks。新增 retriever 后如果其 Top-30 引入未判断 pair，评估会重新 `BLOCKED`；不得把 missing qrel 当作 relevance 0。
 
 ## 11. 历史 annotation retriever provenance
 
 历史标注阶段使用的系统与正式 v1 不同：历史 BM25 为 `k1=1.2`，历史 dense 为 `BAAI/bge-small-en-v1.5`，然后做历史 RRF。正式系统则为 `k1=1.5` BM25 + pinned E5 + 两路 RRF。
 
-三套历史排名均独立实现 250/250 exact top-30 sequence match：
+当前独立复现结果为：
 
-```text
-historical BM25   9ff5b86bd011531c73cfa565a244913dab5f18bc012f54a3021b09485763d8ff
-historical dense  766178797dcc3411a12772fdde585cce37717801483650d4dc83063f3f402164
-historical hybrid ad11d4a3e59d32fc0299a5c97dcc63bd0778b0d575e85acdefc72115ac39d148
-```
+| 历史系统 | exact Top-30 sequence | exact Top-30 set | mean Top-30 overlap | 状态 |
+|---|---:|---:|---:|---|
+| BM25 | 250/250 | 250/250 | 1.0000 | `PASS` |
+| BGE dense | 148/250 | 247/250 | 0.9996 | `PARTIAL` |
+| historical RRF | 216/250 | 247/250 | 0.9996 | `PARTIAL` |
 
-系统级 empirical reproduction 是 `PASS`，但总 provenance 保守为 `PARTIAL`，原因包括：
+因此 empirical ranking reproduction 与总 provenance 都保守记为 `PARTIAL`。主要限制包括：
 
 - 历史 binding 没有证明当时内存中 builder 的精确源码 bytes；
 - 历史 ONNX/tokenizer/runtime 的全部传递依赖未完整锁定；
-- 历史 neural tie behavior 没有显式 `chunk_id` tie-breaker。
+- 当前 ONNX/runtime 下 dense 分数存在极小数值漂移，且历史 neural tie behavior 没有显式 `chunk_id` tie-breaker。
 
-这项 `PARTIAL` 不阻止正式 baseline，因为正式检索不读取历史 candidate ranks，也不在 search 中使用 qrels 或 annotation evidence。修改 `reproduction.py` 或相关输入可能使 cache 失效并触发数小时重算。
+权威细节见 [annotation reproduction report](retrieval/baseline/reproduction/reproduction_report.json)。这项 `PARTIAL` 不阻止正式 baseline，因为正式检索不读取历史 candidate ranks，也不在 search 中使用 qrels 或 annotation evidence；正式三路 run 自身重复运行仍字节一致。修改 `reproduction.py` 或相关输入可能使 cache 失效并触发数小时重算。
 
-## 12. 上一候选的测试、性能和本机快照
+## 12. 当前 baseline 的测试、性能和本机快照
 
-### 12.1 Retrieval 测试证据（当前 checkout：`STALE`）
+### 12.1 Retrieval 测试证据（当前 checkout：`PASS`）
 
-权威文件：[test results](retrieval/reports/test_results.json)。
+权威文件：[test results](retrieval/baseline/reports/test_results.json)。
 
 ```text
-95 tests PASS in 76.97 s
+95 tests PASS in 49.79 s
 Python 3.12.7
 source_file_count=41
-source_tree_sha256=d804a637d0c64b2f79170f929d1e9520f37060b13e0edefc797728f438572562
+source_tree_sha256=cc89618c684b849b256c4a74ee71c11efb9d9ed36217a19e9d046e026d0f8552
 source_stable_during_tests=true
-current_source_tree_sha256=afecdc290e80248a8f9826ceab80930269b463567cfbee17fdd6c9f1ab7c4f31
-evidence_applies_to_current_checkout=false
+evidence_applies_to_current_checkout=true
 ```
 
-95 项通过是上一候选的事实，不是当前 checkout 已通过正式测试的声明。正式测试证据必须通过 CLI `test` 生成；手工 pytest 只适合开发诊断，不能替代 `test_results.json`。
+正式测试证据必须通过 CLI `test` 生成；手工 pytest 只适合开发诊断，不能替代 `test_results.json`。
 
-### 12.2 上一候选性能快照
+### 12.2 性能快照
 
-权威文件：[latency report](retrieval/evaluation/latency.json)。当前环境为 Windows 11、CPU-only、20 logical CPUs、约 34 GB RAM。不同硬件不得直接比较。
+权威文件：[latency report](retrieval/baseline/evaluation/latency.json)。当前环境为 Windows 11、CPU-only、20 logical CPUs、约 34 GB RAM。不同硬件不得直接比较。
 
 | 系统 | Mean | P95 | QPS |
 |---|---:|---:|---:|
@@ -510,13 +483,13 @@ Dense model load/download=9.585 s
 
 ## 13. Retrieval 安装、重建与退出码
 
-要求 Python 3.11+。`retrieval/pyproject.toml` 和 `retrieval/requirements.txt` 固定了直接 runtime/test 依赖，但仓库没有完整 lockfile；build system（如 `setuptools>=69`、`wheel`）及传递依赖并未全部精确锁定。
+要求 Python 3.11+。`retrieval/baseline/pyproject.toml` 和 `retrieval/baseline/requirements.txt` 固定了直接 runtime/test 依赖，但仓库没有完整 lockfile；build system（如 `setuptools>=69`、`wheel`）及传递依赖并未全部精确锁定。
 
 从仓库根目录执行：
 
 ```powershell
 $env:PYTHONDONTWRITEBYTECODE = "1"
-python -m pip install -e retrieval
+python -m pip install -e retrieval/baseline
 
 python -m sqlmend_retrieval.cli audit-protected-paths --phase before
 python -m sqlmend_retrieval.cli verify-inputs
@@ -542,7 +515,7 @@ python -m sqlmend_retrieval.cli validate
 
 `python -m sqlmend_retrieval.cli all` 执行同一依赖链，但首次运行会下载模型、构建 E5 embeddings，并可能重做历史 BGE reproduction，耗时较长。
 
-针对当前仅因 `retrieval/README.md` 变化而陈旧的证据，最小正式刷新链是 `test -> finalize -> validate`；不要手工修改旧报告中的 source hash。由于 judgment pool 仍不完整，`finalize`/`validate` 预期仍会以发布阻塞语义返回非零。
+当前完整 pool 上，`finalize` 与 `validate` 应在工程、评估完整性和质量门禁均通过时返回 0。不要手工修改报告中的 source hash；任何 retrieval source 变化仍需执行正式 `test -> finalize -> validate` 刷新链。
 
 若从仓库外运行，`--root` 必须放在子命令前：
 
@@ -550,13 +523,14 @@ python -m sqlmend_retrieval.cli validate
 python -m sqlmend_retrieval.cli --root C:\path\to\SQLMend-RAG verify-inputs
 ```
 
-当前 pool 不完整时的退出码语义：
+退出码语义：
 
-- `evaluate` 返回 0，表示正确写入了 `BLOCKED` 状态，不表示 evaluation `PASS`；
-- `finalize`、`validate` 和 `all` 返回非零，表示发布门禁拒绝将候选称为完整 release；
+- `evaluate` 返回 0 只表示评估流程正确完成；是否可发布仍以生成状态和 validator 为准；
+- 如果任一正式 run 的 Top-30 存在 unjudged，`evaluate` 会生成 `BLOCKED` sentinel，`finalize`、`validate` 和 `all` 返回非零；
+- pool 完整但质量门禁未达到时，工程可以是 `PASS` 而 retrieval quality 为 `FAIL`；
 - 工程 `FAIL` 与评估 `BLOCKED` 必须分开处理。
 
-补判完成后，从 `check-pool` 开始重跑，然后依次运行 `evaluate`、`benchmark`、`test`、after audit、`finalize`、`validate`。
+qrels 或正式 run 变化后，从 `check-pool` 开始重跑，然后依次运行 `evaluate`、必要的 `benchmark`、`test`、after audit、`finalize`、`validate`。
 
 ## 14. Pool 完整后的质量门禁
 
@@ -580,20 +554,20 @@ python -m sqlmend_retrieval.cli --root C:\path\to\SQLMend-RAG verify-inputs
 
 ## 15. 后续开发路线
 
-后续工作分为两个互不混淆的标注轨道：
+后续工作分为两个互不混淆的数据轨道：
 
-1. **开发 pool 补判**：补齐当前 10,003 个正式 top-30 pair，使 v1 baseline 可以被完整测量；
+1. **机器开发回归集**：当前 annotation v1 revision 1.1.0 已完整覆盖固定 baseline Top-30，可用于 retrieval v2 的开发比较；新增系统带来的新候选必须先补判并版本化，不能把缺标当 0；
 2. **最终人工 held-out 数据**：由小组另行采集并标注至少 1,000 条无重复、尽量平衡的记录；推荐三名 annotators，两名也可，IAA >= 80%；保存原始标注、annotator、分歧、adjudication 与 manifest；不得在其上反复调参。
 
-这些工作不是全部串行依赖。应立即并行启动三条线：
+这些工作不是全部串行依赖。当前可推进三条线：
 
-1. `BLOCKED` **baseline evaluation**：完成开发 pool 补判，冻结有效 v1 release；它是 retrieval v2 正式比较和阶段 7 发布的前置条件；
+1. `PLANNED_NEXT` **dialect/version-aware retrieval v2**：保留固定 v1 和当前 qrels 作为对照；新系统若扩大候选 pool，先完成相同口径的盲补判再比较；
 2. `PLANNED` **human evaluation protocol**：在任何相关调参前冻结 held-out split、schema、指南、抽样、平衡、annotator 和 adjudication 流程；
-3. `PLANNED` **product scaffolding**：generator 和 UI 可以基于当前冻结 v1 接口并行开发，不必等待 10,003 个开发 pool labels 全部完成。
+3. `PLANNED` **product scaffolding**：generator 和 UI 可以基于当前冻结 v1 接口并行开发。
 
 随后按各自依赖推进：
 
-1. 新建 dialect/version-aware retrieval v2，并保留 v1 作为不可覆盖对照；
+1. 新建 dialect/version-aware retrieval v2，并保留 retrieval v1 作为不可覆盖对照；不要与已放弃的 annotation v2 混淆；
 2. 评估 reranker、query rewriting、HyDE 或其他创新；多个创新必须提供独立与组合配置以支持 ablation；
 3. 实现 grounded SQL diagnosis/repair generator，答案引用可检查证据，并加入 unsupported-claim/faithfulness 检查；
 4. 实现简单 UI。服务启动时加载并保持热的 BM25、DenseIndex 和模型，不要逐请求执行 CLI；
@@ -611,10 +585,11 @@ python -m sqlmend_retrieval.cli --root C:\path\to\SQLMend-RAG verify-inputs
 |---|---|
 | 仅本文 | 无需重跑 retrieval；提交本文即可 |
 | 根 `README.md` | 不在 retrieval source snapshot 中；按最终用户体验验证 |
-| `retrieval/README.md` | `test -> finalize -> validate` |
+| `retrieval/baseline/README.md` | `test -> finalize -> validate` |
 | retrieval 源码、测试、config、requirements、pyproject | 相关 build/run/eval；正式 `test`；after audit；`finalize -> validate` |
 | query serializer 或允许字段 | serialized queries、两个 retriever runs、RRF、pool、evaluation、test、finalize、validate |
 | corpus | 这是新数据版本；不能原地修改受保护文件。新建版本并重建全部索引、runs、qrels binding、评估和报告 |
+| annotation qrels、candidate pool、schema 或 provenance | 仅在明确的数据维护版本中修改；更新 `annotation/VERSION_HISTORY.md`，运行 annotation validator，重新锚定 protected audit，再从 `check-pool` 重跑评估与最终化链 |
 | supplemental qrels | 从 `check-pool` 开始重跑完整评估与最终化链 |
 | 新 retriever | 新 system ID/config/artifact；更新 pool/evaluation/reporting/validation/tests；保留 v1 对照 |
 | RRF 常量或 tie-break | 新 hybrid 版本；重建 hybrid、pool、evaluation、tests、reports；不得覆盖 v1 |
@@ -623,10 +598,10 @@ python -m sqlmend_retrieval.cli --root C:\path\to\SQLMend-RAG verify-inputs
 
 ## 17. 禁止事项与常见陷阱
 
-- 不修改 `construction/` 或 `annotation/codex/` 的任何字节，包括缓存。
+- 除非用户明确启动版本化数据维护，不修改 `construction/` 或 `annotation/codex/` 的任何字节，包括缓存。
 - 不把 missing qrel 当 relevance 0。
 - 不把 250 条开发数据、50 条 Codex audit 或混合 effective qrels 称为人工 gold/held-out test。
-- 不在不完整 pool 上发布 Recall/nDCG/MRR，或用这些数字调模型。
+- 不在不完整 pool 上发布 Recall/nDCG/MRR，或用这些数字调模型；新增 retriever 后必须重新检查 judged coverage。
 - 不让正式 retriever 读取 reference fix、evidence、qrels、candidate ranks 或 case flags。
 - 不把历史 annotation retriever 当作正式 baseline。
 - 不手工编辑 run、TREC qrels、metric、report 或 manifest；通过对应 CLI 重建。
@@ -647,27 +622,33 @@ python -m sqlmend_retrieval.cli --root C:\path\to\SQLMend-RAG verify-inputs
 
 ### Machine development annotations
 
+- [Annotation version history](annotation/VERSION_HISTORY.md)
 - [Annotation README](annotation/codex/README.md)
 - [Annotation manifest](annotation/codex/manifest.json)
 - [Annotation validation](annotation/codex/validation_report.json)
 - [Annotation statistics](annotation/codex/statistics.json)
 - [Annotation provenance](annotation/codex/provenance/)
+- [Top-30 blind refresh provenance](annotation/codex/provenance/top30_blind_refresh.json)
+- [Annotation sensitivity](annotation/codex/reports/top30_annotation_sensitivity.json)
 
 ### Formal retrieval baseline
 
-- [Retrieval README](retrieval/README.md)
-- [Retrieval manifest](retrieval/manifest.json)
-- [Retrieval validation](retrieval/reports/validation_report.json)
-- [Retrieval completion report](retrieval/reports/completion_report.md)
-- [Baseline report](retrieval/reports/baseline_report.md)
-- [Failure analysis](retrieval/reports/failure_analysis.md)
-- [Provenance audit](retrieval/reports/provenance_audit.md)
-- [Judged coverage](retrieval/evaluation/judged_coverage.json)
-- [Pool summary](retrieval/pool_expansion/pool_expansion_summary.json)
-- [Pool expansion requests](retrieval/pool_expansion/pool_expansion_required.jsonl)
-- [Evaluation sentinel](retrieval/evaluation/overall_metrics.json)
-- [Latency](retrieval/evaluation/latency.json)
-- [Test evidence](retrieval/reports/test_results.json)
+- [Retrieval README](retrieval/baseline/README.md)
+- [Retrieval manifest](retrieval/baseline/manifest.json)
+- [Retrieval validation](retrieval/baseline/reports/validation_report.json)
+- [Retrieval completion report](retrieval/baseline/reports/completion_report.md)
+- [Baseline report](retrieval/baseline/reports/baseline_report.md)
+- [Failure analysis](retrieval/baseline/reports/failure_analysis.md)
+- [Provenance audit](retrieval/baseline/reports/provenance_audit.md)
+- [Judged coverage](retrieval/baseline/evaluation/judged_coverage.json)
+- [Pool summary](retrieval/baseline/pool_expansion/pool_expansion_summary.json)
+- [Pool expansion requests](retrieval/baseline/pool_expansion/pool_expansion_required.jsonl)
+- [Overall metrics](retrieval/baseline/evaluation/overall_metrics.json)
+- [Confidence intervals](retrieval/baseline/evaluation/confidence_intervals.json)
+- [Pairwise differences](retrieval/baseline/evaluation/pairwise_differences.json)
+- [Complementarity](retrieval/baseline/evaluation/complementarity_report.json)
+- [Latency](retrieval/baseline/evaluation/latency.json)
+- [Test evidence](retrieval/baseline/reports/test_results.json)
 
 ## 19. 本文件维护协议
 
@@ -689,9 +670,9 @@ python -m sqlmend_retrieval.cli --root C:\path\to\SQLMend-RAG verify-inputs
 | 日期 | 决定 | 原因与影响 |
 |---|---|---|
 | 2026-08-29 | `Assignment.pdf` 高于阶段 prompt 和开发便利性 | 任何冲突以课程要求为准；阶段边界不取消最终 UI、生成与人工评估要求 |
-| 2026-08-29 | 250 条 Codex 数据仅作 machine-proposed development data | 人工标注后补；当前数据不能抵扣 1,000+ 人工记录或称为 held-out test |
-| 2026-08-29 | `construction/` 和 `annotation/codex/` 在 retrieval v1 中字节级冻结 | 新判断通过独立 supplemental/new dataset 输入，不覆盖既有来源 |
-| 2026-08-29 | missing qrel 永远是 unjudged，不是 relevance 0 | pool 不完整时必须阻止正式指标发布 |
+| 2026-08-30 | 250 条 Codex 数据及其 Top-30 判断仅作 machine-proposed development data | 双盲机器标注与机器裁决降低单次判断波动，但不能抵扣 1,000+ 人工记录或称为 held-out test |
+| 2026-08-30 | annotation 当前主版本为 v1、dataset revision 1.1.0；v2 实验放弃 | 本轮明确授权的数据维护直接更新主 v1；历史集中记录于 `annotation/VERSION_HISTORY.md`，维护结束后重新冻结 |
+| 2026-08-30 | missing qrel 永远是 unjudged，不是 relevance 0 | 当前固定三路 Top-30 已完整；未来新增 retriever 若引入未判断候选，必须重新阻止指标发布 |
 | 2026-08-29 | 正式 v1 固定为 BM25 + pinned E5 + two-channel RRF | 历史 BGE/candidate ranks 只用于 provenance；创新建立新版本而不覆盖 v1 |
 | 2026-08-29 | 根 `README.md` 留作最终用户文档；根 `DEVELOPMENT_CONTEXT.md` 维护内部状态 | 避免把交接细节、临时 blocker 和用户安装文档混在一起 |
-| 2026-08-29 | 当前 retrieval 正式证据标为 `STALE` | `a192ed1` 修改 `retrieval/README.md` 后 source tree SHA 与上一候选证据不再一致；下一次维护先执行 `test -> finalize -> validate` |
+| 2026-08-30 | 当前 retrieval v1 正式证据重新绑定并通过 | source tree SHA 为 `cc8961...`；95 tests、protected after audit、`finalize -> validate` 共同构成当前证据 |

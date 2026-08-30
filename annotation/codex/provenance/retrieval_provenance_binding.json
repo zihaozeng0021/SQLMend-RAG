@@ -1,7 +1,7 @@
 {
   "binding_method": "post_build_exact_cached_snapshot_capture",
   "capture_stage": "final_after_derived_refresh",
-  "captured_at_utc": "2026-08-28T05:44:42Z",
+  "captured_at_utc": "2026-08-29T19:02:36Z",
   "inputs": {
     "corpus_path": "construction/data/processed/corpus.jsonl",
     "corpus_sha256": "279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3",
@@ -20,24 +20,24 @@
   "snapshot_file_count": 5,
   "embedding_model_json_sha256": "13a7ce3fa931cd23a575b05221d284f0327ee1820ad30f3a327024ba56d7ee43",
   "latest_snapshot_mtime_not_after_earliest_output": true,
-  "latest_snapshot_mtime_utc": "2026-08-28T03:29:41Z",
-  "earliest_ranking_output_mtime_utc": "2026-08-28T05:44:15Z",
+  "latest_snapshot_mtime_utc": "2026-08-28T14:32:02Z",
+  "earliest_ranking_output_mtime_utc": "2026-08-29T02:52:59Z",
   "artifact_sha256_before_binding": {
     "cases": "2ce81dd27690795266fc5cc813dc1999f8c55d86ed1605fd6e1013213a416fae",
-    "pools": "0d8a89ad0eb39b3e481e58668c15df9416da69bf750100ec695f5d150f3f8d85",
-    "qrels": "bcc0ef136a7ef06409ddf9a8e9d811ebe39671e4c4ad24e5c67e15b4463a47c6",
+    "pools": "86549c5b1bb59cb1557c747db37c66b77a0812c8a8f9ff02dd2d75c0be87a60f",
+    "qrels": "bc672f2767762d253e8c9dc239d37d00bdb88a547c0c80585788c8c9021e8d3f",
     "leakage": "7f8adc38ee2c258c607977f570c53756b7f81c5ac9596251a485f8ffdbe13eb3",
     "runs": "bc68a4755b390f342d972257403655a4d76b6166071c9e6e55747c6a1a55cd51",
-    "metrics": "cbdfc245dd05d725d0b0f582a0deb459a4bc1bd8e90b1d3394b190bcef2484a4",
+    "metrics": "5b914e5744a0d18eda9f9ebc22db21c153e262b6827d41cb20032ca350db381f",
     "config": "95afb9aadea78b8e3020d0e38fe6d33f5edb73aaaae6da52f764d4328345f6bd"
   },
   "artifact_sha256_after_binding": {
     "cases": "2ce81dd27690795266fc5cc813dc1999f8c55d86ed1605fd6e1013213a416fae",
-    "pools": "0d8a89ad0eb39b3e481e58668c15df9416da69bf750100ec695f5d150f3f8d85",
-    "qrels": "bcc0ef136a7ef06409ddf9a8e9d811ebe39671e4c4ad24e5c67e15b4463a47c6",
+    "pools": "86549c5b1bb59cb1557c747db37c66b77a0812c8a8f9ff02dd2d75c0be87a60f",
+    "qrels": "bc672f2767762d253e8c9dc239d37d00bdb88a547c0c80585788c8c9021e8d3f",
     "leakage": "7f8adc38ee2c258c607977f570c53756b7f81c5ac9596251a485f8ffdbe13eb3",
     "runs": "bc68a4755b390f342d972257403655a4d76b6166071c9e6e55747c6a1a55cd51",
-    "metrics": "cbdfc245dd05d725d0b0f582a0deb459a4bc1bd8e90b1d3394b190bcef2484a4",
+    "metrics": "5b914e5744a0d18eda9f9ebc22db21c153e262b6827d41cb20032ca350db381f",
     "config": "95afb9aadea78b8e3020d0e38fe6d33f5edb73aaaae6da52f764d4328345f6bd"
   },
   "note": "Rankings and scores are unchanged; this step only records the exact cached model snapshot and mirrors that identity into config/metric metadata. The ranking process was already running when provenance-writing code was upgraded, so this is the builder file hash at binding time, not a claim about its prior in-memory source image. Query hashes, saved ranks/scores, model-cache timing, and all deterministic judgments are independently checked downstream."

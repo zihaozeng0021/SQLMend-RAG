@@ -146,11 +146,11 @@
   },
   "estimated_near_duplicate_record_rate": 0.0,
   "candidate_pool_records": 250,
-  "qrel_judgments": 13449,
+  "qrel_judgments": 23452,
   "qrel_labels": {
-    "0": 9216,
-    "1": 3931,
-    "2": 302
+    "0": 20154,
+    "1": 2839,
+    "2": 459
   },
   "leakage_status": {
     "PASS": 250

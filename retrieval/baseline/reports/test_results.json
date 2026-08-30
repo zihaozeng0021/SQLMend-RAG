@@ -1,0 +1,21 @@
+{
+  "command": [
+    "E:\\MyProgramFiles\\anaconda\\python.exe",
+    "-m",
+    "pytest",
+    "retrieval/baseline/tests",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "python_executable": "E:\\MyProgramFiles\\anaconda\\python.exe",
+  "python_version": "3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 13:17:27) [MSC v.1929 64 bit (AMD64)]",
+  "returncode": 0,
+  "source_file_count": 41,
+  "source_stable_during_tests": true,
+  "source_tree_sha256": "02bf56a20642d5563097c01f0232cba37b358b9929b5f0cb2a43f2da20d0c3c8",
+  "source_tree_sha256_after": "02bf56a20642d5563097c01f0232cba37b358b9929b5f0cb2a43f2da20d0c3c8",
+  "status": "PASS",
+  "stderr": "",
+  "stdout": "........................................................................ [ 75%]\n.......................                                                  [100%]\n95 passed in 49.79s\n"
+}

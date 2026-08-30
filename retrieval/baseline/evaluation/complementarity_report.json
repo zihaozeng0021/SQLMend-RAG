@@ -1,0 +1,47 @@
+{
+  "BM25_HitRate@20_rel2": 0.616,
+  "BM25_only_relevance_2_query_hits_at_20": 43,
+  "Dense_HitRate@20_rel2": 0.572,
+  "Dense_only_relevance_2_query_hits_at_20": 32,
+  "diagnostic_investigation": {
+    "dense_model_suitability": "The zero-shot dense model was frozen before evaluation; a diagnostic miss is reported rather than tuned away.",
+    "normalization": "Document and query embeddings are L2-normalized and tested against cosine equivalence.",
+    "query_document_prefix": "The fixed E5 query/document prefixes are asserted by automated tests.",
+    "query_truncation": "The fixed maximum input length is recorded; inspect long serialized queries if complementarity targets fail.",
+    "representation_independence": "BM25 tokens and dense embeddings use separate implementations; measured Jaccard values quantify overlap."
+  },
+  "diagnostic_target_status": "PASS",
+  "diagnostic_targets": {
+    "BM25_only_relevance_2_query_hits_at_20": {
+      "observed": 43,
+      "passed": true,
+      "required_minimum": 5
+    },
+    "Dense_only_relevance_2_query_hits_at_20": {
+      "observed": 32,
+      "passed": true,
+      "required_minimum": 5
+    },
+    "oracle_union_HitRate@20_delta_over_best_single": {
+      "observed": 0.128,
+      "passed": true,
+      "required_minimum": 0.02
+    }
+  },
+  "evaluation_label": "machine-proposed development evaluation",
+  "mean_Jaccard@10": 0.06278709594499068,
+  "mean_Jaccard@20": 0.05923189632477558,
+  "median_Jaccard@10": 0.05263157894736842,
+  "median_Jaccard@20": 0.02564102564102564,
+  "oracle_union_HitRate@10": 0.68,
+  "oracle_union_HitRate@20": 0.744,
+  "oracle_union_HitRate@20_delta_over_best_single": 0.128,
+  "oracle_union_HitRate@5": 0.612,
+  "queries_hit_by_both_at_20": 111,
+  "queries_missed_by_both_at_20": 64,
+  "query_count": 250,
+  "relevance_definition": "explicit relevance = 2",
+  "unique_relevance_2_chunks_found_by_both": 137,
+  "unique_relevance_2_chunks_only_BM25": 74,
+  "unique_relevance_2_chunks_only_dense": 60
+}

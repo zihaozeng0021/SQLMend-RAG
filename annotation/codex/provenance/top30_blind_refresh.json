@@ -1,0 +1,108 @@
+{
+  "agreement": {
+    "agreement_count": 13326,
+    "cohen_kappa": 0.5227680374081514,
+    "confusion_A_to_B": {
+      "0->0": 12832,
+      "0->1": 358,
+      "0->2": 39,
+      "1->0": 360,
+      "1->1": 276,
+      "1->2": 55,
+      "2->0": 33,
+      "2->1": 61,
+      "2->2": 218
+    },
+    "disagreement_count": 906,
+    "exact_agreement": 0.9363406408094435,
+    "quadratic_weighted_kappa": 0.6916104537894363
+  },
+  "annotation_main_version": "v1",
+  "applied_existing_transition_counts": {
+    "0->0": 2334,
+    "0->1": 98,
+    "0->2": 17,
+    "1->0": 1192,
+    "1->1": 283,
+    "1->2": 129,
+    "2->2": 176
+  },
+  "artifact_sha256": {
+    "ADJ_judgments": "49926edcf0e83493259b094c2c39ea2aa312c0c5506091ba3a6118cc25766369",
+    "A_judgments": "31de1aa625c174ba17b5f48b369b36fef11231b790870d1b7af6bd224dc0f08a",
+    "B_judgments": "47e0b586a4afc99d6f016b09749505d7e1185f3bb6eec260d327c8a7d88ab698",
+    "final_blind_decisions": "b76e774ac0de4d0b4dafc7874e3501178e0e05cd2ff2a8d2d3af529483616f87",
+    "original_candidate_pools": "0d8a89ad0eb39b3e481e58668c15df9416da69bf750100ec695f5d150f3f8d85",
+    "original_v1_qrels": "bcc0ef136a7ef06409ddf9a8e9d811ebe39671e4c4ad24e5c67e15b4463a47c6",
+    "updated_candidate_pools": "86549c5b1bb59cb1557c747db37c66b77a0812c8a8f9ff02dd2d75c0be87a60f",
+    "updated_legacy_retrieval_metrics": "5b914e5744a0d18eda9f9ebc22db21c153e262b6827d41cb20032ca350db381f",
+    "updated_v1_qrels": "bc672f2767762d253e8c9dc239d37d00bdb88a547c0c80585788c8c9021e8d3f"
+  },
+  "blind_decision_label_counts": {
+    "0": 13395,
+    "1": 532,
+    "2": 305
+  },
+  "blind_existing_transition_counts": {
+    "0->0": 2334,
+    "0->1": 98,
+    "0->2": 17,
+    "1->0": 1192,
+    "1->1": 283,
+    "1->2": 129,
+    "2->0": 8,
+    "2->1": 20,
+    "2->2": 148
+  },
+  "blindness": {
+    "candidate_order": "independent deterministic rank-free shuffle per pass",
+    "disagreement_resolution": "third blind machine adjudication",
+    "old_labels_visible_before_decisions_frozen": false,
+    "passes": [
+      "A",
+      "B"
+    ],
+    "query_ids_chunk_ids_ranks_scores_run_identity_in_prompts": false
+  },
+  "completed_at": "2026-08-29T18:56:32Z",
+  "dataset_revision": "1.1.0",
+  "eligible_for_final_held_out_evaluation": false,
+  "existing_formal_pair_count": 4229,
+  "explicit_evidence_overrides_prevented": 28,
+  "explicit_evidence_preserved_count": 176,
+  "formal_pair_count": 14232,
+  "formal_pair_set_sha256": "05a950d58ac088496df1e69cabd435bb51ec539844003a5e6511b138ebfcf37f",
+  "formal_run_sha256": {
+    "retrieval/runs/bm25_formal_dev250.trec": "e72361668fc3338abac657a04c598eb36983e8a8201e506e34084d474e268f98",
+    "retrieval/runs/dense_formal_dev250.trec": "eeada87a6e1457f91a577e8c6d7a3d60cb59854523a4e31a4fff81b023513cdd",
+    "retrieval/runs/hybrid_rrf_formal_dev250.trec": "05a907f5ab05c3e09aad872d8523db74fd61c77bf34a4108e55c7c9fc667a468"
+  },
+  "formal_scope_jsonl_sha256": "0ad025a4c36477fa7fc42ee68f089fa2a7acec4850bc53c76c6abbbff39b7575",
+  "human_verified": false,
+  "integration_policy": "preserve explicit_case_evidence labels; replace heuristic labels in formal scope with blind decisions; add every previously missing formal pair; preserve all v1 pairs outside formal scope",
+  "models": {
+    "A": "gpt-5.4-mini",
+    "ADJ": "gpt-5.4",
+    "B": "gpt-5.4-mini"
+  },
+  "new_formal_pair_count": 10003,
+  "original_v1_qrel_count": 13449,
+  "query_count": 250,
+  "record_sha256": "ab73ca0329bfaef506fe615186facf21e6d8a1119ae061ca8403cee5b74b7e92",
+  "retention_policy": "The raw execution workspace is temporary. Main v1 retains compact per-qrel confidence/resolution plus this integrity and agreement summary.",
+  "schema_version": "sqlmend-v1-top30-blind-refresh-v1",
+  "scope_definition": "exact union of the three frozen formal baseline Top-30 runs",
+  "status": "COMPLETE_MACHINE_PROPOSED_DEVELOPMENT_ONLY",
+  "updated_qrel_label_counts": {
+    "0": 20154,
+    "1": 2839,
+    "2": 459
+  },
+  "updated_qrel_method_counts": {
+    "blind_double_pass_adjudicated": 872,
+    "blind_double_pass_consensus": 13184,
+    "deterministic_contextual_heuristic": 9094,
+    "explicit_case_evidence": 302
+  },
+  "updated_v1_qrel_count": 23452
+}

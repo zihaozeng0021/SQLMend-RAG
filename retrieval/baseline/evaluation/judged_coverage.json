@@ -1,0 +1,28 @@
+{
+  "evaluation_integrity_status": "PASS",
+  "evaluation_label": "machine-proposed development evaluation",
+  "per_system": {
+    "bm25_formal": {
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "query_count": 250
+    },
+    "dense_formal": {
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "query_count": 250
+    },
+    "hybrid_rrf_formal": {
+      "Judged@10": 1.0,
+      "Judged@20": 1.0,
+      "Judged@30": 1.0,
+      "Judged@5": 1.0,
+      "query_count": 250
+    }
+  },
+  "unjudged_documents_are_not_relevance_zero": true
+}

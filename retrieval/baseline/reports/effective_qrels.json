@@ -1,0 +1,8 @@
+{
+  "base_qrels_sha256": "eae4aefdf6c152df36330a00adf29d8a40d2ea42a476ed7df8c0f675d7446e5d",
+  "effective_qrel_count": 23452,
+  "effective_qrels_sha256": "eae4aefdf6c152df36330a00adf29d8a40d2ea42a476ed7df8c0f675d7446e5d",
+  "protected_source_unchanged": true,
+  "supplemental_qrel_count": 0,
+  "supplemental_qrels_present": false
+}
