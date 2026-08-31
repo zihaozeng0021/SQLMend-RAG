@@ -1,36 +1,36 @@
 # SQLMend-RAG Retrieval v1
 
-Retrieval v1 在冻结的 BM25、Dense E5 与 Hybrid RRF baseline 之上加入方言感知、版本感知和一个轻量 lexical reranker。它是独立 release；不会改写 `construction/`、`annotation/codex/` 或 `retrieval/baseline/`。
+Retrieval v1 adds dialect awareness, version awareness and a lightweight lexical reranker on top of the frozen BM25, Dense E5 and Hybrid RRF baselines. It is a standalone release; it does not override `construction/`, `annotation/codex/` or `retrieval/baseline/`.
 
-这里的 250 条查询及 relevance judgments 只能称为 **machine-proposed development data**。它们用于开发实验和回归验证，不是人工 gold，也不是最终 held-out test set。
+The 250 queries and relevance judgments here can only be called **machine-proposed development data**. They are used for development experiments and regression validation, not artificial gold, nor the final held-out test set.
 
-## 五个正式系统
+## Five formal systems
 
-| 简称 | System ID | 配置 | Run |
+| Abbreviation | System ID | Configuration | Run |
 |---|---|---|---|
-| Frozen Hybrid | `hybrid_rrf_frozen_control_v1` | `config/systems/frozen_hybrid_control.yaml` | 引用冻结的 `retrieval/baseline/runs/hybrid_rrf_formal_dev250.trec` |
+| Frozen Hybrid | `hybrid_rrf_frozen_control_v1` | `config/systems/frozen_hybrid_control.yaml` | Reference to frozen `retrieval/baseline/runs/hybrid_rrf_formal_dev250.trec` |
 | + Dialect | `hybrid_rrf_dialect_aware_v1` | `config/systems/dialect_aware.yaml` | `runs/hybrid_rrf_dialect_aware_dev250.trec` |
 | + Version | `hybrid_rrf_version_aware_v1` | `config/systems/version_aware.yaml` | `runs/hybrid_rrf_version_aware_dev250.trec` |
 | + Dialect + Version | `hybrid_rrf_dialect_version_aware_v1` | `config/systems/dialect_version_aware.yaml` | `runs/hybrid_rrf_dialect_version_aware_dev250.trec` |
 | + Dialect + Version + Reranker | `hybrid_rrf_dialect_version_lexical_rerank_v1` | `config/systems/dialect_version_reranker.yaml` | `runs/hybrid_rrf_dialect_version_lexical_rerank_dev250.trec` |
 
-所有新系统都从冻结 BM25 Top-30 与 Dense Top-30 的 RRF union 取候选。每条查询有 45–60 个候选；metadata awareness 与 reranker 只做 soft reranking，不删除跨方言、旧版本或 metadata 未知的文档。最终输出深度固定为 30。
+All new systems take candidates from the RRF union of frozen BM25 Top-30 and Dense Top-30. Each query has 45–60 candidates; metadata awareness and reranker only do soft reranking and do not delete documents across dialects, old versions, or with unknown metadata. The final output depth is fixed at 30.
 
-## 方法
+## Method
 
-Dialect awareness 使用查询 dialect 与 corpus-owned dialect metadata。相同方言优先；MySQL/MariaDB 作为 related，但仍按显式 dialect mismatch 计入 `Wrong-Dialect@5`；unknown 位于 related 与明确 incompatible 之间。任何类别都不会被硬过滤。
+Dialect awareness uses query dialect and corpus-owned dialect metadata. Same dialect takes precedence; MySQL/MariaDB as related, but still counts as `Wrong-Dialect@5` as an explicit dialect mismatch; unknown falls between related and explicitly incompatible. No categories will be hard filtered.
 
-Version awareness 只使用 corpus metadata 和 passage 中明确、保守匹配的版本边界，不从文档时间或措辞凭空推断支持范围。优先级是 compatible、general、unknown、incompatible；跨 dialect 的版本命名空间标为 `not_applicable`。如果一个排除当前版本的明确边界直接点名查询中的函数、运算符或错误标识，它属于有用的诊断证据，而不是错误版本证据。
+Version awareness only uses explicit, conservative matching version boundaries in corpus metadata and passages, and does not infer support range from document time or wording. Priorities are compatible, general, unknown, incompatible; cross-dialect version namespaces are marked `not_applicable`. If an explicit boundary excluding the current version directly names a function, operator, or error flag in a query, it is useful diagnostic evidence, not evidence of an incorrect version.
 
-Reranker 对 `user_problem`、SQL、实际错误字段与 candidate passage 分别计算确定性的 corpus-IDF BM25/精确标识匹配，再以很小的权重与 Dialect+Version score 相加。它不训练模型、不访问网络、不读取 qrels、reference fix、root cause、case flags 或 candidate labels。
+Reranker calculates deterministic corpus-IDF BM25/exact identity matches for `user_problem`, SQL, actual error field and candidate passage respectively, and then adds them with the Dialect+Version score with a small weight. It does not train models, access the network, or read qrels, reference fixes, root causes, case flags, or candidate labels.
 
-在线排序的数据边界是 `OnlineQuery`：dialect、version、user problem、SQL、实际 error message/code/SQLSTATE/symbol 以及冻结 serializer 的文本。原始 annotation records 只在安全 projection 与离线 slice evaluation 中出现；离线 qrels 加载位于 `experiment.py`，不会进入 `build-runs`。
+The data boundaries for online sorting are `OnlineQuery`: dialect, version, user problem, SQL, actual error message/code/SQLSTATE/symbol, and the text of the frozen serializer. Original annotation records only appear in safe projection and offline slice evaluation; offline qrels are loaded in `experiment.py` and will not enter `build-runs`.
 
-## 开发集结果
+## Development set results
 
-下表来自完整判断的五系统 Top-30 pool；`Judged@30` 均为 1.0。精确值、全部切片、成功/失败案例和 latency 以 `reports/retrieval_v1_report.md`、`evaluation/comparison_results.json` 与 `reports/latency.json` 为准。
+The following table comes from the five-system Top-30 pool of complete judgments; `Judged@30` are all 1.0. Exact values, full slices, success/failure cases and latency are subject to `reports/retrieval_v1_report.md`, `evaluation/comparison_results.json` and `reports/latency.json`.
 
-| 系统 | nDCG@10 | MRR@10 rel2 | pooled Recall@10 rel2 | HitRate@5 rel2 | Wrong-Dialect@5 | Wrong-Version@5 | Unknown-Version@5 |
+| System | nDCG@10 | MRR@10 rel2 | pooled Recall@10 rel2 | HitRate@5 rel2 | Wrong-Dialect@5 | Wrong-Version@5 | Unknown-Version@5 |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | Frozen Hybrid | 0.306983 | 0.431941 | 0.500162 | 0.544 | 0.2704 | 0.0032 | 0.0096 |
 | + Dialect | 0.325623 | 0.453219 | 0.519162 | 0.568 | 0.1008 | 0.0040 | 0.0112 |
@@ -38,13 +38,13 @@ Reranker 对 `user_problem`、SQL、实际错误字段与 candidate passage 分�
 | + Dialect + Version | 0.329306 | 0.468895 | 0.536695 | 0.588 | 0.0944 | 0.0008 | 0.0072 |
 | + Dialect + Version + Reranker | 0.345570 | 0.494748 | 0.559629 | 0.632 | 0.0952 | 0.0008 | 0.0088 |
 
-最终系统相对 Frozen Hybrid 的 nDCG、MRR 与 pooled Recall 分别提升 `+0.038587`、`+0.062806`、`+0.059467`。在 174 条 dialect-sensitive 查询上，`Wrong-Dialect@5` 相对下降 63.68%；在 53 条 version-sensitive 查询上，`Wrong-Version@5` 相对下降 66.67%。所有 Phase 7/8/9 与最终 acceptance gates 均通过。
+Compared with Frozen Hybrid, the final system’s nDCG, MRR and pooled recall were improved by `+0.038587`, `+0.062806` and `+0.059467` respectively. On 174 dialect-sensitive queries, `Wrong-Dialect@5` has a relative decrease of 63.68%; on 53 version-sensitive queries, `Wrong-Version@5` has a relative decrease of 66.67%. All Phase 7/8/9 and final acceptance gates passed.
 
-这些数字不能外推为人工测试性能。只要任何新正式 Top-30 pair 缺少判断，`check-pool` 就把它写入 `pool_expansion/pool_expansion_required.jsonl`，evaluation 状态变为 `BLOCKED`，且不发布 nDCG、MRR 或 pooled Recall。
+These numbers cannot be extrapolated to human test performance. Whenever any new official Top-30 pair is missing a judgment, `check-pool` writes it to `pool_expansion/pool_expansion_required.jsonl`, the evaluation status becomes `BLOCKED`, and no nDCG, MRR or pooled Recall is issued.
 
-## 从干净环境重建
+## Rebuild from a clean environment
 
-以下命令从仓库根目录运行。Python 3.11+ 可用；当前冻结环境为 Python 3.12。
+The following command is run from the repository root directory. Python 3.11+ is available; the current frozen environment is Python 3.12.
 
 ```powershell
 python -m venv .venv-retrieval-v1
@@ -55,7 +55,7 @@ $env:PYTHONPATH = (Resolve-Path 'retrieval\retrieval-v1\src')
 .\.venv-retrieval-v1\Scripts\python.exe -m sqlmend_retrieval_v1.cli --root . all --clean
 ```
 
-分步重建和审计顺序如下：
+The step-by-step rebuild and audit sequence is as follows:
 
 ```powershell
 python -m sqlmend_retrieval_v1.cli --root . audit-protected-paths --phase before
@@ -70,15 +70,15 @@ python -m sqlmend_retrieval_v1.cli --root . finalize
 python -m sqlmend_retrieval_v1.cli --root . validate
 ```
 
-`build-runs` 是无标签在线路径；`check-pool` 之后的命令属于离线 evaluation/release 路径。`clean` 只移除 `retrieval/retrieval-v1/` 下已知的生成目录和 manifest，不触碰源码、测试、配置、本文或任何冻结目录。
+`build-runs` is an unlabeled online path; the commands after `check-pool` belong to the offline evaluation/release path. `clean` only removes the known build directories and manifests under `retrieval/retrieval-v1/`, without touching the source code, tests, configurations, this article or any frozen directories.
 
-## 正式证据
+## Formal evidence
 
-- `manifest.json`：输入、配置、系统、runs、provenance、评估、报告和测试证据的 SHA-256 绑定。
-- `reports/validation_report.json`：从当前文件重新计算的独立验证结果。
-- `reports/protected_paths_before.json` / `protected_paths_after.json`：三个受保护目录的完整 byte snapshot。
-- `evaluation/acceptance.json`：Phase 7/8/9 与最终门禁。
-- `evaluation/judged_coverage.json`：五系统 Top-30 判断完整性。
-- `reports/test_results.json`：测试前后 source-tree hash 与 pytest 输出。
+- `manifest.json`: SHA-256 bindings for input, config, system, runs, provenance, evaluation, reporting and test evidence.
+- `reports/validation_report.json`: Independent validation results recalculated from the current file.
+- `reports/protected_paths_before.json` / `protected_paths_after.json`: full byte snapshot of three protected directories.
+- `evaluation/acceptance.json`: Phase 7/8/9 and final access control.
+- `evaluation/judged_coverage.json`: Top-30 judgment completeness of five systems.
+- `reports/test_results.json`: source-tree hash and pytest output before and after testing.
 
-本阶段没有实现 generator、UI 或最终人工 held-out dataset。
+No generator, UI or final human held-out dataset is implemented at this stage.

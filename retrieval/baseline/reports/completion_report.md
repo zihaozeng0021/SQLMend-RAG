@@ -1,12 +1,12 @@
-# 阶段 5–6 完成报告
+# Phase 5–6 Completion Report
 
-数据性质：**machine-proposed development evaluation**。
+Nature of data: **machine-proposed development evaluation**.
 
-本报告只覆盖正式检索基线，不代表 AI6127 整体课程作业已经完成。当前 release 是 `retrieval-baseline`；只要 engineering 失败或 evaluation integrity 未 PASS，标题与状态都必须明确写作“尚未完成”。
+This report only covers the formal search baseline and does not represent the completion of the overall AI6127 coursework. The current release is `retrieval-baseline`; as long as engineering fails or evaluation integrity is not PASS, the title and status must be clearly written as "not yet completed".
 
-## 创建的精确文件
+## Exact file created
 
-以下清单递归枚举项目自有代码、配置、隐藏占位文件（包括 `.gitignore`/`.gitkeep`）与契约产物。下载模型缓存、Python bytecode/`__pycache__`、pytest cache 明确排除；旧版 annotation reproduction 命名残留不进入正式清单。正式 dense 模型快照由 manifest 的目录 tree hash 整体绑定。
+The following list recursively enumerates the project's own code, configuration, hidden placeholder files (including `.gitignore`/`.gitkeep`) and contract products. Download model cache, Python bytecode/`__pycache__`, and pytest cache are explicitly excluded; legacy annotation reproduction naming residues are not included in the official list. The formal dense model snapshot is bound by the manifest's directory tree hash as a whole.
 
 - `.gitignore` — `CREATED`
 - `README.md` — `CREATED`
@@ -101,9 +101,9 @@
 - `**/__pycache__/ and *.py[co]` — `EXCLUDED_BYTECODE_CACHE`
 - `**/.pytest_cache/` — `EXCLUDED_TEST_CACHE`
 
-## 执行的精确命令
+## Exact command to execute
 
-从仓库根目录、已安装 `retrieval` editable package 的环境依次运行：
+Run from the root directory of the warehouse and the environment where the `retrieval` editable package has been installed:
 
 1. `python -m sqlmend_retrieval.cli audit-protected-paths --phase before`
 2. `python -m sqlmend_retrieval.cli verify-inputs`
@@ -122,9 +122,9 @@
 15. `python -m sqlmend_retrieval.cli finalize`
 16. `python -m sqlmend_retrieval.cli validate`
 
-`test` 子命令内部执行并记录 `python -m pytest retrieval/baseline/tests -q -p no:cacheprovider`，且比较测试前后 source tree；单独运行 pytest 只适合开发诊断，但不能替代 `reports/test_results.json`。在 pool 未补齐时，`evaluate` 写入 BLOCKED sentinel 并返回 0；`finalize`、`validate`（以及因 `finalize` 阻塞而失败的 `all`）返回非零，这是预期阻塞信号，不是发布成功。
+The `test` subcommand internally executes and records `python -m pytest retrieval/baseline/tests -q -p no:cacheprovider`, and compares the source tree before and after the test; running pytest alone is only suitable for development diagnosis, but cannot replace `reports/test_results.json`. When the pool is not filled, `evaluate` writes to the BLOCKED sentinel and returns 0; `finalize`, `validate` (and `all` that fails due to `finalize` blocking) return non-zero, which is an expected blocking signal, not a successful release.
 
-## Corpus、query 与 qrel 验证
+## Corpus, query and qrel validation
 
 ```json
 {
@@ -157,9 +157,9 @@
 }
 ```
 
-查询数：`250`；受保护 qrel 数：`23452`；effective qrel 数：`23452`。Supplemental judgments 只允许进入独立文件，不修改受保护输入。
+Number of queries: `250`; Number of protected qrels: `23452`; Number of effective qrels: `23452`. Supplemental judgments only allow access to standalone files and do not modify protected input.
 
-## 受保护目录前后验证
+## Verification before and after protected directory
 
 ```json
 {
@@ -171,11 +171,11 @@
 }
 ```
 
-## Annotation-reproduction 状态
+## Annotation-reproduction status
 
-状态：`PARTIAL`；empirical ranking 状态：`PARTIAL`；provenance completeness：`PARTIAL`。详细系统级比较、配置与缺失项见 `reports/provenance_audit.md`。
+Status: `PARTIAL`; empirical ranking Status: `PARTIAL`; proven completeness: `PARTIAL`. See `reports/provenance_audit.md` for detailed system-level comparisons, configurations and missing items.
 
-## 正式 BM25、dense 与 hybrid 配置
+## Official BM25, dense and hybrid configurations
 
 ```json
 {
@@ -243,7 +243,7 @@
 }
 ```
 
-## Run 与 index hashes
+## Run and index hashes
 
 ```json
 {
@@ -273,9 +273,9 @@
 }
 ```
 
-## Metric summary、slice summary、CI、pairwise 与 complementarity
+## Metric summary, slice summary, CI, pairwise and complementarity
 
-所有 Recall 名称均为 **pooled Recall**。
+All Recall names are **pooled Recall**.
 
 ## Overall metrics
 
@@ -1239,7 +1239,7 @@
 }
 ```
 
-## Pool-expansion 状态
+## Pool-expansion status
 
 ```json
 {
@@ -1291,7 +1291,7 @@
 }
 ```
 
-唯一请求写在 `pool_expansion/pool_expansion_required.jsonl`。外部补判写入 `qrels/pool_expansion_judgments.jsonl` 后，流水线只合并当前正式 top-30 union 内、且不与冻结 base qrels 冲突的 query/chunk 对；流水线不会创建或覆盖该人工文件。
+The only request is written in `pool_expansion/pool_expansion_required.jsonl`. After the external supplementary judgment is written into `qrels/pool_expansion_judgments.jsonl`, the pipeline will only merge the query/chunk pairs that are within the current official top-30 union and do not conflict with the frozen base qrels; the pipeline will not create or overwrite the manual file.
 
 ## Test evidence
 
@@ -1314,7 +1314,7 @@
 }
 ```
 
-## 所有未通过检查
+## All failed checks
 
 ```json
 [
@@ -1325,19 +1325,19 @@
 ]
 ```
 
-`BLOCKED` 表示缺少判断而不能发布指标；它不应被误写为 relevance 0，也不等同于工程实现 FAIL。工程 FAIL 必须先修复；质量 FAIL 只能如实报告，不能在同一开发集上改 qrels、queries、模型或 RRF 来隐藏。
+`BLOCKED` indicates a lack of judgment to publish the indicator; it should not be mistakenly written as relevance 0, nor is it equivalent to engineering implementation FAIL. Engineering FAIL must be fixed first; quality FAIL can only be reported truthfully and cannot be hidden by changing qrels, queries, models, or RRFs on the same development set.
 
-## 所有限制与下一推荐阶段
+## All restrictions and next recommendation phase
 
-- 250 条查询与 13,449 条基础 qrels 是 machine-proposed development data，不是最终人工 held-out test。
-- 不完整 judgment pool 和历史 pooling bias 阻止可靠的质量比较；先完成独立人工补判，再重跑整个评估与验证链。
-- annotation retriever 复现若为 PARTIAL/NOT_REPRODUCIBLE，不能推断未复现系统与历史排名一致。
-- 本阶段没有方言/版本感知、reranker、query rewriting、HyDE、SQL 修复、grounded generator 或答案级评估。
-- PDF 仍要求简单 UI、5 条界面演示查询、grounded generator、答案级 RAG 指标、至少 1,000 条人工标注，以及标注者一致性至少 80%。
+- The 250 queries and 13,449 underlying qrels are machine-proposed development data, not final human held-out test.
+- Incomplete judgment pool and historical pooling bias prevent reliable quality comparison; complete independent manual supplementary judgment first, and then rerun the entire evaluation and verification chain.
+- If the annotation retriever recurrence is PARTIAL/NOT_REPRODUCIBLE, it cannot be inferred that the non-recurring system is consistent with the historical ranking.
+- There is no dialect/version awareness, reranker, query rewriting, HyDE, SQL fixes, grounded generator or answer level evaluation at this stage.
+- PDF still requires a simple UI, 5 interface demo queries, a grounded generator, answer-level RAG metrics, at least 1,000 human annotations, and annotator agreement of at least 80%.
 
-下一步不是直接进入 Stage 7：先补齐当前正式 top-30 judgments，使 evaluation integrity PASS 并冻结有效 baseline；随后才建议 Stage 7 dialect-aware retrieval。课程作业的 UI、生成与最终人工测试集仍须继续完成。
+The next step is not to enter Stage 7 directly: first complete the current official top-30 judgments, make evaluation integrity PASS and freeze the effective baseline; then recommend Stage 7 dialect-aware retrieval. UI, generation and final manual test sets for coursework must still be completed.
 
-## 最终 status object
+## Final status object
 
 ```json
 {

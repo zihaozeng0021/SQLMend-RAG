@@ -115,10 +115,10 @@ def test_failure_analysis_anchors_hybrid_harm_to_a_single_system_hit(tmp_path: P
     generate_failure_analysis(paths, runs, qrels, queries, corpus)
 
     report = (paths.reports / "failure_analysis.md").read_text(encoding="utf-8")
-    harm_section = report.split("### hybrid 损害排名", 1)[1].split("### dialect-sensitive", 1)[0]
-    assert "实际可识别：1" in harm_section
-    assert "案例：Q2" in harm_section
-    assert "案例：Q1" not in harm_section
+    harm_section = report.split("### hybrid damage ranking", 1)[1].split("### Failure in dialect-sensitive", 1)[0]
+    assert "Actual recognition: 1" in harm_section
+    assert "Case: Q2" in harm_section
+    assert "Case: Q1" not in harm_section
     assert "why does foo() fail?" in report
     assert "The foo() function is documented here." in report
     assert "component ranks BM25=`1` / dense=`None`" in report
@@ -188,12 +188,12 @@ def test_blocked_reports_use_candidate_not_completion_language(tmp_path: Path) -
 
     baseline = (paths.reports / "baseline_report.md").read_text(encoding="utf-8")
     completion = (paths.reports / "completion_report.md").read_text(encoding="utf-8")
-    assert baseline.startswith("# SQLMend-RAG 正式基线候选状态报告——尚未完成")
-    assert completion.startswith("# 阶段 5–6 候选状态报告——尚未完成")
+    assert baseline.startswith("# SQLMend-RAG Official Baseline Candidate Status Report - Not Completed")
+    assert completion.startswith("# Phase 5–6 Candidate Status Report - Not Completed")
     assert "NOT_PUBLISHED (BLOCKED)" in baseline
     assert "pooled Recall" in baseline
     assert "pooled Recall" in completion
-    assert "`evaluate` 写入 BLOCKED sentinel 并返回 0" in completion
+    assert "`evaluate` writes to the BLOCKED sentinel and returns 0" in completion
     assert "python -m sqlmend_retrieval.cli test" in completion
     assert completion.index("audit-protected-paths --phase before") < completion.index(
         "verify-inputs"

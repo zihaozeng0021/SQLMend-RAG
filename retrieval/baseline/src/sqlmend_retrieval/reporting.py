@@ -229,38 +229,38 @@ def audit_annotation_retrievers(paths: ProjectPaths) -> dict[str, Any]:
             [
                 f"## {system}",
                 "",
-                f"- 状态：`{detail.get('status')}`",
-                f"- 可获得的历史配置：`{json.dumps(detail.get('configuration'), ensure_ascii=False, sort_keys=True)}`",
-                f"- 独立重算 run SHA-256：`{detail.get('reproduced_run_sha256')}`",
-                f"- exact top-30 sequence match：`{metrics.get('exact_top30_sequence_match_rate')}`",
-                f"- exact top-30 set match：`{metrics.get('exact_top30_set_match_rate')}`",
-                f"- mean overlap / Jaccard / RBO：`{metrics.get('mean_top30_set_overlap')}` / `{metrics.get('mean_jaccard_at_30')}` / `{metrics.get('mean_reciprocal_rank_biased_overlap')}`",
-                f"- mean Kendall on common docs：`{metrics.get('mean_kendall_correlation_on_common_documents')}`",
-                f"- out-of-pool pairs / missing stored docs：`{metrics.get('out_of_pool_query_chunk_pair_count')}` / `{metrics.get('missing_stored_documents')}`",
-                f"- score differences：`{metrics.get('score_differences')}`（历史保存 run 无 score）",
-                f"- 错误或限制：`{detail.get('error') or detail.get('reason')}`",
+                f"- Status: `{detail.get('status')}`",
+                f"- Available historical configuration: `{json.dumps(detail.get('configuration'), ensure_ascii=False, sort_keys=True)}`",
+                f"- Independent recalculation run SHA-256: `{detail.get('reproduced_run_sha256')}`",
+                f"-exact top-30 sequence match:`{metrics.get('exact_top30_sequence_match_rate')}`",
+                f"-exact top-30 set match:`{metrics.get('exact_top30_set_match_rate')}`",
+                f"- mean overlap / Jaccard / RBO: `{metrics.get('mean_top30_set_overlap')}` / `{metrics.get('mean_jaccard_at_30')}` / `{metrics.get('mean_reciprocal_rank_biased_overlap')}`",
+                f"- mean Kendall on common docs:`{metrics.get('mean_kendall_correlation_on_common_documents')}`",
+                f"- out-of-pool pairs / missing stored docs: `{metrics.get('out_of_pool_query_chunk_pair_count')}` / `{metrics.get('missing_stored_documents')}`",
+                f"- score differences: `{metrics.get('score_differences')}` (history saving run without score)",
+                f"- Error or restriction: `{detail.get('error') or detail.get('reason')}`",
                 "",
             ]
         )
-    report = f"""# 标注阶段检索器来源追踪审计
+    report = f"""# Marking stage retriever source tracking audit
 
-数据性质：**{DEVELOPMENT_LABEL}**。
+Data properties: **{DEVELOPMENT_LABEL}**.
 
-Recall 语义声明：任何 Recall 都只能称为 **pooled Recall**；本来源审计本身不发布检索质量指标。
+Recall semantic statement: Any Recall can only be called a **pooled Recall**; this source audit itself does not publish retrieval quality indicators.
 
-状态：`{result['annotation_reproduction_status']}`
+Status: `{result['annotation_reproduction_status']}`
 
-## 识别与审计方法
+## Identification and Audit Methods
 
-标注阶段系统由受保护的 `provenance/retrieval_config.json`、`provenance/embedding_model.json`、`provenance/retrieval_runs.jsonl` 与 `candidate_pools.jsonl` 共同识别。本审计从冻结 corpus/cases 和历史配置独立重算排名；保存的历史 run 只在重算完成后用于比较，candidate pool 只用于 out-of-pool 审计，二者都不是重算排名的输入。
+The annotation phase system is identified by the protected `provenance/retrieval_config.json`, `provenance/embedding_model.json`, `provenance/retrieval_runs.jsonl` and `candidate_pools.jsonl`. This audit recalculates the rankings independently from frozen corpus/cases and historical configurations; the saved historical run is only used for comparison after the recalculation is completed, and the candidate pool is only used for out-of-pool audits, neither of which is input to the recalculation of the rankings.
 
-历史 query 构造包含 `expected_behavior` 等 annotation-only 字段，这是必须披露的标注基础设施循环性风险；这些字段仅用于复现来源，绝不进入正式 baselines。审计输入哈希为：
+The historical query construct contains annotation-only fields such as `expected_behavior`, which are annotation infrastructure cyclic risks that must be disclosed; these fields are only used for reproduction sources and never enter official baselines. The audit input hash is:
 
 ```json
 {json.dumps(result.get('inputs', {}), ensure_ascii=False, indent=2, sort_keys=True)}
 ```
 
-## 可获得设置与独立复现结果
+## Settings and independent reproduction results are available
 
 ```json
 {json.dumps(result.get('available_configuration', {}), ensure_ascii=False, indent=2, sort_keys=True)}
@@ -268,17 +268,17 @@ Recall 语义声明：任何 Recall 都只能称为 **pooled Recall**；本来�
 
 {chr(10).join(system_lines)}
 
-## 缺失信息与限制
+## Missing information and restrictions
 
-来源完整性状态：`{result.get('provenance_completeness_status')}`。明确记录的限制：`{json.dumps(result.get('provenance_limitations', []), ensure_ascii=False, sort_keys=True)}`。某个系统显示 `NOT_REPRODUCIBLE` 时，其错误或依赖原因已逐系统列出；不能把其余系统的成功推断成该系统也成功。历史保存 run 没有 score，因此只能核验排名，不能核验历史浮点 score。
+Source integrity status: `{result.get('provenance_completeness_status')}`. Explicitly documented limitations: `{json.dumps(result.get('provenance_limitations', []), ensure_ascii=False, sort_keys=True)}`. When a system displays `NOT_REPRODUCIBLE`, the error or dependency reasons are listed on a system-by-system basis; success on other systems cannot be inferred to success on that system. The historical save run does not have a score, so it can only verify the ranking, not the historical floating point score.
 
-## 与正式 baselines 的隔离
+## Isolation from formal baselines
 
-正式 BM25 使用 `rank_bm25`、k1=1.5 与严格用户字段 serializer；正式 dense 使用固定 revision 的 `intfloat/e5-base-v2`、CPU exact search；正式 hybrid 只融合这两套正式 run 的 rank，固定 RRF k=60。正式检索入口不读取 qrels、candidate-pool ranks 或 annotation evidence，任何历史 ranking 都未被复制进正式 run。
+Formal BM25 uses `rank_bm25`, k1=1.5 and strict user field serializer; formal dense uses fixed revision `intfloat/e5-base-v2`, CPU exact search; formal hybrid only integrates the two sets of official run ranks, with fixed RRF k=60. The official search entry does not read qrels, candidate-pool ranks or annotation evidence, and any historical rankings are not copied into the official run.
 
-## 现有 pool 之外的正式结果
+## Formal results outside the existing pool
 
-正式 run 落在现有 judgment pool 之外的唯一 query/chunk 对数：`{pool_summary.get('pool_expansion_record_count')}`；top-30 未判定出现次数：`{pool_summary.get('unjudged_top30_occurrence_count')}`。若值为 `None`，说明来源审计发生在正式 pool audit 之前，最终化阶段会重新生成本报告。
+Formal run The only query/chunk pair falling outside the existing judgment pool: `{pool_summary.get('pool_expansion_record_count')}`; top-30 unjudged occurrences: `{pool_summary.get('unjudged_top30_occurrence_count')}`. If the value is `None`, it means that the source audit occurred before the formal pool audit, and the finalization phase will regenerate this report.
 """
     (paths.reports / "provenance_audit.md").parent.mkdir(parents=True, exist_ok=True)
     (paths.reports / "provenance_audit.md").write_text(report, encoding="utf-8", newline="\n")
@@ -319,7 +319,7 @@ def _excerpt(value: Any, limit: int = 280) -> str:
 
 
 def _display_rank(value: int | None) -> str:
-    return str(value) if value is not None else "未在 top-30 命中显式 rel=2"
+    return str(value) if value is not None else "Explicit rel=2 not hit in top-30"
 
 
 def _query_diagnostic_tokens(query: dict[str, Any]) -> list[str]:
@@ -384,10 +384,10 @@ def generate_failure_analysis(
     }
     rel2_ranks: dict[str, dict[str, int | None]] = {}
     primary_categories: dict[str, list[str]] = {
-        "BM25 成功而 dense 失败": [],
-        "dense 成功而 BM25 失败": [],
-        "hybrid 改善排名": [],
-        "hybrid 损害排名": [],
+        "BM25 succeeds but dense fails": [],
+        "dense succeeded but BM25 failed": [],
+        "hybrid improves ranking": [],
+        "hybrid damage ranking": [],
     }
     for query_id in sorted(query_map):
         bm = _first_relevant_rank(grouped.get("bm25", {}).get(query_id, []), qrels)
@@ -395,16 +395,16 @@ def generate_failure_analysis(
         hy = _first_relevant_rank(grouped.get("hybrid", {}).get(query_id, []), qrels)
         rel2_ranks[query_id] = {"bm25": bm, "dense": de, "hybrid": hy}
         if bm is not None and bm <= 10 and (de is None or de > 10):
-            primary_categories["BM25 成功而 dense 失败"].append(query_id)
+            primary_categories["BM25 succeeds but dense fails"].append(query_id)
         if de is not None and de <= 10 and (bm is None or bm > 10):
-            primary_categories["dense 成功而 BM25 失败"].append(query_id)
+            primary_categories["dense succeeded but BM25 failed"].append(query_id)
         best_single = min(rank for rank in (bm, de) if rank is not None) if bm is not None or de is not None else None
         if hy is not None and best_single is not None and hy < best_single:
-            primary_categories["hybrid 改善排名"].append(query_id)
+            primary_categories["hybrid improves ranking"].append(query_id)
         # A query with no single-system rel=2 hit has no observed single rank for
         # hybrid to harm.  Keep the condition explicitly anchored to best_single.
         if best_single is not None and (hy is None or hy > best_single):
-            primary_categories["hybrid 损害排名"].append(query_id)
+            primary_categories["hybrid damage ranking"].append(query_id)
 
     def hybrid_failed(query_id: str) -> bool:
         rank = rel2_ranks[query_id]["hybrid"]
@@ -465,7 +465,7 @@ def generate_failure_analysis(
 
     # Dense success with lexical failure is the report's operational, rank-based
     # signal for cases that warrant semantic matching inspection.
-    semantic_cases = list(primary_categories["dense 成功而 BM25 失败"])
+    semantic_cases = list(primary_categories["dense succeeded but BM25 failed"])
 
     chunk_risk_candidates: list[tuple[int, int, str]] = []
     for query_id in sorted(query_map):
@@ -496,67 +496,67 @@ def generate_failure_analysis(
 
     category_definitions: list[tuple[str, str, list[str]]] = [
         (
-            "BM25 成功而 dense 失败",
-            "BM25 首个显式 rel=2 位于 top-10，dense 首个显式 rel=2 在 top-10 之后或 top-30 未命中。",
-            primary_categories["BM25 成功而 dense 失败"],
+            "BM25 succeeds but dense fails",
+            "BM25 first explicit rel=2 is in top-10, dense first explicit rel=2 is after top-10 or top-30 misses.",
+            primary_categories["BM25 succeeds but dense fails"],
         ),
         (
-            "dense 成功而 BM25 失败",
-            "dense 首个显式 rel=2 位于 top-10，BM25 首个显式 rel=2 在 top-10 之后或 top-30 未命中。",
-            primary_categories["dense 成功而 BM25 失败"],
+            "dense succeeded but BM25 failed",
+            "dense first explicit rel=2 at top-10, BM25 first explicit rel=2 after top-10 or top-30 miss.",
+            primary_categories["dense succeeded but BM25 failed"],
         ),
         (
-            "hybrid 改善排名",
-            "hybrid 的首个显式 rel=2 排名严格优于最佳单路排名。",
-            primary_categories["hybrid 改善排名"],
+            "hybrid improves rankings",
+            "The hybrid's first explicit rel=2 ranking strictly outperforms the best single-way ranking.",
+            primary_categories["hybrid improves ranking"],
         ),
         (
-            "hybrid 损害排名",
-            "存在可比较的单路 rel=2 排名，且 hybrid 排名更低或 top-30 未命中。",
-            primary_categories["hybrid 损害排名"],
+            "hybrid damage ranking",
+            "There is a comparable single-way rel=2 ranking, and the hybrid ranks lower or top-30 misses.",
+            primary_categories["hybrid damage ranking"],
         ),
         (
-            "dialect-sensitive 查询中的失败",
-            "case flag 明确要求方言推理，且 hybrid 首个显式 rel=2 不在 top-10。",
+            "Failure in dialect-sensitive query",
+            "The case flag explicitly requires dialect inference, and hybrid's first explicit rel=2 is not in the top-10.",
             dialect_failures,
         ),
         (
-            "version-sensitive 查询中的失败",
-            "case flag 明确要求版本推理，且 hybrid 首个显式 rel=2 不在 top-10。",
+            "Failure in version-sensitive query",
+            "The case flag explicitly requires version inference, and the first explicit rel=2 in hybrid is not in the top-10.",
             version_failures,
         ),
         *[
             (
-                f"方言切片 graded nDCG@10 回退 >0.05：{dialect}",
-                "实际 slice 指标为 "
+                f"Dialect slice graded nDCG@10 fallback >0.05: {dialect}",
+                "The actual slice index is "
                 + json.dumps(values, ensure_ascii=False, sort_keys=True)
-                + "；选择该方言中 hybrid 相对最佳单路后移的查询作为 passage/component-rank 证据。",
+                + ";Select the query with the relative best single-pass backward shift of hybrid in this dialect as passage/component-rank evidence.",
                 [
                     query_id
-                    for query_id in primary_categories["hybrid 损害排名"]
+                    for query_id in primary_categories["hybrid damage ranking"]
                     if query_map[query_id].get("dialect") == dialect
                 ],
             )
             for dialect, values in dialect_regressions.items()
         ],
         (
-            "精确 SQL token 或 error code 主导的可核查案例",
-            "查询含 SQLSTATE、错误码、错误符号、运算符或函数名，且实际 top-5 passage 出现至少一个完全相同 token。",
+            "Verifiable cases dominated by precise SQL token or error code",
+            "The query contains SQLSTATE, error code, error symbol, operator or function name, and at least one identical token appears in the actual top-5 passage.",
             exact_token_cases,
         ),
         (
-            "需要语义匹配的案例",
-            "以 dense top-10 命中 rel=2 而 BM25 未命中作为可复核的操作性信号，不据此宣称因果。",
+            "Semantic matching case",
+            "Using dense top-10 hits with rel=2 and BM25 misses as operable signals that can be reviewed, we do not claim causation based on this.",
             semantic_cases,
         ),
         (
-            "chunk 粒度风险案例",
-            "显式 rel=2 passage 至少 900 字符，且 hybrid 未在 top-10 命中；这是边界检查信号，不是已证明的原因。",
+            "chunk granularity risk case",
+            "Explicit rel=2 passage of at least 900 characters, and hybrid not hitting in the top-10; this is a bounds check signal, not a proven cause.",
             chunk_risk_cases,
         ),
         (
-            "需要 pool expansion 的未判定案例",
-            "三套正式 top-30 中至少一次出现当前 qrels 未覆盖的 query/chunk 对。",
+            "Undecided cases requiring pool expansion",
+            "The query/chunk pair not covered by the current qrels appears at least once in the three official top-30 sets.",
             pool_cases,
         ),
     ]
@@ -576,38 +576,38 @@ def generate_failure_analysis(
     evaluation_blocked = pool_summary.get("evaluation_integrity_status") != "PASS"
     if evaluation_blocked:
         evaluation_statement = (
-            "由于 judgment pool 不完整，所有正式 overall、slice、CI、pairwise 与单案例 "
-            "metric delta 都是 **NOT_PUBLISHED (BLOCKED)**；这些案例不能替代补判后的指标。"
+            "Due to the incomplete judgment pool, all formal overall, slice, CI, pairwise and single cases"
+            "The metric deltas are all **NOT_PUBLISHED (BLOCKED)**; these cases cannot replace the indicators after the supplementary judgment."
         )
         follow_up_statement = (
-            "先完成 pool expansion；若完整评估仍显示方言/版本或 chunk 回退，再在 "
-            "Stage 7 或 chunk-boundary review 中处理，补判前不调参。"
+            "Complete pool expansion first; if the complete evaluation still shows dialect/version or chunk fallback, then "
+            "Processed in Stage 7 or chunk-boundary review, no parameters will be adjusted before supplementary judgment."
         )
     else:
         evaluation_statement = (
-            "当前三路正式 Top-30 judgment pool 完整，overall、slice、CI 与 pairwise 指标已发布；"
-            "单案例只用于解释已发布结果，不能替代独立人工 held-out 评估。"
+            "The current three-way official Top-30 judgment pool is complete, and the overall, slice, CI and pairwise indicators have been released;"
+            "Single cases are intended only to interpret published results and are not a substitute for independent human held-out evaluation."
         )
         follow_up_statement = (
-            "结合已发布逐查询、切片与配对结果复核；后续方言/版本或 chunk 创新必须建立新系统版本，"
-            "保留固定 baseline 和当前 qrels，不按案例反向改标签。"
+            "Combined with the published query-by-query, slice and pairing results to review; subsequent dialect/version or chunk innovation must create a new system version,"
+            "Keep the fixed baseline and current qrels, and do not change the labels in reverse according to the case."
         )
 
     lines = [
-        "# 检索失败分析",
+        "# Retrieval Failure Analysis",
         "",
-        f"数据性质：**{DEVELOPMENT_LABEL}**。未判定文档没有被当作 relevance 0。",
+        f"Data properties: **{DEVELOPMENT_LABEL}**. Undetermined documents are not treated as relevance 0.",
         "",
-        "Recall 语义声明：任何 Recall 都只能称为 **pooled Recall**；pool 不完整时不发布 Recall 数值。",
+        "Recall semantic statement: Any Recall can only be called a **pooled Recall**; the Recall value will not be released when the pool is incomplete.",
         "",
-        "本报告只陈述实际 run、显式 qrel 与冻结语料 passage 可支持的事实；未判定结果不按 relevance 0 处理。",
+        "This report only states the facts that can be supported by actual runs, explicit qrels, and frozen corpus passages; undetermined results are not treated as relevance 0.",
         "",
-        f"Pool 状态：`{pool_summary.get('evaluation_integrity_status', 'UNKNOWN')}`；未判定 top-30 出现次数：`{pool_summary.get('unjudged_top30_occurrence_count')}`；唯一扩池请求：`{pool_summary.get('pool_expansion_record_count')}`。",
+        f"Pool status: `{pool_summary.get('evaluation_integrity_status', 'UNKNOWN')}`; Unjudged top-30 occurrences: `{pool_summary.get('unjudged_top30_occurrence_count')}`; Unique pool expansion request: `{pool_summary.get('pool_expansion_record_count')}`.",
         "",
-        "这里的“成功/失败/改善/损害”只按首个显式 relevance-2 的观察排名定义。"
+        "Success/failure/improvement/damage here is defined only by the ranking of the first explicit relevance-2 observation."
         + evaluation_statement,
         "",
-        "## 类别覆盖",
+        "## Category coverage",
         "",
     ]
     for title, definition, candidates in category_definitions:
@@ -618,18 +618,18 @@ def generate_failure_analysis(
             [
                 f"### {title}",
                 "",
-                f"- 判定规则：{definition}",
-                f"- 实际可识别：{len(candidates)}；要求展示：{minimum}；实际展示：{len(selected)}；覆盖状态：`{coverage}`。",
-                f"- 案例：{', '.join(selected) if selected else '无可证据支持的案例'}",
+                f"- Determination rule: {definition}",
+                f"- Actual recognition: {len(candidates)}; Requested display: {minimum}; Actual display: {len(selected)}; Coverage status: `{coverage}`.",
+                f"- Case: {', '.join(selected) if selected else 'Case without evidence'}",
                 "",
             ]
         )
 
     lines.extend(
         [
-            "## 案例证据目录",
+            "## Case Evidence Directory",
             "",
-            "下列案例只展示上述各类别选中的并集；同一查询属于多个类别时不重复整张证据卡。",
+            "The following cases only display the union of the selected categories above; the entire evidence card will not be repeated when the same query belongs to multiple categories.",
             "",
         ]
     )
@@ -641,37 +641,37 @@ def generate_failure_analysis(
             [
                 f"### {query_id}",
                 "",
-                f"- 类别：{'；'.join(case_tags[query_id])}",
-                f"- dialect/version：`{query.get('dialect')}` / `{query.get('version')}`",
-                f"- serialized query SHA-256：`{serialized.get('serialized_text_sha256')}`",
-                "- follow-up/后续：" + follow_up_statement,
-                "- serialized query（直接取自冻结 audit 文件）：",
+                f"- Category: {';'.join(case_tags[query_id])}",
+                f"- dialect/version: `{query.get('dialect')}` / `{query.get('version')}`",
+                f"- serialized query SHA-256: `{serialized.get('serialized_text_sha256')}`",
+                "- follow-up/Follow-up:" + follow_up_statement,
+                "- serialized query (taken directly from the frozen audit file):",
                 "",
             ]
         )
         for serialized_line in str(serialized.get("serialized_text") or "").split("\n"):
             lines.append(f"    {serialized_line}" if serialized_line else "")
-        lines.extend(["", "- relevance-2 evidence passages："])
+        lines.extend(["", "- relevance-2 evidence passages:"])
         relevant_ids = sorted(
             chunk_id for chunk_id, relevance in qrels.get(query_id, {}).items() if relevance == 2
         )
         if not relevant_ids:
-            lines.append("  - 无显式 relevance-2 judgment；本案例不能作排名成败判断。")
+            lines.append(" - No explicit relevance-2 judgment; this case cannot be used to judge the success or failure of ranking.")
         for chunk_id in relevant_ids:
             passage = corpus_map.get(chunk_id)
             if passage is None:
-                lines.append(f"  - `{chunk_id}`：语料中缺失，属于工程证据错误。")
+                lines.append(f" - `{chunk_id}`: missing from the corpus, which is an engineering evidence error.")
                 continue
             lines.append(
-                f"  - `{chunk_id}`；doc dialect/version=`{passage.get('dialect')}`/`{passage.get('version')}`；"
-                f"title={_excerpt(passage.get('title'), 140)}；section={_excerpt(passage.get('section'), 180)}；"
+                f" - `{chunk_id}`;doc dialect/version=`{passage.get('dialect')}`/`{passage.get('version')}`;"
+                f"title={_excerpt(passage.get('title'), 140)}; section={_excerpt(passage.get('section'), 180)};"
                 f"passage={_excerpt(passage.get('text'))}"
             )
         for system in ("bm25", "dense", "hybrid"):
-            lines.append(f"- {system} top-5 results：")
+            lines.append(f"- {system} top-5 results: ")
             top = grouped.get(system, {}).get(query_id, [])[:5]
             if not top:
-                lines.append("  - 缺失正式结果。")
+                lines.append(" - Missing formal result.")
             for entry in top:
                 passage = corpus_map.get(entry.chunk_id, {})
                 judgment = qrels.get(query_id, {}).get(entry.chunk_id)
@@ -679,32 +679,32 @@ def generate_failure_analysis(
                 bm_rank = component_ranks.get("bm25", {}).get(query_id, {}).get(entry.chunk_id)
                 dense_rank = component_ranks.get("dense", {}).get(query_id, {}).get(entry.chunk_id)
                 lines.append(
-                    f"  - rank={entry.rank}；chunk=`{entry.chunk_id}`；score=`{entry.score:.12f}`；"
-                    f"judgment=`{judgment_text}`；component ranks BM25=`{bm_rank}` / dense=`{dense_rank}`；"
-                    f"doc dialect/version=`{passage.get('dialect')}`/`{passage.get('version')}`；"
-                    f"title={_excerpt(passage.get('title'), 140)}；passage={_excerpt(passage.get('text'))}"
+                    f" - rank={entry.rank}; chunk=`{entry.chunk_id}`; score=`{entry.score:.12f}`;"
+                    f"judgment=`{judgment_text}`; component ranks BM25=`{bm_rank}` / dense=`{dense_rank}`;"
+                    f"doc dialect/version=`{passage.get('dialect')}`/`{passage.get('version')}`;"
+                    f"title={_excerpt(passage.get('title'), 140)};passage={_excerpt(passage.get('text'))}"
                 )
 
         metric_caveat = (
-            "正式 metric impact=NOT_PUBLISHED (BLOCKED)；只可观察首个 rel=2 排名。"
+            "Official metric impact=NOT_PUBLISHED (BLOCKED); only first rel=2 ranking can be observed."
             if evaluation_blocked
-            else "正式 metric impact 以 evaluation 目录中的逐查询与配对结果为准，不从单个排名臆算。"
+            else "The official metric impact is based on the query and pairing results in the evaluation directory and is not calculated from a single ranking."
         )
         lines.append(
-            "- metric impact："
-            f"BM25={_display_rank(ranks['bm25'])}；dense={_display_rank(ranks['dense'])}；"
-            f"hybrid={_display_rank(ranks['hybrid'])}。{metric_caveat}"
+            "-metric impact:"
+            f"BM25={_display_rank(ranks['bm25'])}; dense={_display_rank(ranks['dense'])};"
+            f"hybrid={_display_rank(ranks['hybrid'])}.{metric_caveat}"
         )
 
         diagnosis: list[str] = []
-        if query_id in primary_categories["BM25 成功而 dense 失败"]:
-            diagnosis.append("实际排名显示 BM25 top-10 命中而 dense 未达 top-10")
-        if query_id in primary_categories["dense 成功而 BM25 失败"]:
-            diagnosis.append("实际排名显示 dense top-10 命中而 BM25 未达 top-10")
-        if query_id in primary_categories["hybrid 改善排名"]:
-            diagnosis.append("RRF 后首个 rel=2 严格前移")
-        if query_id in primary_categories["hybrid 损害排名"]:
-            diagnosis.append("RRF 后首个 rel=2 相对最佳单路后移或消失于 top-30")
+        if query_id in primary_categories["BM25 succeeds but dense fails"]:
+            diagnosis.append("The actual ranking shows that BM25 top-10 hits but dense does not reach top-10")
+        if query_id in primary_categories["dense succeeded but BM25 failed"]:
+            diagnosis.append("The actual ranking shows that dense top-10 hits but BM25 does not reach top-10")
+        if query_id in primary_categories["hybrid improves ranking"]:
+            diagnosis.append("The first rel=2 after RRF is strictly moved forward")
+        if query_id in primary_categories["hybrid damage ranking"]:
+            diagnosis.append("The first relative best rel=2 after RRF moves backward or disappears in top-30")
         if query_id in dialect_failures:
             target = str(query.get("dialect"))
             counts = {
@@ -714,16 +714,16 @@ def generate_failure_analysis(
                 )
                 for system in ("bm25", "dense", "hybrid")
             }
-            diagnosis.append(f"目标方言 top-5 文档数（BM25/dense/hybrid）={counts['bm25']}/{counts['dense']}/{counts['hybrid']}")
+            diagnosis.append(f"Number of top-5 documents in target dialect (BM25/dense/hybrid)={counts['bm25']}/{counts['dense']}/{counts['hybrid']}")
         if query_id in version_failures:
-            diagnosis.append("case flag 要求版本推理，但 hybrid 未在 top-10 命中显式 rel=2")
+            diagnosis.append("case flag requires version inference, but hybrid does not hit explicit rel=2 in top-10")
         if query_id in token_evidence:
             matches = token_evidence[query_id]
             if any(matches.values()):
                 diagnosis.append(
-                    "top-5 passage 完全匹配 token："
+                    "top-5 passage exact match token:"
                     + "; ".join(
-                        f"{system}={found or '无'}" for system, found in matches.items()
+                        f"{system}={found or 'None'}" for system, found in matches.items()
                     )
                 )
         if query_id in chunk_risk_cases:
@@ -732,44 +732,44 @@ def generate_failure_analysis(
                 for chunk_id in relevant_ids
             ]
             diagnosis.append(
-                f"rel=2 passage 最大字符数={max(evidence_lengths) if evidence_lengths else 0}，需检查结构化 chunk 边界；当前不声称它造成排名"
+                f"rel=2 passage maximum number of characters={max(evidence_lengths) if evidence_lengths else 0}, need to check structured chunk boundaries; currently not claimed to cause ranking"
             )
         if query_id in unjudged_counts:
             diagnosis.append(
-                f"三套 top-30 有 {unjudged_counts[query_id]} 次未判定出现，结论可能随补判变化"
+                f"Three sets of top-30 have {unjudged_counts[query_id]} unjudged occurrences, and the conclusion may change with supplementary judgments"
             )
-        lines.append("- diagnosis：" + "；".join(diagnosis) + "。")
+        lines.append("- diagnosis:" + ";".join(diagnosis) + ".")
 
         future: list[str] = (
-            ["先按 pool_expansion_required.jsonl 对未判定结果作外部补判"]
+            ["First press pool_expansion_required.jsonl to make an external supplementary judgment for the undetermined result"]
             if evaluation_blocked
-            else ["使用已发布逐查询、切片与配对指标复核，不修改当前冻结 qrels"]
+            else ["Review using published query-by-query, slice and paired indicators, without modifying the currently frozen qrels"]
         )
         if query_id in dialect_failures or query_id in version_failures:
             future.append(
-                "若回退在独立评估中仍成立，在 Stage 7 检验方言/版本感知检索"
+                "If fallback holds in independent evaluation, verify dialect/version-aware retrieval in Stage 7"
                 if not evaluation_blocked
-                else "若补判后回退仍成立，在 Stage 7 检验方言/版本感知检索"
+                else "If the fallback is still true after the supplementary judgment, check the dialect/version aware retrieval in Stage 7"
             )
         if query_id in chunk_risk_cases:
-            future.append("人工检查 relevance-2 passage 的 section 与 chunk 边界")
+            future.append("Manually check the section and chunk boundaries of relevance-2 passage")
         future.append(
-            "创新实验建立新系统版本，不覆盖 baseline 或当前 qrels"
+            "Innovation experiments create new system versions without overwriting baseline or current qrels"
             if not evaluation_blocked
-            else "补判前不据此调模型、RRF 或 qrels"
+            else "Do not adjust the model, RRF or qrels accordingly before making up the judgment"
         )
-        lines.extend(["- future handling：" + "；".join(future) + "。", ""])
+        lines.extend(["- future handling: " + ";".join(future) + ".", ""])
 
     pool_handoff = (
-        "完整未判定请求位于 `retrieval/baseline/pool_expansion/pool_expansion_required.jsonl`；它保存实际 "
-        "passage 快照、三个系统的出现位置与 component ranks。人工或独立标注应写入独立的 "
-        "`retrieval/baseline/qrels/pool_expansion_judgments.jsonl`，不得编辑受保护 qrels 或把未判定项自动写成 0。"
-        "补判后必须重跑 check-pool、evaluate、test、受保护目录 after audit 与 finalize。"
+        "The complete unresolved request is located in `retrieval/baseline/pool_expansion/pool_expansion_required.jsonl`; it holds the actual "
+        "passage snapshot, occurrence position of three systems and component ranks. Manual or independent annotations should be written independently"
+        "`retrieval/baseline/qrels/pool_expansion_judgments.jsonl`, you must not edit protected qrels or automatically write unjudgments to 0."
+        "After re-judgment, check-pool, evaluate, test, protected directory after audit and finalize must be re-run."
         if evaluation_blocked
-        else "当前 `retrieval/baseline/pool_expansion/pool_expansion_required.jsonl` 为空。新增 retriever 或修改 run "
-        "若引入未判断 pair，必须先按版本化标注流程补齐；不得把 missing qrel 自动写成 0。"
+        else "The current `retrieval/baseline/pool_expansion/pool_expansion_required.jsonl` is empty. Add retriever or modify run "
+        "If an undetermined pair is introduced, it must be completed according to the versioning annotation process; the missing qrel must not be automatically written as 0."
     )
-    lines.extend(["## Pool expansion 交接", "", pool_handoff, ""])
+    lines.extend(["## Pool expansion handover", "", pool_handoff, ""])
     output = paths.reports / "failure_analysis.md"
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text("\n".join(lines), encoding="utf-8", newline="\n")
@@ -1278,35 +1278,35 @@ def generate_reports(paths: ProjectPaths, statuses: dict[str, Any], manifest: di
     blocked = pool.get("pool_expansion_required") is True
     engineering_passed = statuses.get("engineering_status") == "PASS"
     if engineering_passed and not blocked and statuses.get("evaluation_integrity_status") == "PASS":
-        baseline_title = "# SQLMend-RAG 正式基线检索报告"
-        completion_title = "# 阶段 5–6 完成报告"
+        baseline_title = "# SQLMend-RAG official baseline search report"
+        completion_title = "# Phase 5–6 Completion Report"
     elif engineering_passed and blocked:
-        baseline_title = "# SQLMend-RAG 正式基线候选状态报告——尚未完成"
-        completion_title = "# 阶段 5–6 候选状态报告——尚未完成"
+        baseline_title = "# SQLMend-RAG Official Baseline Candidate Status Report - Not Completed"
+        completion_title = "# Phase 5–6 Candidate Status Report - Not Completed"
     else:
-        baseline_title = "# SQLMend-RAG 无效基线状态报告——尚未完成"
-        completion_title = "# 阶段 5–6 无效状态报告——尚未完成"
+        baseline_title = "# SQLMend-RAG Invalid Baseline Status Report - Not Completed"
+        completion_title = "# Phase 5–6 Invalid Status Report - Not Completed"
 
     if blocked:
         evaluation_sections = """## Overall metrics
 
-`NOT_PUBLISHED (BLOCKED)`。`evaluation/overall_metrics.json` 只保存阻塞哨兵，不包含检索质量数值。
+`NOT_PUBLISHED (BLOCKED)`. `evaluation/overall_metrics.json` only saves blocking sentinels and does not contain retrieval quality values.
 
 ## Slice metrics
 
-`NOT_PUBLISHED (BLOCKED)`。`evaluation/slice_metrics.csv` 必须不存在，避免把不完整 pool 当成完整评估。
+`NOT_PUBLISHED (BLOCKED)`. `evaluation/slice_metrics.csv` must not exist to avoid treating an incomplete pool as a complete evaluation.
 
 ## Confidence intervals
 
-`NOT_PUBLISHED (BLOCKED)`。未运行 paired bootstrap。
+`NOT_PUBLISHED (BLOCKED)`. Paired bootstrap was not run.
 
 ## Pairwise comparisons
 
-`NOT_PUBLISHED (BLOCKED)`。未发布 BM25/dense/hybrid 配对差异。
+`NOT_PUBLISHED (BLOCKED)`. Unpublished BM25/dense/hybrid pairing differences.
 
 ## Complementarity
 
-`NOT_PUBLISHED (BLOCKED)`。正式互补性指标等待 top-30 全部判定。失败分析中的排名观察不等同于此指标。
+`NOT_PUBLISHED (BLOCKED)`. Formal complementarity indicators await all top-30 determinations. Ranked observations in failure analysis are not equivalent to this metric.
 """
     else:
         evaluation_sections = f"""## Overall metrics
@@ -1408,31 +1408,31 @@ def generate_reports(paths: ProjectPaths, statuses: dict[str, Any], manifest: di
 
     baseline = f"""{baseline_title}
 
-数据性质：**{DEVELOPMENT_LABEL}**。250 条查询和当前 qrels 是机器提出的开发数据，不是 gold、人工标注或 held-out test，也不替代课程要求的 1,000+ 条人工标注。
+Data properties: **{DEVELOPMENT_LABEL}**. The 250 queries and current qrels are machine-raised development data and are not gold, human annotation, or held-out testing, nor do they replace the 1,000+ human annotations required for the course.
 
-## 最终状态
+## final state
 
-- release：`{manifest.get('release')}`
-- engineering：`{statuses.get('engineering_status')}`
-- evaluation integrity：`{statuses.get('evaluation_integrity_status')}`
-- retrieval quality：`{statuses.get('retrieval_quality_status')}`
-- annotation reproduction：`{statuses.get('annotation_reproduction_status')}`
+- release: `{manifest.get('release')}`
+- engineering: `{statuses.get('engineering_status')}`
+- evaluation integrity: `{statuses.get('evaluation_integrity_status')}`
+- retrieval quality: `{statuses.get('retrieval_quality_status')}`
+- annotation reproduction: `{statuses.get('annotation_reproduction_status')}`
 
-## 冻结输入身份
+## Freeze input identity
 
 ```json
 {_report_json(identity_summary)}
 ```
 
-## 正式配置
+## Formal configuration
 
 ```json
 {_report_json(config_summary)}
 ```
 
-BM25 与 dense 共用 `sqlmend-query-v1` 严格白名单序列化。Dense 模型精确 revision 是 `{dense.get('model_revision')}`；检索为 CPU 上的 L2-normalized float32 exact inner product，不使用 ANN。Hybrid 只读取两套正式 top-30 run，并按固定 RRF k={hybrid.get('rrf_k')} 融合。
+BM25 and dense share `sqlmend-query-v1` strict whitelist serialization. Dense model exact revision is `{dense.get('model_revision')}`; retrieved as L2-normalized float32 exact inner product on CPU, without using ANN. Hybrid only reads two sets of formal top-30 runs and fuses them according to fixed RRF k={hybrid.get('rrf_k')}.
 
-## Run 与 index 身份
+## Run and index identity
 
 ```json
 {_report_json(run_and_index_hashes)}
@@ -1448,7 +1448,7 @@ BM25 与 dense 共用 `sqlmend-query-v1` 严格白名单序列化。Dense 模型
 {_report_json(judged)}
 ```
 
-缺失 `(query_id, chunk_id)` judgment 表示未判定，绝不等同于 relevance 0。所有 Recall 指标的严格名称是 **pooled Recall**，分母来自有限 judgment pool，不是 corpus-exhaustive recall。
+Missing `(query_id, chunk_id)` judgment means undecided, which is by no means equivalent to relevance 0. The strict name of all Recall metrics is **pooled Recall**, with the denominator coming from the limited judgment pool, not corpus-exhaustive recall.
 
 {evaluation_sections}
 ## Quality targets
@@ -1457,22 +1457,22 @@ BM25 与 dense 共用 `sqlmend-query-v1` 严格白名单序列化。Dense 模型
 {_report_json(quality_targets)}
 ```
 
-## Latency、throughput、build time 与 index size
+## Latency, throughput, build time and index size
 
 ```json
 {_report_json(benchmark_summary)}
 ```
 
-## 限制与后续工作
+## Limitations and follow-up work
 
-- 当前开发标签由 Codex 机器提出，存在循环性与标注误差风险，必须由后续人工标注替换或独立复核。
-- 历史 pool 由 BM25、BGE dense 与 source-linked evidence 构造，存在 pooling bias；正式 E5/BM25 的 pool 外结果是预期风险，不可按 0 惩罚。
-- 当前 pool expansion required=`{pool.get('pool_expansion_required')}`；补判前不发布 overall、slice、CI、pairwise 或 complementarity 指标，也不据此调参。
-- annotation reproduction=`{reproduction.get('annotation_reproduction_status')}`；逐系统证据和缺失项见 `reports/provenance_audit.md`。
-- 本阶段是检索基线，不含方言/版本加权、过滤、reranker、query rewriting、HyDE、SQL 修复或生成。
-- AI6127 PDF 的简单 UI、5 条界面演示查询、grounded generator、答案级 RAG 指标、至少 1,000 条人工标注 held-out 数据及标注者一致性至少 80% 仍未完成。
+- The current development labels are proposed by the Codex machine, which has the risk of circularity and labeling errors, and must be replaced by subsequent manual labeling or independently reviewed.
+- The historical pool is constructed from BM25, BGE dense and source-linked evidence, and there is pooling bias; officially, the results outside the pool of E5/BM25 are expected risks and cannot be punished as 0.
+- The current pool expansion required=`{pool.get('pool_expansion_required')}`; the overall, slice, CI, pairwise or complementarity indicators will not be released before the supplementary judgment, nor will the parameters be adjusted accordingly.
+- annotation reproduction=`{reproduction.get('annotation_reproduction_status')}`; see `reports/provenance_audit.md` for system-by-system evidence and missing items.
+- This phase is the retrieval baseline and does not include dialect/version weighting, filtering, reranker, query rewriting, HyDE, SQL repair or generation.
+- AI6127 PDF's simple UI, 5 interface demo queries, grounded generator, answer-level RAG metrics, at least 1,000 manually annotated held-out data and annotator consistency of at least 80% are still incomplete.
 
-推荐先完成外部补判并冻结有效评估；只有 engineering 与 evaluation integrity 都 PASS 后，才考虑 Stage 7 dialect-aware retrieval。PDF 的 UI、生成与人工测试要求仍是后续独立工作。
+It is recommended to complete the external re-judgment first and freeze the effective evaluation; only consider Stage 7 dialect-aware retrieval after both engineering and evaluation integrity are PASS. The UI, generation and manual testing requirements of PDF are still independent work in the future.
 """
     paths.reports.mkdir(parents=True, exist_ok=True)
     (paths.reports / "baseline_report.md").write_text(baseline, encoding="utf-8", newline="\n")
@@ -1522,57 +1522,57 @@ BM25 与 dense 共用 `sqlmend-query-v1` 严格白名单序列化。Dense 模型
     )
     completion = f"""{completion_title}
 
-数据性质：**{DEVELOPMENT_LABEL}**。
+Data properties: **{DEVELOPMENT_LABEL}**.
 
-本报告只覆盖正式检索基线，不代表 AI6127 整体课程作业已经完成。当前 release 是 `{manifest.get('release')}`；只要 engineering 失败或 evaluation integrity 未 PASS，标题与状态都必须明确写作“尚未完成”。
+This report only covers the formal search baseline and does not represent the completion of the overall AI6127 coursework. The current release is `{manifest.get('release')}`; as long as engineering fails or evaluation integrity is not PASS, the title and status must be clearly written as "not yet completed".
 
-## 创建的精确文件
+## Exact file created
 
-以下清单递归枚举项目自有代码、配置、隐藏占位文件（包括 `.gitignore`/`.gitkeep`）与契约产物。下载模型缓存、Python bytecode/`__pycache__`、pytest cache 明确排除；旧版 annotation reproduction 命名残留不进入正式清单。正式 dense 模型快照由 manifest 的目录 tree hash 整体绑定。
+The following list recursively enumerates the project's own code, configuration, hidden placeholder files (including `.gitignore`/`.gitkeep`) and contract products. Download model cache, Python bytecode/`__pycache__`, and pytest cache are explicitly excluded; legacy annotation reproduction naming residues are not included in the official list. The formal dense model snapshot is bound by the manifest's directory tree hash as a whole.
 
 {inventory_lines}
 
-## 执行的精确命令
+## Exact command to execute
 
-从仓库根目录、已安装 `retrieval` editable package 的环境依次运行：
+Run from the root directory of the warehouse and the environment where the `retrieval` editable package has been installed:
 
 {chr(10).join(f'{index}. `python -m sqlmend_retrieval.cli {command}`' for index, command in enumerate(commands, start=1))}
 
-`test` 子命令内部执行并记录 `python -m pytest retrieval/baseline/tests -q -p no:cacheprovider`，且比较测试前后 source tree；单独运行 pytest 只适合开发诊断，但不能替代 `reports/test_results.json`。在 pool 未补齐时，`evaluate` 写入 BLOCKED sentinel 并返回 0；`finalize`、`validate`（以及因 `finalize` 阻塞而失败的 `all`）返回非零，这是预期阻塞信号，不是发布成功。
+The `test` subcommand internally executes and records `python -m pytest retrieval/baseline/tests -q -p no:cacheprovider`, and compares the source tree before and after the test; running pytest alone is only suitable for development diagnosis, but cannot replace `reports/test_results.json`. When the pool is not filled, `evaluate` writes to the BLOCKED sentinel and returns 0; `finalize`, `validate` (and `all` that fails due to `finalize` blocking) return non-zero, which is an expected blocking signal, not a successful release.
 
-## Corpus、query 与 qrel 验证
+## Corpus, query and qrel validation
 
 ```json
 {_report_json(identity_summary)}
 ```
 
-查询数：`{observed.get('query_count')}`；受保护 qrel 数：`{observed.get('qrel_count')}`；effective qrel 数：`{manifest.get('effective_qrel_count')}`。Supplemental judgments 只允许进入独立文件，不修改受保护输入。
+Number of queries: `{observed.get('query_count')}`; Number of protected qrels: `{observed.get('qrel_count')}`; Number of effective qrels: `{manifest.get('effective_qrel_count')}`. Supplemental judgments only allow access to standalone files and do not modify protected input.
 
-## 受保护目录前后验证
+## Protected directory before and after verification
 
 ```json
 {_report_json(protected_summary)}
 ```
 
-## Annotation-reproduction 状态
+## Annotation-reproduction status
 
-状态：`{status_object['annotation_reproduction_status']}`；empirical ranking 状态：`{reproduction.get('empirical_ranking_reproduction_status')}`；provenance completeness：`{reproduction.get('provenance_completeness_status')}`。详细系统级比较、配置与缺失项见 `reports/provenance_audit.md`。
+Status: `{status_object['annotation_reproduction_status']}`; empirical ranking status: `{reproduction.get('empirical_ranking_reproduction_status')}`; provenance completeness: `{reproduction.get('provenance_completeness_status')}`. See `reports/provenance_audit.md` for detailed system-level comparisons, configurations and missing items.
 
-## 正式 BM25、dense 与 hybrid 配置
+## Official BM25, dense and hybrid configurations
 
 ```json
 {_report_json(config_summary)}
 ```
 
-## Run 与 index hashes
+## Run and index hashes
 
 ```json
 {_report_json(run_and_index_hashes)}
 ```
 
-## Metric summary、slice summary、CI、pairwise 与 complementarity
+## Metric summary, slice summary, CI, pairwise and complementarity
 
-所有 Recall 名称均为 **pooled Recall**。
+All Recall names are **pooled Recall**.
 
 {evaluation_sections}
 ## Quality-target summary
@@ -1587,13 +1587,13 @@ BM25 与 dense 共用 `sqlmend-query-v1` 严格白名单序列化。Dense 模型
 {_report_json(benchmark_summary)}
 ```
 
-## Pool-expansion 状态
+## Pool-expansion status
 
 ```json
 {_report_json(pool)}
 ```
 
-唯一请求写在 `pool_expansion/pool_expansion_required.jsonl`。外部补判写入 `qrels/pool_expansion_judgments.jsonl` 后，流水线只合并当前正式 top-30 union 内、且不与冻结 base qrels 冲突的 query/chunk 对；流水线不会创建或覆盖该人工文件。
+The only request is written in `pool_expansion/pool_expansion_required.jsonl`. After the external supplementary judgment is written into `qrels/pool_expansion_judgments.jsonl`, the pipeline will only merge the query/chunk pairs that are within the current official top-30 union and do not conflict with the frozen base qrels; the pipeline will not create or overwrite the manual file.
 
 ## Test evidence
 
@@ -1601,25 +1601,25 @@ BM25 与 dense 共用 `sqlmend-query-v1` 严格白名单序列化。Dense 模型
 {_report_json(test_summary)}
 ```
 
-## 所有未通过检查
+## All failed checks
 
 ```json
 {_report_json(_validation_issue_summary(validation))}
 ```
 
-`BLOCKED` 表示缺少判断而不能发布指标；它不应被误写为 relevance 0，也不等同于工程实现 FAIL。工程 FAIL 必须先修复；质量 FAIL 只能如实报告，不能在同一开发集上改 qrels、queries、模型或 RRF 来隐藏。
+`BLOCKED` indicates a lack of judgment to publish the indicator; it should not be mistakenly written as relevance 0, nor is it equivalent to engineering implementation FAIL. Engineering FAIL must be fixed first; quality FAIL can only be reported truthfully and cannot be hidden by changing qrels, queries, models, or RRFs on the same development set.
 
-## 所有限制与下一推荐阶段
+## All restrictions and next recommendation phase
 
-- 250 条查询与 13,449 条基础 qrels 是 machine-proposed development data，不是最终人工 held-out test。
-- 不完整 judgment pool 和历史 pooling bias 阻止可靠的质量比较；先完成独立人工补判，再重跑整个评估与验证链。
-- annotation retriever 复现若为 PARTIAL/NOT_REPRODUCIBLE，不能推断未复现系统与历史排名一致。
-- 本阶段没有方言/版本感知、reranker、query rewriting、HyDE、SQL 修复、grounded generator 或答案级评估。
-- PDF 仍要求简单 UI、5 条界面演示查询、grounded generator、答案级 RAG 指标、至少 1,000 条人工标注，以及标注者一致性至少 80%。
+- The 250 queries and 13,449 underlying qrels are machine-proposed development data, not final human held-out test.
+- Incomplete judgment pool and historical pooling bias prevent reliable quality comparison; complete independent manual supplementary judgment first, and then rerun the entire evaluation and verification chain.
+- If the annotation retriever recurrence is PARTIAL/NOT_REPRODUCIBLE, it cannot be inferred that the non-recurring system is consistent with the historical ranking.
+- There is no dialect/version awareness, reranker, query rewriting, HyDE, SQL fixes, grounded generator or answer level evaluation at this stage.
+- PDF still requires a simple UI, 5 interface demo queries, a grounded generator, answer-level RAG metrics, at least 1,000 human annotations, and annotator agreement of at least 80%.
 
-下一步不是直接进入 Stage 7：先补齐当前正式 top-30 judgments，使 evaluation integrity PASS 并冻结有效 baseline；随后才建议 Stage 7 dialect-aware retrieval。课程作业的 UI、生成与最终人工测试集仍须继续完成。
+The next step is not to enter Stage 7 directly: first complete the current official top-30 judgments, make evaluation integrity PASS and freeze the effective baseline; then recommend Stage 7 dialect-aware retrieval. UI, generation and final manual test sets for coursework must still be completed.
 
-## 最终 status object
+## final status object
 
 ```json
 {_report_json(status_object)}

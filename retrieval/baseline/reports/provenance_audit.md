@@ -1,16 +1,16 @@
-# 标注阶段检索器来源追踪审计
+# Annotation phase retriever source tracking audit
 
-数据性质：**machine-proposed development evaluation**。
+Nature of data: **machine-proposed development evaluation**.
 
-Recall 语义声明：任何 Recall 都只能称为 **pooled Recall**；本来源审计本身不发布检索质量指标。
+Recall semantic statement: Any Recall can only be called a **pooled Recall**; this source audit itself does not publish retrieval quality indicators.
 
-状态：`PARTIAL`
+Status: `PARTIAL`
 
-## 识别与审计方法
+## Identification and audit methods
 
-标注阶段系统由受保护的 `provenance/retrieval_config.json`、`provenance/embedding_model.json`、`provenance/retrieval_runs.jsonl` 与 `candidate_pools.jsonl` 共同识别。本审计从冻结 corpus/cases 和历史配置独立重算排名；保存的历史 run 只在重算完成后用于比较，candidate pool 只用于 out-of-pool 审计，二者都不是重算排名的输入。
+The annotation phase system is identified by the protected `provenance/retrieval_config.json`, `provenance/embedding_model.json`, `provenance/retrieval_runs.jsonl` and `candidate_pools.jsonl`. This audit recalculates the rankings independently from frozen corpus/cases and historical configurations; the saved historical run is only used for comparison after the recalculation is completed, and the candidate pool is only used for out-of-pool audits, neither of which is input to the recalculation of the rankings.
 
-历史 query 构造包含 `expected_behavior` 等 annotation-only 字段，这是必须披露的标注基础设施循环性风险；这些字段仅用于复现来源，绝不进入正式 baselines。审计输入哈希为：
+The historical query construct contains annotation-only fields such as `expected_behavior`, which are annotation infrastructure cyclic risks that must be disclosed; these fields are only used for reproduction sources and never enter official baselines. The audit input hash is:
 
 ```json
 {
@@ -25,7 +25,7 @@ Recall 语义声明：任何 Recall 都只能称为 **pooled Recall**；本来�
 }
 ```
 
-## 可获得设置与独立复现结果
+## Settings and independent reproduction results are available
 
 ```json
 {
@@ -55,52 +55,52 @@ Recall 语义声明：任何 Recall 都只能称为 **pooled Recall**；本来�
 
 ## bm25
 
-- 状态：`PASS`
-- 可获得的历史配置：`{"b": 0.75, "k1": 1.2, "top_k": 30}`
-- 独立重算 run SHA-256：`9ff5b86bd011531c73cfa565a244913dab5f18bc012f54a3021b09485763d8ff`
-- exact top-30 sequence match：`1.0`
-- exact top-30 set match：`1.0`
-- mean overlap / Jaccard / RBO：`1.0` / `1.0` / `0.9999999999999999`
-- mean Kendall on common docs：`1.0`
-- out-of-pool pairs / missing stored docs：`0` / `0`
-- score differences：`{'compared_common_scores': 7500, 'exact_after_8_decimal_rounding_count': 7500, 'exact_after_8_decimal_rounding_rate': 1.0, 'maximum_absolute_difference': 0.0, 'mean_absolute_difference': 0.0}`（历史保存 run 无 score）
-- 错误或限制：`None`
+- Status: `PASS`
+- Available historical configurations: `{"b": 0.75, "k1": 1.2, "top_k": 30}`
+- Independent recalculation run SHA-256: `9ff5b86bd011531c73cfa565a244913dab5f18bc012f54a3021b09485763d8ff`
+- exact top-30 sequence match: `1.0`
+- exact top-30 set match: `1.0`
+- mean overlap / Jaccard / RBO: `1.0` / `1.0` / `0.99999999999999999`
+- mean Kendall on common docs: `1.0`
+- out-of-pool pairs / missing stored docs: `0` / `0`
+- score differences: `{'compared_common_scores': 7500, 'exact_after_8_decimal_rounding_count': 7500, 'exact_after_8_decimal_rounding_rate': 1.0, 'maximum_absolute_difference': 0.0, 'mean_absolute_difference': 0.0}` (History saving run without score)
+- Error or limitation: `None`
 
 ## dense
 
-- 状态：`PARTIAL`
-- 可获得的历史配置：`{"cache_dir": "annotation/codex/work/model_cache", "dimensions": 384, "method": "fastembed_neural_text_embedding_cosine", "model_name": "BAAI/bge-small-en-v1.5", "resolved_repository": "qdrant/bge-small-en-v1.5-onnx-q", "resolved_revision": "52398278842ec682c6f32300af41344b1c0b0bb2", "snapshot_manifest_sha256": "96de455d68206045c9752118bceced33cb0d65efff2d268ef3462db39dbaa0c5", "top_k": 30}`
-- 独立重算 run SHA-256：`2bf6e3bb0028dda8faab58fbc656954880fdb9bed63506124838b99d89e72c5a`
-- exact top-30 sequence match：`0.592`
-- exact top-30 set match：`0.988`
-- mean overlap / Jaccard / RBO：`0.9996` / `0.999225806451613` / `0.9982014908608511`
-- mean Kendall on common docs：`0.9974594417077176`
-- out-of-pool pairs / missing stored docs：`1` / `0`
-- score differences：`{'compared_common_scores': 7497, 'exact_after_8_decimal_rounding_count': 3, 'exact_after_8_decimal_rounding_rate': 0.00040016006402561027, 'maximum_absolute_difference': 0.0001893699999999665, 'mean_absolute_difference': 3.296958116579968e-05}`（历史保存 run 无 score）
-- 错误或限制：`None`
+- Status: `PARTIAL`
+- Available historical configurations: `{"cache_dir": "annotation/codex/work/model_cache", "dimensions": 384, "method": "fastembed_neural_text_embedding_cosine", "model_name": "BAAI/bge-small-en-v1.5", "resolved_repository": "qdrant/bge-small-en-v1.5-onnx-q", "resolved_revision": "52398278842ec682c6f32300af41344b1c0b0bb2", "snapshot_manifest_sha256": "96de455d68206045c9752118bceced33cb0d65efff2d268ef3462db39dbaa0c5", "top_k": 30}`
+- Independent recalculation run SHA-256: `2bf6e3bb0028dda8faab58fbc656954880fdb9bed63506124838b99d89e72c5a`
+- exact top-30 sequence match: `0.592`
+- exact top-30 set match: `0.988`
+- mean overlap / Jaccard / RBO: `0.9996` / `0.999225806451613` / `0.9982014908608511`
+- mean Kendall on common docs: `0.9974594417077176`
+- out-of-pool pairs / missing stored docs: `1` / `0`
+- score differences: `{'compared_common_scores': 7497, 'exact_after_8_decimal_rounding_count': 3, 'exact_after_8_decimal_rounding_rate': 0.00040016006402561027, 'maximum_absolute_difference': 0.0001893699999999665, 'mean_absolute_difference': 3.296958116579968e-05}` (History save run without score)
+- Error or limitation: `None`
 
 ## hybrid_rrf
 
-- 状态：`PARTIAL`
-- 可获得的历史配置：`{"rrf_constant": 60, "top_k": 30}`
-- 独立重算 run SHA-256：`5451788e7e4a058fd5c5f4e888e8000deb8909bf2eda3e2c4e751c1cad49a036`
-- exact top-30 sequence match：`0.864`
-- exact top-30 set match：`0.988`
-- mean overlap / Jaccard / RBO：`0.9996` / `0.999225806451613` / `0.9993888195438829`
-- mean Kendall on common docs：`0.9981977011494253`
-- out-of-pool pairs / missing stored docs：`0` / `0`
-- score differences：`None`（历史保存 run 无 score）
-- 错误或限制：`None`
+- Status: `PARTIAL`
+- Available historical configurations: `{"rrf_constant": 60, "top_k": 30}`
+- Independent recalculation run SHA-256: `5451788e7e4a058fd5c5f4e888e8000deb8909bf2eda3e2c4e751c1cad49a036`
+- exact top-30 sequence match: `0.864`
+- exact top-30 set match: `0.988`
+- mean overlap / Jaccard / RBO: `0.9996` / `0.999225806451613` / `0.9993888195438829`
+- mean Kendall on common docs: `0.9981977011494253`
+- out-of-pool pairs / missing stored docs: `0` / `0`
+- score differences: `None` (history saved run without score)
+- Error or limitation: `None`
 
 
-## 缺失信息与限制
+## Missing information and limitations
 
-来源完整性状态：`PARTIAL`。明确记录的限制：`["the historical binding does not attest the exact in-memory builder source bytes", "historical transitive ONNX/tokenizer/runtime versions are not fully pinned", "historical neural tie behavior has no explicit chunk-ID tie breaker"]`。某个系统显示 `NOT_REPRODUCIBLE` 时，其错误或依赖原因已逐系统列出；不能把其余系统的成功推断成该系统也成功。历史保存 run 没有 score，因此只能核验排名，不能核验历史浮点 score。
+Source integrity status: `PARTIAL`. Explicitly documented limitations: `["the historical binding does not attest the exact in-memory builder source bytes", "historical transitive ONNX/tokenizer/runtime versions are not fully pinned", "historical neural tie behavior has no explicit chunk-ID tie breaker"]`. When a system displays `NOT_REPRODUCIBLE`, the error or dependency reasons are listed on a system-by-system basis; success on other systems cannot be inferred to success on that system. The historical save run does not have a score, so it can only verify the ranking, not the historical floating point score.
 
-## 与正式 baselines 的隔离
+## Isolation from official baselines
 
-正式 BM25 使用 `rank_bm25`、k1=1.5 与严格用户字段 serializer；正式 dense 使用固定 revision 的 `intfloat/e5-base-v2`、CPU exact search；正式 hybrid 只融合这两套正式 run 的 rank，固定 RRF k=60。正式检索入口不读取 qrels、candidate-pool ranks 或 annotation evidence，任何历史 ranking 都未被复制进正式 run。
+Formal BM25 uses `rank_bm25`, k1=1.5 and strict user field serializer; formal dense uses fixed revision `intfloat/e5-base-v2`, CPU exact search; formal hybrid only integrates the two sets of official run ranks, with fixed RRF k=60. The official search entry does not read qrels, candidate-pool ranks or annotation evidence, and any historical rankings are not copied into the official run.
 
-## 现有 pool 之外的正式结果
+## Formal results outside the existing pool
 
-正式 run 落在现有 judgment pool 之外的唯一 query/chunk 对数：`0`；top-30 未判定出现次数：`0`。若值为 `None`，说明来源审计发生在正式 pool audit 之前，最终化阶段会重新生成本报告。
+Official run The only query/chunk pair outside the existing judgment pool: `0`; the number of top-30 undetermined occurrences: `0`. If the value is `None`, it means that the source audit occurred before the formal pool audit, and the finalization phase will regenerate this report.

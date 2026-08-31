@@ -138,52 +138,52 @@ REQUIRED_REPORT_FILES = (
 )
 REQUIRED_REPORT_MARKERS = {
     "reports/baseline_report.md": (
-        "## 最终状态",
-        "## 冻结输入身份",
-        "## 正式配置",
-        "## Run 与 index 身份",
+        "## final state",
+        "## Freeze input identity",
+        "## Formal configuration",
+        "## Run and index identity",
         "## Pool completeness",
         "## Quality targets",
-        "## Latency、throughput、build time 与 index size",
-        "## 限制与后续工作",
+        "## Latency, throughput, build time and index size",
+        "## Limitations and follow-up work",
     ),
     "reports/failure_analysis.md": (
-        "## 类别覆盖",
-        "BM25 成功而 dense 失败",
-        "dense 成功而 BM25 失败",
-        "hybrid 改善排名",
-        "hybrid 损害排名",
+        "## Category coverage",
+        "BM25 succeeds but dense fails",
+        "dense succeeded but BM25 failed",
+        "hybrid improves rankings",
+        "hybrid damage ranking",
         "dialect-sensitive",
         "version-sensitive",
         "SQL token",
-        "语义匹配",
-        "chunk 粒度",
+        "Semantic matching",
+        "chunk granularity",
         "pool expansion",
-        "## 案例证据目录",
-        "## Pool expansion 交接",
+        "## Case Evidence Directory",
+        "## Pool expansion handover",
     ),
     "reports/provenance_audit.md": (
-        "## 识别与审计方法",
-        "## 可获得设置与独立复现结果",
-        "## 缺失信息与限制",
-        "## 与正式 baselines 的隔离",
-        "## 现有 pool 之外的正式结果",
+        "## Identification and Audit Methods",
+        "## Settings and independent reproduction results are available",
+        "## Missing information and restrictions",
+        "## Isolation from formal baselines",
+        "## Formal results outside the existing pool",
     ),
     "reports/completion_report.md": (
-        "## 创建的精确文件",
-        "## 执行的精确命令",
-        "## Corpus、query 与 qrel 验证",
-        "## 受保护目录前后验证",
-        "## Annotation-reproduction 状态",
-        "## 正式 BM25、dense 与 hybrid 配置",
-        "## Run 与 index hashes",
-        "## Metric summary、slice summary、CI、pairwise 与 complementarity",
+        "## Exact file created",
+        "## Exact command to execute",
+        "## Corpus, query and qrel validation",
+        "## Protected directory before and after verification",
+        "## Annotation-reproduction status",
+        "## Official BM25, dense and hybrid configurations",
+        "## Run and index hashes",
+        "## Metric summary, slice summary, CI, pairwise and complementarity",
         "## Performance summary",
-        "## Pool-expansion 状态",
+        "## Pool-expansion status",
         "## Test evidence",
-        "## 所有未通过检查",
-        "## 所有限制与下一推荐阶段",
-        "## 最终 status object",
+        "## All failed checks",
+        "## All restrictions and next recommendation phase",
+        "## final status object",
     ),
 }
 POOLED_RECALL_LABEL = "pooled Recall"
@@ -623,8 +623,8 @@ def _dialect_regressions(path: Path, failure_analysis: str) -> list[str]:
             )
             has_query = bool(re.search(r"\b(?:dev\d{4}|q\d+)\b", evidence_window))
             has_passage = "passage" in evidence_window
-            has_component_ranks = "component rank" in evidence_window or "组件排名" in evidence_window
-            has_follow_up = "follow-up" in evidence_window or "后续" in evidence_window
+            has_component_ranks = "component rank" in evidence_window or "component ranking" in evidence_window
+            has_follow_up = "follow-up" in evidence_window or "follow-up" in evidence_window
             if not (has_query and has_passage and has_component_ranks and has_follow_up):
                 unexplained.append(dialect)
     return unexplained

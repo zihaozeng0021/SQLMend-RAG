@@ -1,98 +1,98 @@
-# SQLMend-RAG 正式基线检索模块
+# SQLMend-RAG formal baseline retrieval module
 
-本目录实现三套独立、可审计基线：BM25 稀疏检索、零样本 E5 稠密检索，以及只融合前两者排名的 RRF hybrid。流水线自行控制语料加载、schema 验证、查询序列化、索引、精确检索、融合、TREC 导出、pool 审计、评估、性能记录和验证；第三方库只提供算法组件，不会把语料或查询发送给托管检索/RAG 服务。
+This directory implements three sets of independent, auditable baselines: BM25 sparse retrieval, zero-sample E5 dense retrieval, and an RRF hybrid that only fuses the first two rankings. The pipeline controls corpus loading, schema verification, query serialization, indexing, precise retrieval, fusion, TREC export, pool audit, evaluation, performance recording and verification by itself; the third-party library only provides algorithm components and will not send corpus or queries to managed retrieval/RAG services.
 
-版本身份说明：本目录及其 release 仅称为 **retrieval baseline**，不是 retrieval v1。之后加入方言与版本感知的正式检索系统才命名为 **retrieval v1**。现有 `*_formal_v1` run tag 是已被 annotation provenance 按字节哈希绑定的旧兼容标识，其中的 `v1` 不代表当前 retrieval release；不得据此把 baseline 称为 v1，也不得为改名原地重写这些已冻结 run。
+Version identity note: This directory and its release are only called **retrieval baseline**, not retrieval v1. Later, the formal retrieval system that added dialect and version awareness was named **retrieval v1**. The existing `*_formal_v1` run tag is an old compatible tag that has been bound by byte hash by annotation provenance. The `v1` does not represent the current retrieval release; the baseline cannot be called v1 based on this, nor can these frozen runs be rewritten in place for name changes.
 
-这不是 AI6127 整体作业的完成声明。本阶段没有实现方言/版本显式加权、元数据过滤、reranker、query rewriting、HyDE、生成、SQL 修复或 UI。PDF 最终要求的简单 UI、五条界面演示查询、grounded generator、答案级 RAG 指标，以及至少 1,000 条人工标注且标注者一致性不低于 80% 的 held-out 数据，仍须在后续阶段完成。
+This is not a statement of completion for the overall AI6127 assignment. No dialect/version explicit weighting, metadata filtering, reranker, query rewriting, HyDE, generation, SQL fixes, or UI are implemented at this stage. PDF's final requirements of a simple UI, five interface demonstration queries, grounded generator, answer-level RAG indicators, and at least 1,000 manually annotated held-out data with annotator consistency of no less than 80% must still be completed in subsequent stages.
 
-## 数据身份与不可变性
+## Data Identity and Immutability
 
-正式语料固定为 `construction/data/processed/corpus.jsonl`：
+The formal corpus is fixed to `construction/data/processed/corpus.jsonl`:
 
-- SHA-256：`279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3`
-- 12,000 chunks，五种方言各 2,400 条
-- 处理顺序：按 `chunk_id` 升序
+- SHA-256: `279c2cffcbf74dad6b65867afacb92cbd52bc04c0e1ac2e49b8f3d95adb25db3`
+- 12,000 chunks, 2,400 chunks for each of the five dialects
+- Processing order: ascending order by `chunk_id`
 
-`construction/` 和 `annotation/codex/` 都是受保护目录。审计命令递归记录每个文件的二进制 SHA-256；工作前后任一文件新增、删除或字节变化都会失败。不能只用 Git status 代替该检查。
+`construction/` and `annotation/codex/` are both protected directories. The audit command recursively records the binary SHA-256 of each file; any addition, deletion, or byte change of any file before and after work will fail. You can't just use Git status instead of this check.
 
-当前 250 条查询及 13,449 条 qrels 是 **machine-proposed development data**。基于它们的任何可发布结果必须写作 **machine-proposed development evaluation**，不能称为 gold、人工标注或 held-out test，也不能抵扣最终 1,000+ 人工标注要求。
+The current 250 queries and 13,449 qrels are machine-proposed development data. Any releasable results based on them must be written as **machine-proposed development evaluation** and cannot be called gold, human annotation or held-out test, nor can they be used to offset the final 1,000+ human annotation requirement.
 
-## 严格查询白名单
+## Strict query whitelist
 
-实际 `dev_250.jsonl` schema 被保守映射为：
+The actual `dev_250.jsonl` schema is conservatively mapped as:
 
-| 用户可提供语义 | 实际字段 |
+| User-supplied semantics | Actual fields |
 |---|---|
-| 数据库方言 | `dialect` |
-| 数据库版本 | `version` |
-| 自然语言问题 | `user_problem` |
-| 原始 SQL | `sql` |
-| 已观察错误 | `error_message`, `error_code`, `sqlstate`, `error_symbol` |
+| Database dialect | `dialect` |
+| Database version | `version` |
+| Natural language problem | `user_problem` |
+| Raw SQL | `sql` |
+| Observed errors | `error_message`, `error_code`, `sqlstate`, `error_symbol` |
 
-`expected_behavior`、schema/setup/seed、error category、root cause、reference fix、evidence、source link、case flags、verification、qrels 和其他标注字段一律不会进入正式查询。缺失字段会省略整个 section，不插入 `Unknown`、`N/A` 或 `None`。BM25 与 dense 共用 `sqlmend-query-v1` 序列化结果；SQL 只规范 CRLF/CR 换行，不做改写。
+`expected_behavior`, schema/setup/seed, error category, root cause, reference fix, evidence, source link, case flags, verification, qrels and other annotation fields will not enter the formal query. Missing fields omit the entire section and do not insert `Unknown`, `N/A` or `None`. BM25 and dense share the `sqlmend-query-v1` serialization result; SQL only standardizes CRLF/CR line breaks and does not rewrite them.
 
-## 三套固定基线
+## Three sets of fixed baselines
 
 ### BM25
 
 - `rank_bm25.BM25Okapi==0.2.2`
 - `k1=1.5`, `b=0.75`, top 30
-- lowercase；无 stemming、stopword removal 或 SQL 专用加权
-- `sqlmend-lexical-v1` 保留 SQL 标识符、函数、SQLSTATE、错误码、版本号、限定名称和 `->>`、`->`、`::`、`<=`、`>=`、`<>`、`!=` 等运算符
-- 排序：score 降序，再按 `chunk_id` 升序
+- lowercase; no stemming, stopword removal, or SQL-specific weighting
+- `sqlmend-lexical-v1` retains SQL identifiers, functions, SQLSTATE, error codes, version numbers, qualified names and operators such as `->>`, `->`, `::`, `<=`, `>=`, `<>`, `!=`
+- Sorting: score in descending order, then `chunk_id` in ascending order
 
 ### Zero-shot dense
 
-- 模型：`intfloat/e5-base-v2`
-- 固定 revision：`f52bf8ec8c7124536f0efb74aca902b2995e5bcd`
-- `query: ` / `passage: ` 前缀；mean pooling
-- CPU、14 线程、batch 64、最大输入 256 tokens
-- 为可接受的 CPU 构建时间使用固定 dynamic-int8 模型推理；输出 embedding 明确转换并保存为 L2-normalized float32
-- cosine 通过精确 inner product / matrix multiplication 实现，不使用 ANN
-- 排序：similarity 降序，再按 `chunk_id` 升序
+- Model: `intfloat/e5-base-v2`
+- Fixed revision: `f52bf8ec8c7124536f0efb74aca902b2995e5bcd`
+- `query: ` / `passage: ` prefix; mean pooling
+- CPU, 14 threads, batch 64, maximum input 256 tokens
+- Use fixed dynamic-int8 model inference for acceptable CPU build times; output embeddings are explicitly converted and saved as L2-normalized float32
+- cosine is implemented via exact inner product / matrix multiplication, without using ANN
+- Sorting: descending order by similarity, then ascending order by `chunk_id`
 
-该模型与参数在查看开发集正式指标之前冻结；不会在同一 250 条数据上试多个模型后挑选最好者。模型下载/加载时间与语料编码、索引写入时间分开记录。
+The model and parameters are frozen before viewing formal metrics on the development set; multiple models will not be tried on the same 250 pieces of data and the best one will be selected. Model download/loading time is recorded separately from corpus encoding and index writing time.
 
 ### Hybrid RRF
 
-只读取正式 BM25 top 30 和正式 dense top 30：
+Only read the official BM25 top 30 and the official dense top 30:
 
 ```text
 RRF(d) = 1 / (60 + rank_bm25(d)) + 1 / (60 + rank_dense(d))
 ```
 
-缺失通道不贡献分数，component rank 保存为 `null`。输出排序依次为 RRF score 降序、最佳组件 rank 升序、`chunk_id` 升序。qrels、relevance、source links 或手工文档没有进入融合 API 的入口。
+Missing channels do not contribute scores and component rank is saved as `null`. The output sorting is RRF score in descending order, best component rank in ascending order, and `chunk_id` in ascending order. There is no entry for qrels, relevance, source links, or manual documentation into the Fusion API.
 
-## TREC、qrels 与 pool 语义
+## TREC, qrels and pool semantics
 
-三套 run 均采用：
+All three sets of runs use:
 
 ```text
 query_id Q0 chunk_id rank score run_tag
 ```
 
-分数固定为 12 位小数；每条查询恰好 30 条、rank 连续、chunk 唯一且必须属于冻结语料。qrels 转换保留 0/1/2 全部标签，包括 relevance 0。
+The score is fixed to 12 decimal places; each query has exactly 30 items, the rank is continuous, the chunk is unique and must belong to the frozen corpus. The qrels transformation preserves all tags 0/1/2, including relevance 0.
 
-缺少 `(query_id, chunk_id)` qrel 表示“未判定”，绝不等同于 relevance 0。三个系统都必须达到 `Judged@30 = 1.000` 才能发布指标；否则生成 `pool_expansion_required.jsonl` 和 summary，将 `evaluation_integrity_status` 设为 `BLOCKED`，并等待外部人工或独立机器判断。扩池文件只提出 judgment 请求，不自动生成标签。
+The absence of `(query_id, chunk_id)` qrel means "undecided" and is in no way equivalent to relevance 0. All three systems must reach `Judged@30 = 1.000` before they can publish indicators; otherwise, generate `pool_expansion_required.jsonl` and summary, set `evaluation_integrity_status` to `BLOCKED`, and wait for external human or independent machine judgment. The pool expansion file only makes a judgment request and does not automatically generate labels.
 
-即使 pool 完整，Recall 也只能称为 **pooled Recall**：分母来自有限 judgment pool，不是 corpus-exhaustive recall。现有 pool 由历史 BM25、BGE dense 和 source-linked evidence 构造，因此存在 pooling bias；正式 E5/BM25 找到 pool 外文档是预期现象，不应被惩罚为 0。
+Even if the pool is complete, Recall can only be called **pooled Recall**: the denominator comes from the limited judgment pool, not corpus-exhaustive recall. The existing pool is constructed from historical BM25, BGE dense and source-linked evidence, so there is pooling bias; officially E5/BM25 finding documents outside the pool is an expected phenomenon and should not be penalized to 0.
 
-### 怎样补充 pool judgments
+### How to replenish pool judgments
 
-`check-pool` 生成的 `retrieval/baseline/pool_expansion/pool_expansion_required.jsonl` 是只读请求清单，其中带有 passage 快照、正式系统排名和 component ranks。人工或独立标注流程完成后，把新增判断另存为 `retrieval/baseline/qrels/pool_expansion_judgments.jsonl`，每行只需：
+The `retrieval/baseline/pool_expansion/pool_expansion_required.jsonl` generated by `check-pool` is a read-only request manifest with passage snapshots, official system rankings, and component ranks. After the manual or independent annotation process is completed, save the new judgment as `retrieval/baseline/qrels/pool_expansion_judgments.jsonl`. Each line only needs:
 
 ```json
 {"query_id":"DEV0001","chunk_id":"smr_example","relevance":1}
 ```
 
-`relevance` 仍使用 0/1/2 语义。不要编辑 `annotation/codex/qrels_machine_proposed.jsonl`、已有 TREC qrels 或扩池请求文件，也不要让流水线自动猜标签。合并器只接受当前三套正式 top-30 union 内、且没有出现在冻结 base qrels 中的 query/chunk 对；冲突、重复、未知 chunk 或 pool 外记录都会失败。补判文件由外部标注过程拥有，流水线从不创建或覆盖它。
+`relevance` still uses 0/1/2 semantics. Do not edit `annotation/codex/qrels_machine_proposed.jsonl`, existing TREC qrels or pool expansion request files, and do not let the pipeline automatically guess labels. The combiner only accepts query/chunk pairs that are in the current three formal top-30 unions and do not appear in the frozen base qrels; conflicts, duplications, unknown chunks, or records outside the pool will fail. The catch-up file is owned by the external annotation process and the pipeline never creates or overwrites it.
 
-保存补判文件后，从 `check-pool` 开始重跑；命令会生成新的 `qrels_effective_dev250.trec` 和 merge metadata。只有三个系统的 `Judged@30` 都达到 1.000，`evaluate` 才会生成 overall、slice、confidence intervals、pairwise comparisons 与 complementarity。否则这些发布物必须继续缺席。
+After saving the supplementary judgment file, rerun from `check-pool`; the command will generate new `qrels_effective_dev250.trec` and merge metadata. Only if the `Judged@30` of all three systems reaches 1.000, `evaluate` will generate overall, slice, confidence intervals, pairwise comparisons and complementarity. Otherwise these publications must remain absent.
 
-## 安装与完整重建
+## Installation and full rebuild
 
-从仓库根目录执行：
+Execute from the repository root directory:
 
 ```powershell
 $env:PYTHONDONTWRITEBYTECODE = "1"
@@ -120,33 +120,33 @@ python -m sqlmend_retrieval.cli finalize
 python -m sqlmend_retrieval.cli validate
 ```
 
-正式测试证据必须由 `test` 子命令生成。它内部执行 `python -m pytest retrieval/baseline/tests -q -p no:cacheprovider`，记录 stdout/stderr、return code、Python 信息与测试前后 source-tree hash；直接运行 pytest 可用于开发诊断，但不能替代 `retrieval/baseline/reports/test_results.json`。
+Formal test evidence must be generated by the `test` subcommand. It internally executes `python -m pytest retrieval/baseline/tests -q -p no:cacheprovider`, recording stdout/stderr, return code, Python information and source-tree hash before and after testing; running pytest directly can be used for development diagnosis, but cannot replace `retrieval/baseline/reports/test_results.json`.
 
-`finalize` 重新生成 failure analysis、manifest、baseline/completion reports，并对最终重写后的产物再次 validation。当前 pool 尚未补齐时，`evaluate` 会正常写入 BLOCKED 哨兵，而 `finalize` 与 `validate` 会以非零状态明确拒绝发布；这是预期的完整性门禁，不应绕过。
+`finalize` regenerates failure analysis, manifest, baseline/completion reports, and validates the final rewritten product again. When the current pool is not filled, `evaluate` will write to the BLOCKED sentinel normally, while `finalize` and `validate` will explicitly deny publishing with a non-zero status; this is an expected integrity gate and should not be bypassed.
 
-`python -m sqlmend_retrieval.cli all` 按同一依赖顺序执行完整流水线，在输入、索引、run、确定性或受保护目录硬失败时停止。Dense 模型首次下载保存在 `retrieval/baseline/indices/dense/model_cache/`；以后可离线重建 embedding。要重建索引，无需删除目录或执行未记录步骤，直接依次重跑 `build-bm25`、`build-dense`、三个 `run-*`、pool/evaluation/benchmark/test/after-audit/finalize 即可；每个项目自有产物都会按固定配置重写并重新绑定 hash。
+`python -m sqlmend_retrieval.cli all` Execute the full pipeline in the same dependency order, stopping on input, index, run, deterministic or protected directory hard failures. The Dense model is first downloaded and saved in `retrieval/baseline/indices/dense/model_cache/`; the embedding can be reconstructed offline later. To rebuild the index, there is no need to delete the directory or perform undocumented steps, just rerun `build-bm25`, `build-dense`, three `run-*`, pool/evaluation/benchmark/test/after-audit/finalize in sequence; each project's own products will rewrite and rebind the hash according to the fixed configuration.
 
-关键正式产物包括：`serialized_queries/dev_250_queries.jsonl`、两个 index 目录、三套 TREC run、hybrid provenance、base/effective TREC qrels、pool-expansion 请求与 summary、evaluation 目录、四份人工可读报告、validation report 和根部 `manifest.json`。模型缓存内部文件由上游 snapshot 管理，manifest 用目录 tree hash 整体绑定。
+Key formal artifacts include: `serialized_queries/dev_250_queries.jsonl`, two index directories, three sets of TREC runs, hybrid provenance, base/effective TREC qrels, pool-expansion requests and summary, evaluation directory, four human-readable reports, validation report and the root `manifest.json`. The internal files of the model cache are managed by the upstream snapshot, and the manifest is bound as a whole using the directory tree hash.
 
-## 性能测量
+## Performance Measurement
 
-`benchmark` 先做 3 条 warm-up，再对全部 250 条查询运行一次，使用 `time.perf_counter`。它分别报告：
+`benchmark` first does 3 warm-ups, then runs all 250 queries once, using `time.perf_counter`. It reports respectively:
 
-- 冷启动的索引/模型加载；
-- BM25 warm latency；
-- dense query encoding、exact vector search 和 total；
-- hybrid BM25 component、dense component、RRF fusion 和 total；
-- mean、median/P50、P95、max、QPS；
-- build/encoding time、递归索引大小和硬件/软件环境。
+- Cold start index/model loading;
+- BM25 warm latency;
+- dense query encoding, exact vector search and total;
+- hybrid BM25 component, dense component, RRF fusion and total;
+- mean, median/P50, P95, max, QPS;
+- build/encoding time, recursive index size and hardware/software environment.
 
-当前 cold-start 计时明确包含索引/模型加载以及冻结语料与配置 binding 校验，不包含进程启动；warm-query 统计则排除这些一次性工作。
+The current cold-start timing explicitly includes index/model loading and frozen corpus and configuration binding verification, but does not include process startup; warm-query statistics exclude these one-time tasks.
 
-不同硬件的数字不能在不声明环境的情况下直接比较。
+Figures for different hardware cannot be directly compared without declaring the environment.
 
-## 三个状态怎样解释
+## How to interpret the three states?
 
-- `engineering_status=PASS`：冻结输入、隔离、250×30 runs、chunk/rank/score 合法性、两次 run 字节一致、测试、报告和受保护目录都通过。
-- `evaluation_integrity_status=PASS|BLOCKED`：只有三个系统 Judged@30 均为 1、评估产物完整且 qrels 未变时才 PASS；存在未判定 top-30 时必须 BLOCKED。
-- `retrieval_quality_status=PASS|FAIL|NOT_EVALUATED`：在完整 pool 上测量 hybrid nDCG/pooled Recall/HitRate 目标；pool 被阻塞时为 NOT_EVALUATED。质量 FAIL 不等于工程实现错误，不能通过改 qrels、查询、切片、模型或 RRF 参数来隐藏。
+- `engineering_status=PASS`: frozen input, isolation, 250×30 runs, chunk/rank/score validity, byte consistency between two runs, tests, reports and protected directories all passed.
+- `evaluation_integrity_status=PASS|BLOCKED`: PASS only when the Judged@30 of the three systems are all 1, the evaluation product is complete and the qrels have not changed; BLOCKED is required when there is unjudged top-30.
+- `retrieval_quality_status=PASS|FAIL|NOT_EVALUATED`: Measures hybrid nDCG/pooled Recall/HitRate targets on the full pool; NOT_EVALUATED when the pool is blocked. Quality FAIL does not equal engineering implementation errors and cannot be hidden by changing qrels, queries, slices, models, or RRF parameters.
 
-只有前两个状态都 PASS，阶段 5-6 才能称为完整 baseline release；之后才建议进入 Stage 7 dialect-aware retrieval。即使如此，PDF 所要求的 UI、生成和人工测试集仍属于课程项目的未完成工作。
+Only if the first two states are PASS, stages 5-6 can be called a complete baseline release; only after that is it recommended to enter Stage 7 dialect-aware retrieval. Even so, the required UI, generation, and manual test sets for the PDF are still work-in-progress for the course project.

@@ -1,16 +1,16 @@
-# SQLMend-RAG 正式基线检索报告
+# SQLMend-RAG official baseline search report
 
-数据性质：**machine-proposed development evaluation**。250 条查询和当前 qrels 是机器提出的开发数据，不是 gold、人工标注或 held-out test，也不替代课程要求的 1,000+ 条人工标注。
+Nature of data: **machine-proposed development evaluation**. The 250 queries and current qrels are machine-raised development data and are not gold, human annotation, or held-out testing, nor do they replace the 1,000+ human annotations required for the course.
 
-## 最终状态
+## Final state
 
-- release：`retrieval-baseline`
-- engineering：`PASS`
-- evaluation integrity：`PASS`
-- retrieval quality：`PASS`
-- annotation reproduction：`PARTIAL`
+- release: `retrieval-baseline`
+- engineering: `PASS`
+- evaluation integrity: `PASS`
+- retrieval quality: `PASS`
+- annotation reproduction: `PARTIAL`
 
-## 冻结输入身份
+## Freeze input identity
 
 ```json
 {
@@ -43,7 +43,7 @@
 }
 ```
 
-## 正式配置
+## Formal configuration
 
 ```json
 {
@@ -111,9 +111,9 @@
 }
 ```
 
-BM25 与 dense 共用 `sqlmend-query-v1` 严格白名单序列化。Dense 模型精确 revision 是 `f52bf8ec8c7124536f0efb74aca902b2995e5bcd`；检索为 CPU 上的 L2-normalized float32 exact inner product，不使用 ANN。Hybrid 只读取两套正式 top-30 run，并按固定 RRF k=60 融合。
+BM25 and dense share `sqlmend-query-v1` strict whitelist serialization. Dense model exact revision is `f52bf8ec8c7124536f0efb74aca902b2995e5bcd`; retrieved as L2-normalized float32 exact inner product on CPU, without using ANN. Hybrid only reads two sets of formal top-30 runs and fuses them at a fixed RRF k=60.
 
-## Run 与 index 身份
+## Run and index identity
 
 ```json
 {
@@ -226,7 +226,7 @@ BM25 与 dense 共用 `sqlmend-query-v1` 严格白名单序列化。Dense 模型
 }
 ```
 
-缺失 `(query_id, chunk_id)` judgment 表示未判定，绝不等同于 relevance 0。所有 Recall 指标的严格名称是 **pooled Recall**，分母来自有限 judgment pool，不是 corpus-exhaustive recall。
+Missing `(query_id, chunk_id)` judgment means undecided, which is by no means equivalent to relevance 0. The strict name of all Recall metrics is **pooled Recall**, with the denominator coming from the limited judgment pool, not corpus-exhaustive recall.
 
 ## Overall metrics
 
@@ -1094,7 +1094,7 @@ BM25 与 dense 共用 `sqlmend-query-v1` 严格白名单序列化。Dense 模型
 }
 ```
 
-## Latency、throughput、build time 与 index size
+## Latency, throughput, build time and index size
 
 ```json
 {
@@ -1190,13 +1190,13 @@ BM25 与 dense 共用 `sqlmend-query-v1` 严格白名单序列化。Dense 模型
 }
 ```
 
-## 限制与后续工作
+## Limitations and follow-up work
 
-- 当前开发标签由 Codex 机器提出，存在循环性与标注误差风险，必须由后续人工标注替换或独立复核。
-- 历史 pool 由 BM25、BGE dense 与 source-linked evidence 构造，存在 pooling bias；正式 E5/BM25 的 pool 外结果是预期风险，不可按 0 惩罚。
-- 当前 pool expansion required=`False`；补判前不发布 overall、slice、CI、pairwise 或 complementarity 指标，也不据此调参。
-- annotation reproduction=`PARTIAL`；逐系统证据和缺失项见 `reports/provenance_audit.md`。
-- 本阶段是检索基线，不含方言/版本加权、过滤、reranker、query rewriting、HyDE、SQL 修复或生成。
-- AI6127 PDF 的简单 UI、5 条界面演示查询、grounded generator、答案级 RAG 指标、至少 1,000 条人工标注 held-out 数据及标注者一致性至少 80% 仍未完成。
+- The current development labels are proposed by the Codex machine, which has the risk of circularity and labeling errors, and must be replaced by subsequent manual labeling or independently reviewed.
+- The historical pool is constructed from BM25, BGE dense and source-linked evidence, and there is pooling bias; officially, the results outside the pool of E5/BM25 are expected risks and cannot be punished as 0.
+- The current pool expansion required=`False`; the overall, slice, CI, pairwise or complementarity indicators will not be released before the supplementary judgment, nor will the parameters be adjusted accordingly.
+- annotation reproduction=`PARTIAL`; see `reports/provenance_audit.md` for system-by-system evidence and missing items.
+- This phase is the retrieval baseline and does not include dialect/version weighting, filtering, reranker, query rewriting, HyDE, SQL repair or generation.
+- AI6127 PDF's simple UI, 5 interface demo queries, grounded generator, answer-level RAG metrics, at least 1,000 manually annotated held-out data and annotator consistency of at least 80% are still incomplete.
 
-推荐先完成外部补判并冻结有效评估；只有 engineering 与 evaluation integrity 都 PASS 后，才考虑 Stage 7 dialect-aware retrieval。PDF 的 UI、生成与人工测试要求仍是后续独立工作。
+It is recommended to complete the external re-judgment first and freeze the effective evaluation; only consider Stage 7 dialect-aware retrieval after both engineering and evaluation integrity are PASS. The UI, generation and manual testing requirements of PDF are still independent work in the future.

@@ -161,26 +161,27 @@ def test_report_contains_all_required_comparisons_and_commands() -> None:
     assert "Citation Validity" in report
     assert "Faithfulness" in report
     assert "Context Precision" in report
-    assert "+16.67 个百分点" in report
-    assert "完整 6 行配对结果" in report
-    assert "Generation v1 改善最明显的案例" in report
-    assert "Generation v1 没有改善或表现更差的案例" in report
-    assert "RAG 有效与无效的原因" in report
+    assert "+16.67 percentage points" in report
+    assert "See the complete 6 row matching results" in report
+    assert "The most obvious case of improvement in Generation v1" in report
+    assert "Cases where Generation v1 did not improve or performed worse" in report
+    assert "Reasons why RAG is valid and invalid" in report
     assert "Generation latency" in report
-    assert "500 个正式结果 wrapper 与 provenance" in report
+    assert "500 official results wrapper and provenance" in report
     assert "qwen3.5:4b" in report
     assert "think=false" in report
-    assert "judge call success 6/6，failure 0，retry 2" in report
+    assert "judge call success 6/6, failure 0," in report
+    assert "retry 2." in report
     assert "vacuous 1.0" in report
     assert "self-judge" in report
     assert "machine-proposed development reference" in report
-    assert "Generation failure 分开统计" in report
+    assert "Generation failure separate statistics" in report
     assert report.count("-m sqlmend_generation_v1.cli --root . all --clean") == 1
     assert "python -m sqlmend_generation_v1.cli --root . evaluate" not in report
     # Top and non-improvement sections each retain three case rows.
     assert "DEV0001" in report and "DEV0002" in report and "DEV0005" in report
     assert report.count("| `DEV") == 5
-    assert "无更多真实改善案例" in report
+    assert "No more real improvement cases" in report
 
 
 def test_write_report_uses_requested_artifact_path(tmp_path: Path) -> None:
@@ -208,12 +209,12 @@ def test_improvement_section_never_promotes_ties_or_regressions() -> None:
         _row(6, 0),
     ]
     report = render_generation_report(_overall(), rows)
-    improvement_section = report.split("## Generation v1 没有改善或表现更差的案例", 1)[0].split(
-        "## Generation v1 改善最明显的案例", 1
+    improvement_section = report.split("## Cases where Generation v1 did not improve or performed worse", 1)[0].split(
+        "## The most obvious case of improvement in Generation v1", 1
     )[1]
     assert (
-        "实际符合 Baseline Task fail → Generation v1 Task Success 的案例共 0 条"
+        "There are 0 cases that actually match Baseline Task fail → Generation v1 Task Success"
         in improvement_section
     )
-    assert improvement_section.count("无更多真实改善案例") == 3
+    assert improvement_section.count("No more real improvement cases") == 3
     assert "generation_v1_regressed" not in improvement_section

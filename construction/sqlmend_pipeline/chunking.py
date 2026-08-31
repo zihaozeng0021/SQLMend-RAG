@@ -17,7 +17,7 @@ from .metadata import (
 )
 from .utils import iter_jsonl, lexical_tokens, load_yaml, sha256_text, word_count, write_json_atomic, write_jsonl_atomic
 
-SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?。！？])\s+(?=[A-Z0-9`\[])|\n{2,}")
+SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?\u3002\uff01\uff1f])\s+(?=[A-Z0-9`\[])|\n{2,}")
 ATOMIC_SECTION_RE = re.compile(r"\b(?:syntax|synopsis|signature|parameters?|returns?|return value|description)\b", re.I)
 
 

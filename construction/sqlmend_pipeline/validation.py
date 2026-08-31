@@ -38,7 +38,7 @@ ERROR_EVIDENCE_RE = re.compile(
     re.I | re.M,
 )
 ATOMIC_SECTION_RE = re.compile(r"\b(?:syntax|synopsis|signature|parameters?|returns?|return value|description)\b", re.I)
-MOJIBAKE_RE = re.compile(r"(?:Ã[\u00a0-\u00bfƒ]|Â[\u0080-\u00bf]|â€™|â€œ|â€\x9d|鈥.|聽|搂|锟斤拷)")
+MOJIBAKE_RE = re.compile(r"(?:Ã[\u00a0-\u00bfƒ]|Â[\u0080-\u00bf]|â€™|â€œ|â€\x9d|\u9225.|\u807d|\u6402|\u951f\u65a4\u62f7)")
 
 
 def _check(
